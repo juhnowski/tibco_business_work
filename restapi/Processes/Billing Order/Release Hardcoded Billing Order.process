@@ -1,0 +1,1198 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <pd:name>Processes/Billing Order/Release Hardcoded Billing Order.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="inputParams">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="inputJSON" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>175</pd:startX>
+    <pd:startY>214</pd:startY>
+    <pd:returnBindings>
+        <JSONoutput>
+            <xsl:value-of select="if (count($Catch/exceptiondata)>0) then $Render-error-JSON/ns:ActivityOutputClass/jsonString  else $Render-JSON/ns:ActivityOutputClass/jsonString"/>
+        </JSONoutput>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="JSONoutput" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>996</pd:endX>
+    <pd:endY>214</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1521575913877</pd:targetNamespace>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>788</pd:x>
+        <pd:y>215</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="recordId" type="xsd:int"/>
+                            <xsd:element name="opErrorText" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <recordId>
+                        <xsl:value-of select="round($Release-Billing-Order/resultSet/outputSet/RETURN_VALUE)"/>
+                    </recordId>
+                    <opErrorText>
+                        <xsl:value-of select="if($Release-Billing-Order/resultSet/outputSet/RETURN_VALUE >= 0) then $Release-Billing-Order/resultSet/outputSet/ERRTXT else $Get-exception-text/resultSet/outputSet/ErrorTxt"/>
+                    </opErrorText>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>339</pd:x>
+        <pd:y>216</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor>
+                <xsd:element name="input">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="ScalaNumber" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="ClientName" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="LegalAddressName" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="BillingAddressName" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="ContactAddressName" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="BillingContactName" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="BillingContacFax" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="BillingContacPhone" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="POUserID" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="BillingCurrencyInternalCode" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="TariffsCurrencyInternalCode" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="ClientSubCategoryInternalNumber" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="ClientCategoryInternalNumber" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="ClientCarrierTypeInternalNumber" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="BillingContacEmail" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="ServiceLevelInternalNumber" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="ServiceManagerPOUserId" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="SignedDate" type="xsd:dateTime" minOccurs="0"/>
+                            <xsd:element name="CloseDate" type="xsd:dateTime" minOccurs="0"/>
+                            <xsd:element name="BreakCauseCode" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="inn" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Fine" type="xsd:float" minOccurs="0"/>
+                            <xsd:element name="InvoicePayPeriod" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="Convertation" type="xsd:float" minOccurs="0"/>
+                            <xsd:element name="OfficialStatus" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="VoiceTrafDetailsId" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="ContractNumber" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="SupplierInternalNumber" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="BillLanguageId" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="BusinnesUnitInternalNumber" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="ContractTypeInternalNumber" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="SalePointCode" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="BillingAddressCountry" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="ZIP" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="KPP" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="SendToInternalNumber" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="InvoicePrintInternalNumber" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="NationalInternalNumber" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="OKVEDDivision" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="OKVEDCode" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="OrgFormInternalNumber" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="InvoiceDeliveryId" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="EmailInvoiceDelivery" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="ConsentPrivateInfo" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="CustomerPhone" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="NDSTariffId" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="JoinLevelInternalNumber" type="xsd:int" minOccurs="0"/>
+                            <xsd:element name="LegalAddressGeoCountryId" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="ContractInvoiceName" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="VoiceTrafEmail" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="OperLicenseInternalNumber" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="PaymentPeriodFrom" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="AgentCollectorName" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="OppCoopLVLTPInternalNumber" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="ABHId" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="CrossClientID" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="bik" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Bank" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="CorrAccount" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Account" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="USFId" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="RingUpPhone" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="RingUpFax" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="RingUpEMail" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="ScalaNumberVKName" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="TrafficTypeId" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="SegmentID" type="xsd:int" minOccurs="0"/>
+                            <xsd:element name="AgentContractNumber" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="ShowDIDALexpandedId" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="ClientInternalNumber" type="xsd:int" minOccurs="0"/>
+                            <xsd:element name="UBGId" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="kppIndividual" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="SendDataToExtId" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="AllowSFSale" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="SpecifyConsumerId" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="DigitalSignature" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="DigitalSignatureDate" type="xsd:dateTime" minOccurs="0"/>
+                            <xsd:element name="DigitalSignatureId" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="OfficialLastName" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="OfficialFirstName" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="OfficialMiddleName" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="OfficialName" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="ProfitID" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="SetFineId" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="FineTypeId" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="FineWarrentNumber" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="GovContractId" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="PenyRFRName" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityOutputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/inputParams/inputJSON"/>
+                </jsonString>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>510</pd:x>
+        <pd:y>69</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Render error JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>674</pd:x>
+        <pd:y>70</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="opErrorText" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <opErrorText>
+                        <xsl:value-of select="$Catch/exceptiondata/*"/>
+                    </opErrorText>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Release Billing Order">
+        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+        <pd:x>506</pd:x>
+        <pd:y>222</pd:y>
+        <config>
+            <timeout>%%Timeout%%</timeout>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/Oracle BO Connection.sharedjdbc</jdbcSharedConfig>
+            <ProcedureName>CREATE_BO_0</ProcedureName>
+            <useSchema>false</useSchema>
+            <schema>%%BO_Schema%%</schema>
+            <oraObjects/>
+            <oraTables/>
+            <parameterTypes>
+                <parameter>
+                    <colName>RETURN_VALUE</colName>
+                    <colType>5</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_SCALAN</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUSTNAME</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_ADR</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_BADR</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CADR</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_REPR</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_REPR_FAX</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_REPR_PH</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_SUPPL</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_SPCOD</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_C_INV</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_C_TRF</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_C_NEW</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CLNTP</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CLN_SEG</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CLN_SUBCT</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CRGRP</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CRUSR</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUSTMAIL</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUSTSTT</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_SRVMNCOD</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CNTR_SDT</colName>
+                    <colType>1</colType>
+                    <dataType>93</dataType>
+                    <typeName>DATE</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CNTR_EDT</colName>
+                    <colType>1</colType>
+                    <dataType>93</dataType>
+                    <typeName>DATE</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CNTR_TCAUSE</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUST_INN</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_PENI</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>FLOAT</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_PENIAFTER</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_PAYPERIOD</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_EXC_PRCNT</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>FLOAT</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUSTPRSN</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_S_EL_DTL</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CONTRACTNO</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_PROVIDER</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_SSDATE</colName>
+                    <colType>1</colType>
+                    <dataType>93</dataType>
+                    <typeName>DATE</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_INV_LANG</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_BU_COD</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CNTRTP</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_SLPNT</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CNSMR</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_BADR_RUS</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_BADR_INDX</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUST_KPP</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CASE</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CSTLCT</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_OFCLCT</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUST_GEO</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_OKVED_DIVISION</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_OKVED_CODE</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUST_FORM</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_S_INV_MAIL</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_INV_MAIL</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUST_IRS</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUST_IRS_PHONE</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_S_TRFVAT</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CONTRACT_JOIN_LEVEL</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_REGISTR_CNTR</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_INV_FROM</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_INV_MAIL_DTL</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_OPR_LCNCTP</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_PAY_DT_STRT</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_AGNT_CLCTR</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_OPR_COOP_LVLTP</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_AGENT_BL_HST</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CC_ID</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUST_BIC</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUST_BANK</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUST_CRSP</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUST_ACNT</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_USF</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_AUTO_PH</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_AUTO_FAX</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_AUTO_EMAIL</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_SCALAN_VK</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_TRAFFIC_TP</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_SEGMENT_ID</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_AGENT_CONTRACTNO</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_DIDACL_EXPANDED</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUST_ID</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_S_UNL_TRF</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_IS_INDIVIDUAL_KPP</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_SEND_DATA_TO_EXTERNAL_DB</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_S_SF_SALE</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CONSUMER_REQUIRED</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_S_EDO</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_EDO_DATE</colName>
+                    <colType>1</colType>
+                    <dataType>93</dataType>
+                    <typeName>DATE</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_EDO_ID</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_EDO_NAME1</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_EDO_NAME2</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_EDO_NAME3</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_EDO_NAME4</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_PROFIT_TP</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_S_PENI</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_PENI_TP</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_NOTE_NMBR</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_GOV_CONTRACT_ID</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_REFIN_RATE</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>ERRTXT</colName>
+                    <colType>2</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+            </parameterTypes>
+        </config>
+        <pd:inputBindings>
+            <inputs>
+                <inputSet>
+                    <I_SCALAN>
+                        <xsl:value-of select="'M0112'"/>
+                    </I_SCALAN>
+                    <I_CUSTNAME>
+                        <xsl:value-of select="'Моя Весна, ООО'"/>
+                    </I_CUSTNAME>
+                    <I_ADR>
+                        <xsl:value-of select="'140009, г Москва (Москва), 800-летия Москвы ул, д.12, стр.12'"/>
+                    </I_ADR>
+                    <I_BADR>
+                        <xsl:value-of select="'г Москва (Свердловская), 1 Маевки аллея, д.34'"/>
+                    </I_BADR>
+                    <I_CADR>
+                        <xsl:value-of select="'140009, г Москва (Москва), 8 Марта ул, д.2, стр.2'"/>
+                    </I_CADR>
+                    <I_REPR>
+                        <xsl:value-of select="'я я'"/>
+                    </I_REPR>
+                    <I_REPR_FAX xsi:nil="true"/>
+                    <I_REPR_PH>
+                        <xsl:value-of select="'1111111'"/>
+                    </I_REPR_PH>
+                    <I_SUPPL xsi:nil="true"/>
+                    <I_SPCOD>
+                        <xsl:value-of select="3891"/>
+                    </I_SPCOD>
+                    <I_C_INV>
+                        <xsl:value-of select="1"/>
+                    </I_C_INV>
+                    <I_C_TRF>
+                        <xsl:value-of select="1"/>
+                    </I_C_TRF>
+                    <I_C_NEW>
+                        <xsl:value-of select="1"/>
+                    </I_C_NEW>
+                    <I_CLNTP>
+                        <xsl:value-of select="1"/>
+                    </I_CLNTP>
+                    <I_CLN_SEG>
+                        <xsl:value-of select="1"/>
+                    </I_CLN_SEG>
+                    <I_CLN_SUBCT>
+                        <xsl:value-of select="0"/>
+                    </I_CLN_SUBCT>
+                    <I_CRGRP>
+                        <xsl:value-of select="1"/>
+                    </I_CRGRP>
+                    <I_CRUSR>
+                        <xsl:value-of select="4178"/>
+                    </I_CRUSR>
+                    <I_CUSTMAIL>
+                        <xsl:value-of select="'111@mail.ru'"/>
+                    </I_CUSTMAIL>
+                    <I_CUSTSTT>
+                        <xsl:value-of select="2"/>
+                    </I_CUSTSTT>
+                    <I_SRVMNCOD>
+                        <xsl:value-of select="0"/>
+                    </I_SRVMNCOD>
+                    <I_CNTR_SDT>
+                        <xsl:value-of select="tib:create-dateTime(2009, 5, 1, 0, 0, 0)"/>
+                    </I_CNTR_SDT>
+                    <I_CNTR_EDT xsi:nil="true"/>
+                    <I_CNTR_TCAUSE>
+                        <xsl:value-of select="0"/>
+                    </I_CNTR_TCAUSE>
+                    <I_CUST_INN>
+                        <xsl:value-of select="'7707083893'"/>
+                    </I_CUST_INN>
+                    <I_PENI>
+                        <xsl:value-of select="0.2"/>
+                    </I_PENI>
+                    <I_PENIAFTER xsi:nil="true"/>
+                    <I_PAYPERIOD>
+                        <xsl:value-of select="30"/>
+                    </I_PAYPERIOD>
+                    <I_EXC_PRCNT>
+                        <xsl:value-of select="0"/>
+                    </I_EXC_PRCNT>
+                    <I_CUSTPRSN>
+                        <xsl:value-of select="3"/>
+                    </I_CUSTPRSN>
+                    <I_S_EL_DTL>
+                        <xsl:value-of select="0"/>
+                    </I_S_EL_DTL>
+                    <I_CONTRACTNO>
+                        <xsl:value-of select="'M0112'"/>
+                    </I_CONTRACTNO>
+                    <I_PROVIDER>
+                        <xsl:value-of select="0"/>
+                    </I_PROVIDER>
+                    <I_SSDATE xsi:nil="true"/>
+                    <I_INV_LANG>
+                        <xsl:value-of select="1"/>
+                    </I_INV_LANG>
+                    <I_BU_COD>
+                        <xsl:value-of select="2"/>
+                    </I_BU_COD>
+                    <I_CNTRTP>
+                        <xsl:value-of select="'O'"/>
+                    </I_CNTRTP>
+                    <I_SLPNT>
+                        <xsl:value-of select="'SVNMOS'"/>
+                    </I_SLPNT>
+                    <I_CNSMR>
+                        <xsl:value-of select="0"/>
+                    </I_CNSMR>
+                    <I_BADR_RUS>
+                        <xsl:value-of select="1"/>
+                    </I_BADR_RUS>
+                    <I_BADR_INDX>
+                        <xsl:value-of select="'115500'"/>
+                    </I_BADR_INDX>
+                    <I_CUST_KPP>
+                        <xsl:value-of select="'770970219'"/>
+                    </I_CUST_KPP>
+                    <I_CASE>
+                        <xsl:value-of select="4"/>
+                    </I_CASE>
+                    <I_CSTLCT>
+                        <xsl:value-of select="7095"/>
+                    </I_CSTLCT>
+                    <I_OFCLCT>
+                        <xsl:value-of select="7095"/>
+                    </I_OFCLCT>
+                    <I_CUST_GEO>
+                        <xsl:value-of select="923"/>
+                    </I_CUST_GEO>
+                    <I_OKVED_DIVISION>
+                        <xsl:value-of select="'X'"/>
+                    </I_OKVED_DIVISION>
+                    <I_OKVED_CODE xsi:nil="true"/>
+                    <I_CUST_FORM>
+                        <xsl:value-of select="1"/>
+                    </I_CUST_FORM>
+                    <I_S_INV_MAIL>
+                        <xsl:value-of select="0"/>
+                    </I_S_INV_MAIL>
+                    <I_INV_MAIL xsi:nil="true"/>
+                    <I_CUST_IRS>
+                        <xsl:value-of select="0"/>
+                    </I_CUST_IRS>
+                    <I_CUST_IRS_PHONE xsi:nil="true"/>
+                    <I_S_TRFVAT>
+                        <xsl:value-of select="0"/>
+                    </I_S_TRFVAT>
+                    <I_CONTRACT_JOIN_LEVEL xsi:nil="true"/>
+                    <I_REGISTR_CNTR>
+                        <xsl:value-of select="'RUS'"/>
+                    </I_REGISTR_CNTR>
+                    <I_INV_FROM>
+                        <xsl:value-of select="'FZ175'"/>
+                    </I_INV_FROM>
+                    <I_INV_MAIL_DTL xsi:nil="true"/>
+                    <I_OPR_LCNCTP>
+                        <xsl:value-of select="0"/>
+                    </I_OPR_LCNCTP>
+                    <I_PAY_DT_STRT>
+                        <xsl:value-of select="0"/>
+                    </I_PAY_DT_STRT>
+                    <I_AGNT_CLCTR xsi:nil="true"/>
+                    <I_OPR_COOP_LVLTP>
+                        <xsl:value-of select="0"/>
+                    </I_OPR_COOP_LVLTP>
+                    <I_AGENT_BL_HST xsi:nil="true"/>
+                    <I_CC_ID>
+                        <xsl:value-of select="454545"/>
+                    </I_CC_ID>
+                    <I_CUST_BIC>
+                        <xsl:value-of select="'123456789'"/>
+                    </I_CUST_BIC>
+                    <I_CUST_BANK>
+                        <xsl:value-of select="'123'"/>
+                    </I_CUST_BANK>
+                    <I_CUST_CRSP>
+                        <xsl:value-of select="'12345678901234567890'"/>
+                    </I_CUST_CRSP>
+                    <I_CUST_ACNT>
+                        <xsl:value-of select="'12345678901234567890'"/>
+                    </I_CUST_ACNT>
+                    <I_USF>
+                        <xsl:value-of select="1"/>
+                    </I_USF>
+                    <I_AUTO_PH>
+                        <xsl:value-of select="'74997821425'"/>
+                    </I_AUTO_PH>
+                    <I_AUTO_FAX xsi:nil="true"/>
+                    <I_AUTO_EMAIL>
+                        <xsl:value-of select="'нет'"/>
+                    </I_AUTO_EMAIL>
+                    <I_SCALAN_VK xsi:nil="true"/>
+                    <I_TRAFFIC_TP>
+                        <xsl:value-of select="0"/>
+                    </I_TRAFFIC_TP>
+                    <I_SEGMENT_ID>
+                        <xsl:value-of select="2"/>
+                    </I_SEGMENT_ID>
+                    <I_AGENT_CONTRACTNO xsi:nil="true"/>
+                    <I_DIDACL_EXPANDED>
+                        <xsl:value-of select="0"/>
+                    </I_DIDACL_EXPANDED>
+                    <I_CUST_ID>
+                        <xsl:value-of select="555109"/>
+                    </I_CUST_ID>
+                    <I_S_UNL_TRF>
+                        <xsl:value-of select="0"/>
+                    </I_S_UNL_TRF>
+                    <I_IS_INDIVIDUAL_KPP>
+                        <xsl:value-of select="0"/>
+                    </I_IS_INDIVIDUAL_KPP>
+                    <I_SEND_DATA_TO_EXTERNAL_DB>
+                        <xsl:value-of select="1"/>
+                    </I_SEND_DATA_TO_EXTERNAL_DB>
+                    <I_S_SF_SALE xsi:nil="true"/>
+                    <I_CONSUMER_REQUIRED xsi:nil="true"/>
+                    <I_S_EDO>
+                        <xsl:value-of select="0"/>
+                    </I_S_EDO>
+                    <I_EDO_DATE>
+                        <xsl:value-of select="tib:create-dateTime(2016, 6, 24, 0, 0, 0)"/>
+                    </I_EDO_DATE>
+                    <I_EDO_ID>
+                        <xsl:value-of select="'678768768'"/>
+                    </I_EDO_ID>
+                    <I_EDO_NAME1 xsi:nil="true"/>
+                    <I_EDO_NAME2 xsi:nil="true"/>
+                    <I_EDO_NAME3 xsi:nil="true"/>
+                    <I_EDO_NAME4>
+                        <xsl:value-of select="'Моя Весна - полное'"/>
+                    </I_EDO_NAME4>
+                    <I_PROFIT_TP>
+                        <xsl:value-of select="0"/>
+                    </I_PROFIT_TP>
+                    <I_S_PENI>
+                        <xsl:value-of select="0"/>
+                    </I_S_PENI>
+                    <I_PENI_TP>
+                        <xsl:value-of select="1"/>
+                    </I_PENI_TP>
+                    <I_NOTE_NMBR xsi:nil="true"/>
+                    <I_GOV_CONTRACT_ID>
+                        <xsl:value-of select="'12345678901234567891'"/>
+                    </I_GOV_CONTRACT_ID>
+                    <I_REFIN_RATE xsi:nil="true"/>
+                    <ERRTXT>
+                        <xsl:value-of select="''"/>
+                    </ERRTXT>
+                </inputSet>
+            </inputs>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get exception text">
+        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+        <pd:x>664</pd:x>
+        <pd:y>338</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <schema>%%Schema%%</schema>
+            <ProcedureName>Scala_GetReqErrTxt</ProcedureName>
+            <parameterTypes>
+                <parameter>
+                    <colName>@RETURN_VALUE</colName>
+                    <colType>5</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@ErrorCode</colName>
+                    <colType>1</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@ErrorTxt</colName>
+                    <colType>2</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@opResult</colName>
+                    <colType>2</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@opErrorText</colName>
+                    <colType>2</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+            </parameterTypes>
+        </config>
+        <pd:inputBindings>
+            <inputs>
+                <inputSet>
+                    <ErrorCode>
+                        <xsl:copy-of select="-($Release-Billing-Order/resultSet/outputSet/RETURN_VALUE)/@xsi:nil"/>
+                        <xsl:value-of select="-($Release-Billing-Order/resultSet/outputSet/RETURN_VALUE)"/>
+                    </ErrorCode>
+                    <ErrorTxt>
+                        <xsl:value-of select="''"/>
+                    </ErrorTxt>
+                    <opResult>
+                        <xsl:value-of select="0"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="''"/>
+                    </opErrorText>
+                </inputSet>
+            </inputs>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Render error JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render error JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>Release Billing Order</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Release Billing Order</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Release-Billing-Order/resultSet/outputSet/RETURN_VALUE &gt;= 0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Release Billing Order</pd:from>
+        <pd:to>Get exception text</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get exception text</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

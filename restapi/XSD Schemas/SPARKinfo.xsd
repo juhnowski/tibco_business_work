@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           id="SPARKinfo">
+    <xs:include schemaLocation="CommonTypes.xsd"/>
+    <xs:complexType name="SparkInfo">
+        <xs:annotation>
+            <xs:documentation>Набор реквизитов организации, возвращённых из СПАРК</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="FullNameRus" type="xs:string"/>
+            <xs:element name="OKOPF" type="xs:string"/>
+            <xs:element name="ShortNameRus" type="xs:string"/>
+            <xs:element name="Address" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Актуальный юр.адрес</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Www" type="xs:string"/>
+            <xs:element name="DateFirstReg" type="xs:dateTime"/>
+            <xs:element name="INN" type="xs:string"/>
+            <xs:element name="OKVED" type="xs:string">
+                <xs:annotation>
+                    <xs:documentation>Вид экономической деятельности</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="OGRN" type="xs:string"/>
+            <xs:element name="OKPO" type="xs:string"/>
+            <xs:element name="KPP" type="xs:string"/>
+            <xs:element name="StatusDate" type="xs:dateTime"/>
+            <xs:element name="StatusCode" type="xs:string"/>
+            <xs:element name="IsActing">
+                <xs:annotation>
+                    <xs:documentation>Признак действующего клиента (СПАРК)
+                        0: не действующий
+                        1-действующий
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="0"/>
+                        <xs:enumeration value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="SPARKLiqDate" type="xs:dateTime"/>
+            <xs:element name="SPARKCauseLiq" type="xs:string"/>
+            <xs:element name="HasStateContract">
+                <xs:annotation>
+                    <xs:documentation>Признак наличия действующего госконтракта
+                        0 – действующий госконтракт отсутствует
+                        1 – есть действующий госконтракт
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="0"/>
+                        <xs:enumeration value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="PersonsWWActualDate" type="xs:date" minOccurs="0"/>
+            <xs:element name="PersonsWithoutWarrant" type="PersonsWithoutWarrant" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="PersonsWithoutWarrant">
+        <xs:all>
+            <xs:element name="FIO" type="xs:string"/>
+            <xs:element name="DateBirth" type="xs:date" minOccurs="0"/>
+            <xs:element name="Position" type="xs:string" minOccurs="0"/>
+            <xs:element name="INN" type="xs:string" minOccurs="0"/>
+        </xs:all>
+    </xs:complexType>
+</xs:schema>

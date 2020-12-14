@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 id="GetProcessInfoSchema"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:include schemaLocation="Response.xsd"/>
+	<xs:include schemaLocation="ProcessInfo.xsd"/>
+	<xs:include schemaLocation="ContractInfo.xsd"/>
+	<xs:element name="request">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:group ref="RequestIdGroup"/>
+				<xs:element name="ProcessType" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="30"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="StepId" type="xs:string" minOccurs="0"/>
+				<xs:element name="ProductId" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="30"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="DateFrom" type="xs:dateTime" minOccurs="0"/>
+				<xs:element name="DateTo" type="xs:dateTime" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="response">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Response" type="Response"/>
+				<xs:element name="ProcessInfo" type="ProcessInfo" minOccurs="0" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:group name="RequestIdGroup">
+		<xs:choice>
+			<xs:element name="accountId">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="40"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="clientId">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="40"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ContractInfo" type="ContractInfo"/>
+		</xs:choice>
+	</xs:group>
+</xs:schema>

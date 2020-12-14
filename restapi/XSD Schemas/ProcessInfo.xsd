@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 id="ProcessInfo"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:complexType name="ProcessInfo">
+		<xs:all>
+			<xs:element name="Id" type="xs:string"/>
+			<xs:element name="ProcessType" type="xs:string"/>
+			<xs:element name="ProductId">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="30"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="ProductName">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="30"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="StepId" type="xs:string"/>
+			<xs:element name="StepName" type="xs:string"/>
+			<xs:element name="CreateDate" type="xs:dateTime"/>
+		</xs:all>
+	</xs:complexType>
+</xs:schema>

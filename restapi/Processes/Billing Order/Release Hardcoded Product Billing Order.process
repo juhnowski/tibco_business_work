@@ -1,0 +1,2067 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <pd:name>Processes/Billing Order/Release Hardcoded Product Billing Order.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="inputParams">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="oppID" type="xsd:long"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>62</pd:startX>
+    <pd:startY>261</pd:startY>
+    <pd:returnBindings>
+        <JSONoutput>
+            <xsl:value-of select="if (count($Catch/exceptiondata)>0) then $Render-error-JSON/ns:ActivityOutputClass/jsonString  else $Render-JSON/ns:ActivityOutputClass/jsonString"/>
+        </JSONoutput>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="JSONoutput" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>1066</pd:endX>
+    <pd:endY>258</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1521575913877</pd:targetNamespace>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>957</pd:x>
+        <pd:y>260</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="recordId" type="xsd:int"/>
+                            <xsd:element name="opErrorText" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <recordId>
+                        <xsl:value-of select="round($INS_UPD_INTR_CNL/resultSet/outputSet/RETURN_VALUE)"/>
+                    </recordId>
+                    <opErrorText>
+                        <xsl:value-of select="$INS_UPD_INTR_CNL/resultSet/outputSet/O_ERRTXT"/>
+                    </opErrorText>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>949</pd:x>
+        <pd:y>129</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Render error JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>1064</pd:x>
+        <pd:y>130</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="opErrorText" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <opErrorText>
+                        <xsl:value-of select="$Catch/exceptiondata/*"/>
+                    </opErrorText>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Data Query">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>160</pd:x>
+        <pd:y>262</pd:y>
+        <config>
+            <timeout>%%Timeout%%</timeout>
+            <commit>false</commit>
+            <maxRows>10000</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <statement>select p.ID, 
+            p.OpportunityID, 
+            p.AddressID, 
+            p.AddressName, 
+            p.ProductID,
+            p.ProdStringId, 
+            p.Name, 
+            p.Code, 
+            p.Billing, 
+            p.BusinessCenterID, 
+            p.BusinessCenterName, 
+            p.CommissionSchemeID, 
+            p.CommissionSchemeName, 
+            p.ConsumerID, 
+            p.ConsumerName, 
+            p.BOComment, 
+            p.SeparateInstallInvoice from %%Schema%%.v_OpportunityProduct p
+where p.OpportunityID = ?
+
+
+</statement>
+            <wizardData/>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>opportunityId</parameterName>
+                    <dataType>BIGINT</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>OpportunityID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AddressID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AddressName</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ProductID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ProdStringId</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Name</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Code</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Billing</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>BusinessCenterID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>BusinessCenterName</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CommissionSchemeID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CommissionSchemeName</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ConsumerID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ConsumerName</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>BOComment</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>SeparateInstallInvoice</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-6</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>tinyint</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <opportunityId>
+                    <xsl:value-of select="$Start/inputParams/oppID"/>
+                </opportunityId>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Transaction">
+        <pd:type>com.tibco.pe.core.TransactionGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>214</pd:x>
+        <pd:y>29</pd:y>
+        <pd:width>658</pd:width>
+        <pd:height>452</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>transactionGroup</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:transactionType>JDBCTransaction</pd:transactionType>
+            <pd:includeCheckpoint>false</pd:includeCheckpoint>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Iterate</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Iterate</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:group name="Iterate">
+            <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+            <pd:resourceType>ae.process.group</pd:resourceType>
+            <pd:x>248</pd:x>
+            <pd:y>66</pd:y>
+            <pd:width>582</pd:width>
+            <pd:height>374</pd:height>
+            <pd:collapsedWidth>57</pd:collapsedWidth>
+            <pd:collapsedHeight>70</pd:collapsedHeight>
+            <pd:groupVariables/>
+            <pd:joinToggle>inherit</pd:joinToggle>
+            <config>
+                <pd:groupType>inputLoop</pd:groupType>
+                <pd:serializable>false</pd:serializable>
+                <pd:over>$Data-Query/resultSet/Record</pd:over>
+                <pd:indexSlot>i</pd:indexSlot>
+                <pd:activityOutputName/>
+                <pd:accumulateOutput>false</pd:accumulateOutput>
+            </config>
+            <pd:inputBindings/>
+            <pd:expanded>true</pd:expanded>
+            <pd:transition>
+                <pd:from>start</pd:from>
+                <pd:to>CRT_UPD_BRDR</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>$Data-Query/resultSet/Record[$i]/Code = 901</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>INS_UPD_INTR_CNL</pd:from>
+                <pd:to>end</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>otherwise</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>CRT_UPD_BRDR</pd:from>
+                <pd:to>UPD_I_TRF</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>otherwise</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>CRT_UPD_BRDR</pd:from>
+                <pd:to>Get exception text 1</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>$CRT_UPD_BRDR/resultSet/outputSet/RETURN_VALUE &lt; 0</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>UPD_I_TRF</pd:from>
+                <pd:to>UPD_BRDIV</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>otherwise</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>UPD_BRDIV</pd:from>
+                <pd:to>INS_UPD_INTR_CNL</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>otherwise</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Get exception text 1</pd:from>
+                <pd:to>Generate Error 1</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>UPD_I_TRF</pd:from>
+                <pd:to>Get exception text 2</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>$UPD_I_TRF/resultSet/outputSet/RETURN_VALUE &lt; 0</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>UPD_BRDIV</pd:from>
+                <pd:to>Get exception text 3</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>$UPD_BRDIV/resultSet/outputSet/RETURN_VALUE &lt; 0</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>INS_UPD_INTR_CNL</pd:from>
+                <pd:to>Get exception text 4</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>xpath</pd:conditionType>
+                <pd:xpath>$INS_UPD_INTR_CNL/resultSet/outputSet/RETURN_VALUE &lt; 0</pd:xpath>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Get exception text 2</pd:from>
+                <pd:to>Generate Error 2</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Get exception text 3</pd:from>
+                <pd:to>Generate Error 3</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:transition>
+                <pd:from>Get exception text 4</pd:from>
+                <pd:to>Generate Error 4</pd:to>
+                <pd:lineType>Default</pd:lineType>
+                <pd:lineColor>-16777216</pd:lineColor>
+                <pd:conditionType>always</pd:conditionType>
+            </pd:transition>
+            <pd:activity name="CRT_UPD_BRDR">
+                <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+                <pd:x>332</pd:x>
+                <pd:y>129</pd:y>
+                <config>
+                    <timeout>%%Timeout%%</timeout>
+                    <maxRows>100</maxRows>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <jdbcSharedConfig>/Connection/Oracle BO Connection.sharedjdbc</jdbcSharedConfig>
+                    <ProcedureName>CRT_UPD_BRDR</ProcedureName>
+                    <useSchema>false</useSchema>
+                    <schema>%%BO_Schema%%</schema>
+                    <oraObjects/>
+                    <oraTables/>
+                    <parameterTypes>
+                        <parameter>
+                            <colName>RETURN_VALUE</colName>
+                            <colType>5</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_USR_CD</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_SCALAN</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_OPP_LINK</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_OP_NPRJ</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_NBO</colName>
+                            <colType>2</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_BRDPROD</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_BZC_ID</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_COMMIS</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_CITY_TYPE</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_I_CITY_ID</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_STREET_TYPE</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_STREET_NAME</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_DOM_STRING</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_FRM_SCLN</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_CNSMR</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_RTN_SALE</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_SUPPL_T</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_C_NEW</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_TP_ID</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_S_PROFORM</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_ATCH_CAUSE1</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_CLOUD_ACCOUNT_ID</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>O_ERRTXT</colName>
+                            <colType>2</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_STRADR_TXT</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_LOCALLY</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_COUNTRY_ID</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_COUNTRY_NAMERUS</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_REGION_ID</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_REGION_NAMERUS</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_STREET_ID</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_STREET_NAMERUS</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_STREET_STREETTYPE_NAMERUS</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_BUILDINGID</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_BUILDING_ZIPCODE</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_SELADDRESS_NUMBER1</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_SELADDRESS_NUMBERTYPE1_ID</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_SELADDRESS_NUMBER2</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_SELADDRESS_NUMBERTYPE2_ID</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_SELADDRESS_NUMBER3</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_SELADDRESS_NUMBERTYPE3_ID</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_BUSINESSCENTER_ID</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_ROOM_ENTRANCENUMBER</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_ROOM_FLOOR</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_ROOM_FLOORTYPE_ID</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_ROOM_CAPTION</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_ROOM_NUMBER</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_SADR_COMMENT</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_LOCATION_REFERENCES_NAME</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_LOCATION_REFERENCES_DEGREES</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_LOCATION_REFERENCES_MINUTES</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_LOCATION_REFERENCES_SECONDS</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_LOCATION_REFERENCES_DISTANCE</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_LOCATION_ROAD_ID</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_LOCATION_DIRECTION</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_LOCATION_ROADSIDE</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_LOCATION_KILOMETRE</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_LOCATION_ROADELEMENT_ID</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_LOCATION_RAILWAYSTATION_ID</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_LOCATION_METROSTATION_ID</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_GPS_LATITUDE</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_GPS_LONGITUDE</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_GPS_HEIGHT</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_GPS_GEOSYSTEMTYPE_ID</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_STREET_SIDE</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_METRO_LINE_ID</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_GPS_LATITUDEANGLE_DEG</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_GPS_LATITUDEANGLE_MIN</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_GPS_LATITUDEANGLE_SEC</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_GPS_LONGITUDEANGLE_DEG</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_GPS_LONGITUDEANGLE_MIN</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_GPS_LONGITUDEANGLE_SEC</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_LANGUAGE</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_SHORTADDRESSSTRING</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_ISCLOSESTREGION</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_ISCLOSESTBUILDING</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                    </parameterTypes>
+                </config>
+                <pd:inputBindings>
+                    <inputs>
+                        <inputSet>
+                            <I_USR_CD>
+                                <xsl:value-of select="4178"/>
+                            </I_USR_CD>
+                            <I_SCALAN>
+                                <xsl:value-of select="'M0112'"/>
+                            </I_SCALAN>
+                            <I_OPP_LINK>
+                                <xsl:value-of select="'0x000000000003EB1B'"/>
+                            </I_OPP_LINK>
+                            <I_OP_NPRJ>
+                                <xsl:value-of select="434215"/>
+                            </I_OP_NPRJ>
+                            <I_NBO xsi:nil="true"/>
+                            <I_BRDPROD>
+                                <xsl:value-of select="132"/>
+                            </I_BRDPROD>
+                            <I_BZC_ID>
+                                <xsl:value-of select="1496"/>
+                            </I_BZC_ID>
+                            <I_COMMIS>
+                                <xsl:value-of select="1544"/>
+                            </I_COMMIS>
+                            <I_CITY_TYPE>
+                                <xsl:value-of select="'г'"/>
+                            </I_CITY_TYPE>
+                            <I_I_CITY_ID>
+                                <xsl:value-of select="'MOS'"/>
+                            </I_I_CITY_ID>
+                            <I_STREET_TYPE>
+                                <xsl:value-of select="'ул'"/>
+                            </I_STREET_TYPE>
+                            <I_STREET_NAME>
+                                <xsl:value-of select="'Гончарная'"/>
+                            </I_STREET_NAME>
+                            <I_DOM_STRING>
+                                <xsl:value-of select="'12'"/>
+                            </I_DOM_STRING>
+                            <I_FRM_SCLN xsi:nil="true"/>
+                            <I_CNSMR xsi:nil="true"/>
+                            <I_RTN_SALE>
+                                <xsl:value-of select="0"/>
+                            </I_RTN_SALE>
+                            <I_SUPPL_T>
+                                <xsl:value-of select="'&lt;BR>'"/>
+                            </I_SUPPL_T>
+                            <I_C_NEW>
+                                <xsl:value-of select="1"/>
+                            </I_C_NEW>
+                            <I_TP_ID xsi:nil="true"/>
+                            <I_S_PROFORM>
+                                <xsl:value-of select="0"/>
+                            </I_S_PROFORM>
+                            <I_ATCH_CAUSE1>
+                                <xsl:value-of select="0"/>
+                            </I_ATCH_CAUSE1>
+                            <I_CLOUD_ACCOUNT_ID xsi:nil="true"/>
+                            <O_ERRTXT xsi:nil="true"/>
+                            <I_STRADR_TXT>
+                                <xsl:value-of select="'109240, Российская Федерация, Москва Город, Гончарная Улица, д.12, стр.1, (Бизнес центр &quot;Конверсбанк&quot;)'"/>
+                            </I_STRADR_TXT>
+                            <I_LOCALLY>
+                                <xsl:value-of select="1"/>
+                            </I_LOCALLY>
+                            <I_COUNTRY_ID>
+                                <xsl:value-of select="183"/>
+                            </I_COUNTRY_ID>
+                            <I_COUNTRY_NAMERUS>
+                                <xsl:value-of select="'Российская Федерация'"/>
+                            </I_COUNTRY_NAMERUS>
+                            <I_REGION_ID>
+                                <xsl:value-of select="601"/>
+                            </I_REGION_ID>
+                            <I_REGION_NAMERUS>
+                                <xsl:value-of select="'Москва'"/>
+                            </I_REGION_NAMERUS>
+                            <I_STREET_ID>
+                                <xsl:value-of select="427148"/>
+                            </I_STREET_ID>
+                            <I_STREET_NAMERUS>
+                                <xsl:value-of select="'Гончарная'"/>
+                            </I_STREET_NAMERUS>
+                            <I_STREET_STREETTYPE_NAMERUS>
+                                <xsl:value-of select="'Улица'"/>
+                            </I_STREET_STREETTYPE_NAMERUS>
+                            <I_BUILDINGID>
+                                <xsl:value-of select="2081830"/>
+                            </I_BUILDINGID>
+                            <I_BUILDING_ZIPCODE>
+                                <xsl:value-of select="'109240'"/>
+                            </I_BUILDING_ZIPCODE>
+                            <I_SELADDRESS_NUMBER1>
+                                <xsl:value-of select="'12'"/>
+                            </I_SELADDRESS_NUMBER1>
+                            <I_SELADDRESS_NUMBERTYPE1_ID>
+                                <xsl:value-of select="561"/>
+                            </I_SELADDRESS_NUMBERTYPE1_ID>
+                            <I_SELADDRESS_NUMBER2>
+                                <xsl:value-of select="'1'"/>
+                            </I_SELADDRESS_NUMBER2>
+                            <I_SELADDRESS_NUMBERTYPE2_ID>
+                                <xsl:value-of select="563"/>
+                            </I_SELADDRESS_NUMBERTYPE2_ID>
+                            <I_SELADDRESS_NUMBER3 xsi:nil="true"/>
+                            <I_SELADDRESS_NUMBERTYPE3_ID xsi:nil="true"/>
+                            <I_BUSINESSCENTER_ID>
+                                <xsl:value-of select="1496"/>
+                            </I_BUSINESSCENTER_ID>
+                            <I_ROOM_ENTRANCENUMBER xsi:nil="true"/>
+                            <I_ROOM_FLOOR xsi:nil="true"/>
+                            <I_ROOM_FLOORTYPE_ID xsi:nil="true"/>
+                            <I_ROOM_CAPTION xsi:nil="true"/>
+                            <I_ROOM_NUMBER xsi:nil="true"/>
+                            <I_SADR_COMMENT xsi:nil="true"/>
+                            <I_LOCATION_REFERENCES_NAME xsi:nil="true"/>
+                            <I_LOCATION_REFERENCES_DEGREES xsi:nil="true"/>
+                            <I_LOCATION_REFERENCES_MINUTES xsi:nil="true"/>
+                            <I_LOCATION_REFERENCES_SECONDS xsi:nil="true"/>
+                            <I_LOCATION_REFERENCES_DISTANCE xsi:nil="true"/>
+                            <I_LOCATION_ROAD_ID xsi:nil="true"/>
+                            <I_LOCATION_DIRECTION>
+                                <xsl:value-of select="'0'"/>
+                            </I_LOCATION_DIRECTION>
+                            <I_LOCATION_ROADSIDE>
+                                <xsl:value-of select="'0'"/>
+                            </I_LOCATION_ROADSIDE>
+                            <I_LOCATION_KILOMETRE xsi:nil="true"/>
+                            <I_LOCATION_ROADELEMENT_ID xsi:nil="true"/>
+                            <I_LOCATION_RAILWAYSTATION_ID xsi:nil="true"/>
+                            <I_LOCATION_METROSTATION_ID xsi:nil="true"/>
+                            <I_GPS_LATITUDE xsi:nil="true"/>
+                            <I_GPS_LONGITUDE xsi:nil="true"/>
+                            <I_GPS_HEIGHT xsi:nil="true"/>
+                            <I_GPS_GEOSYSTEMTYPE_ID xsi:nil="true"/>
+                            <I_STREET_SIDE xsi:nil="true"/>
+                            <I_METRO_LINE_ID xsi:nil="true"/>
+                            <I_GPS_LATITUDEANGLE_DEG xsi:nil="true"/>
+                            <I_GPS_LATITUDEANGLE_MIN xsi:nil="true"/>
+                            <I_GPS_LATITUDEANGLE_SEC xsi:nil="true"/>
+                            <I_GPS_LONGITUDEANGLE_DEG xsi:nil="true"/>
+                            <I_GPS_LONGITUDEANGLE_MIN xsi:nil="true"/>
+                            <I_GPS_LONGITUDEANGLE_SEC xsi:nil="true"/>
+                            <I_LANGUAGE>
+                                <xsl:value-of select="0"/>
+                            </I_LANGUAGE>
+                            <I_SHORTADDRESSSTRING>
+                                <xsl:value-of select="'109240, Россия, Москва г., Гончарная ул., д.12, стр.1, (Бизнес центр &quot;Конверсбанк&quot;)'"/>
+                            </I_SHORTADDRESSSTRING>
+                            <I_ISCLOSESTREGION>
+                                <xsl:value-of select="0"/>
+                            </I_ISCLOSESTREGION>
+                            <I_ISCLOSESTBUILDING>
+                                <xsl:value-of select="0"/>
+                            </I_ISCLOSESTBUILDING>
+                        </inputSet>
+                    </inputs>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Get exception text 1">
+                <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+                <pd:x>335</pd:x>
+                <pd:y>257</pd:y>
+                <config>
+                    <timeout>10</timeout>
+                    <maxRows>100</maxRows>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+                    <schema>%%Schema%%</schema>
+                    <ProcedureName>Scala_GetReqErrTxt</ProcedureName>
+                    <parameterTypes>
+                        <parameter>
+                            <colName>@RETURN_VALUE</colName>
+                            <colType>5</colType>
+                            <dataType>4</dataType>
+                            <typeName>int</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@ErrorCode</colName>
+                            <colType>1</colType>
+                            <dataType>4</dataType>
+                            <typeName>int</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@ErrorTxt</colName>
+                            <colType>2</colType>
+                            <dataType>12</dataType>
+                            <typeName>varchar</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@opResult</colName>
+                            <colType>2</colType>
+                            <dataType>4</dataType>
+                            <typeName>int</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@opErrorText</colName>
+                            <colType>2</colType>
+                            <dataType>12</dataType>
+                            <typeName>varchar</typeName>
+                        </parameter>
+                    </parameterTypes>
+                </config>
+                <pd:inputBindings>
+                    <inputs>
+                        <inputSet>
+                            <ErrorCode>
+                                <xsl:value-of select="-($CRT_UPD_BRDR/resultSet/outputSet/RETURN_VALUE)"/>
+                            </ErrorCode>
+                            <ErrorTxt>
+                                <xsl:value-of select="''"/>
+                            </ErrorTxt>
+                            <opResult>
+                                <xsl:value-of select="0"/>
+                            </opResult>
+                            <opErrorText>
+                                <xsl:value-of select="''"/>
+                            </opErrorText>
+                        </inputSet>
+                    </inputs>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="UPD_I_TRF">
+                <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+                <pd:x>454</pd:x>
+                <pd:y>128</pd:y>
+                <config>
+                    <timeout>%%Timeout%%</timeout>
+                    <maxRows>100</maxRows>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <jdbcSharedConfig>/Connection/Oracle BO Connection.sharedjdbc</jdbcSharedConfig>
+                    <ProcedureName>UPD_I_TRF</ProcedureName>
+                    <useSchema>false</useSchema>
+                    <schema>%%BO_Schema%%</schema>
+                    <oraObjects/>
+                    <oraTables/>
+                    <parameterTypes>
+                        <parameter>
+                            <colName>RETURN_VALUE</colName>
+                            <colType>5</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_USR_CD</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_NBO</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_BRDPROD</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_TRFTYPE</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_TRFC_TP</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_INSTF</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_INSTF2</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_PRTMF</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_CNLMF</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_CNLMF2</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_DSKMBF</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_STIPF</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_LGNMF</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_INSTF_C</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_INSTF2_C</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_PRTMF_C</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_CNLMF_C</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_K</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_S_INST_SPR</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>O_ERRTXT</colName>
+                            <colType>2</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                    </parameterTypes>
+                </config>
+                <pd:inputBindings>
+                    <inputs>
+                        <inputSet>
+                            <I_USR_CD>
+                                <xsl:value-of select="4178"/>
+                            </I_USR_CD>
+                            <I_NBO>
+                                <xsl:copy-of select="$CRT_UPD_BRDR/resultSet/outputSet/I_NBO/@xsi:nil"/>
+                                <xsl:value-of select="$CRT_UPD_BRDR/resultSet/outputSet/I_NBO"/>
+                            </I_NBO>
+                            <I_BRDPROD>
+                                <xsl:value-of select="132"/>
+                            </I_BRDPROD>
+                            <I_TRFTYPE>
+                                <xsl:value-of select="1149"/>
+                            </I_TRFTYPE>
+                            <I_TRFC_TP xsi:nil="true"/>
+                            <I_INSTF>
+                                <xsl:value-of select="123"/>
+                            </I_INSTF>
+                            <I_INSTF2 xsi:nil="true"/>
+                            <I_PRTMF>
+                                <xsl:value-of select="345"/>
+                            </I_PRTMF>
+                            <I_CNLMF xsi:nil="true"/>
+                            <I_CNLMF2 xsi:nil="true"/>
+                            <I_DSKMBF xsi:nil="true"/>
+                            <I_STIPF xsi:nil="true"/>
+                            <I_LGNMF xsi:nil="true"/>
+                            <I_INSTF_C>
+                                <xsl:value-of select="'234, ул Гончарная, 12'"/>
+                            </I_INSTF_C>
+                            <I_INSTF2_C xsi:nil="true"/>
+                            <I_PRTMF_C>
+                                <xsl:value-of select="'234, ул Гончарная, 12'"/>
+                            </I_PRTMF_C>
+                            <I_CNLMF_C xsi:nil="true"/>
+                            <I_K>
+                                <xsl:value-of select="3"/>
+                            </I_K>
+                            <I_S_INST_SPR>
+                                <xsl:value-of select="0"/>
+                            </I_S_INST_SPR>
+                            <O_ERRTXT xsi:nil="true"/>
+                        </inputSet>
+                    </inputs>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="UPD_BRDIV">
+                <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+                <pd:x>584</pd:x>
+                <pd:y>129</pd:y>
+                <config>
+                    <timeout>%%Timeout%%</timeout>
+                    <maxRows>100</maxRows>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <jdbcSharedConfig>/Connection/Oracle BO Connection.sharedjdbc</jdbcSharedConfig>
+                    <ProcedureName>UPD_BRDIV</ProcedureName>
+                    <useSchema>false</useSchema>
+                    <schema>%%BO_Schema%%</schema>
+                    <oraObjects/>
+                    <oraTables/>
+                    <parameterTypes>
+                        <parameter>
+                            <colName>RETURN_VALUE</colName>
+                            <colType>5</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_USR_CD</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_NBO</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_BRDPROD</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_SSDATE</colName>
+                            <colType>1</colType>
+                            <dataType>93</dataType>
+                            <typeName>DATE</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_QNT_SRV</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_QDSKMB</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_S_Q_SALES</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_QDID</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_Q501</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_CLNS</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_ALNS</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_NET_CNCT</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_VC_THLG</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_VC_CNCTP</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_WIA_INSTF</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_WIA_MF</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_S_CV_PBX</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_BAN</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>O_ERRTXT</colName>
+                            <colType>2</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                    </parameterTypes>
+                </config>
+                <pd:inputBindings>
+                    <inputs>
+                        <inputSet>
+                            <I_USR_CD>
+                                <xsl:value-of select="4178"/>
+                            </I_USR_CD>
+                            <I_NBO>
+                                <xsl:copy-of select="$CRT_UPD_BRDR/resultSet/outputSet/I_NBO/@xsi:nil"/>
+                                <xsl:value-of select="$CRT_UPD_BRDR/resultSet/outputSet/I_NBO"/>
+                            </I_NBO>
+                            <I_BRDPROD>
+                                <xsl:value-of select="132"/>
+                            </I_BRDPROD>
+                            <I_SSDATE xsi:nil="true"/>
+                            <I_QNT_SRV>
+                                <xsl:value-of select="1"/>
+                            </I_QNT_SRV>
+                            <I_QDSKMB xsi:nil="true"/>
+                            <I_S_Q_SALES xsi:nil="true"/>
+                            <I_QDID xsi:nil="true"/>
+                            <I_Q501 xsi:nil="true"/>
+                            <I_CLNS xsi:nil="true"/>
+                            <I_ALNS xsi:nil="true"/>
+                            <I_NET_CNCT xsi:nil="true"/>
+                            <I_VC_THLG xsi:nil="true"/>
+                            <I_VC_CNCTP xsi:nil="true"/>
+                            <I_WIA_INSTF xsi:nil="true"/>
+                            <I_WIA_MF xsi:nil="true"/>
+                            <I_S_CV_PBX xsi:nil="true"/>
+                            <I_BAN xsi:nil="true"/>
+                            <O_ERRTXT xsi:nil="true"/>
+                        </inputSet>
+                    </inputs>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="INS_UPD_INTR_CNL">
+                <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+                <pd:x>726</pd:x>
+                <pd:y>130</pd:y>
+                <config>
+                    <timeout>%%Timeout%%</timeout>
+                    <maxRows>100</maxRows>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <jdbcSharedConfig>/Connection/Oracle BO Connection.sharedjdbc</jdbcSharedConfig>
+                    <ProcedureName>INS_UPD_INTR_CNL</ProcedureName>
+                    <useSchema>false</useSchema>
+                    <schema>%%BO_Schema%%</schema>
+                    <oraObjects/>
+                    <oraTables/>
+                    <parameterTypes>
+                        <parameter>
+                            <colName>RETURN_VALUE</colName>
+                            <colType>5</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_USR_CD</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_BRDPROD</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_NBO</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_CNL</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_ALS</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_LINE</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_CIR</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_CNDATE</colName>
+                            <colType>1</colType>
+                            <dataType>93</dataType>
+                            <typeName>DATE</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_DNDATE</colName>
+                            <colType>1</colType>
+                            <dataType>93</dataType>
+                            <typeName>DATE</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_OP_TP</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_DSL_THLG</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_DSL_UPLD</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_WDSL_THLG</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_DEF_NMBR</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_WIFI_ENTR_PG</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_INTR_PRFL</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_INTR_CNCTP</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_DCINTR</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_IP_ADR_TP</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_IP_ADR_VAL</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_IPTV_PACKET</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_TRFDATE</colName>
+                            <colType>1</colType>
+                            <dataType>93</dataType>
+                            <typeName>DATE</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_NO_PENALTY</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_REALM</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_IP_ADDRESSING_TP</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_VARIANT</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_IP_ADR</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_IP_VER_TP</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_ID_GRP</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_TRFTYPE</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_ID_B_NUM</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_ID_D_CHR</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_ID_E_CHR</colName>
+                            <colType>1</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>I_ID_A_NUM</colName>
+                            <colType>1</colType>
+                            <dataType>2</dataType>
+                            <typeName>NUMBER</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>O_ERRTXT</colName>
+                            <colType>2</colType>
+                            <dataType>12</dataType>
+                            <typeName>VARCHAR2</typeName>
+                        </parameter>
+                    </parameterTypes>
+                </config>
+                <pd:inputBindings>
+                    <inputs>
+                        <inputSet>
+                            <I_USR_CD>
+                                <xsl:value-of select="4178"/>
+                            </I_USR_CD>
+                            <I_BRDPROD>
+                                <xsl:value-of select="132"/>
+                            </I_BRDPROD>
+                            <I_NBO>
+                                <xsl:copy-of select="$CRT_UPD_BRDR/resultSet/outputSet/I_NBO/@xsi:nil"/>
+                                <xsl:value-of select="$CRT_UPD_BRDR/resultSet/outputSet/I_NBO"/>
+                            </I_NBO>
+                            <I_CNL>
+                                <xsl:value-of select="'1188792'"/>
+                            </I_CNL>
+                            <I_ALS>
+                                <xsl:value-of select="'234, ул Гончарная, 12'"/>
+                            </I_ALS>
+                            <I_LINE>
+                                <xsl:value-of select="234"/>
+                            </I_LINE>
+                            <I_CIR xsi:nil="true"/>
+                            <I_CNDATE>
+                                <xsl:value-of select="tib:create-dateTime(2018, 7, 31, 0, 0, 0)"/>
+                            </I_CNDATE>
+                            <I_DNDATE xsi:nil="true"/>
+                            <I_OP_TP>
+                                <xsl:value-of select="1"/>
+                            </I_OP_TP>
+                            <I_DSL_THLG xsi:nil="true"/>
+                            <I_DSL_UPLD xsi:nil="true"/>
+                            <I_WDSL_THLG xsi:nil="true"/>
+                            <I_DEF_NMBR xsi:nil="true"/>
+                            <I_WIFI_ENTR_PG xsi:nil="true"/>
+                            <I_INTR_PRFL>
+                                <xsl:value-of select="1"/>
+                            </I_INTR_PRFL>
+                            <I_INTR_CNCTP>
+                                <xsl:value-of select="1"/>
+                            </I_INTR_CNCTP>
+                            <I_DCINTR>
+                                <xsl:value-of select="0"/>
+                            </I_DCINTR>
+                            <I_IP_ADR_TP>
+                                <xsl:value-of select="1"/>
+                            </I_IP_ADR_TP>
+                            <I_IP_ADR_VAL xsi:nil="true"/>
+                            <I_IPTV_PACKET xsi:nil="true"/>
+                            <I_TRFDATE xsi:nil="true"/>
+                            <I_NO_PENALTY xsi:nil="true"/>
+                            <I_REALM xsi:nil="true"/>
+                            <I_IP_ADDRESSING_TP xsi:nil="true"/>
+                            <I_VARIANT xsi:nil="true"/>
+                            <I_IP_ADR xsi:nil="true"/>
+                            <I_IP_VER_TP>
+                                <xsl:value-of select="4"/>
+                            </I_IP_VER_TP>
+                            <I_ID_GRP xsi:nil="true"/>
+                            <I_TRFTYPE>
+                                <xsl:value-of select="0"/>
+                            </I_TRFTYPE>
+                            <I_ID_B_NUM xsi:nil="true"/>
+                            <I_ID_D_CHR xsi:nil="true"/>
+                            <I_ID_E_CHR xsi:nil="true"/>
+                            <I_ID_A_NUM xsi:nil="true"/>
+                            <O_ERRTXT xsi:nil="true"/>
+                        </inputSet>
+                    </inputs>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Generate Error 1">
+                <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+                <pd:resourceType>ae.activities.throw</pd:resourceType>
+                <pd:x>338</pd:x>
+                <pd:y>364</pd:y>
+                <config>
+                    <faultName/>
+                </config>
+                <pd:inputBindings>
+                    <ns1:ActivityInput>
+                        <xsl:if test="$Get-exception-text-1/resultSet/outputSet/ErrorTxt">
+                            <message>
+                                <xsl:value-of select="$Get-exception-text-1/resultSet/outputSet/ErrorTxt"/>
+                            </message>
+                        </xsl:if>
+                        <xsl:if test="$Get-exception-text-1/resultSet/outputSet/opResult">
+                            <messageCode>
+                                <xsl:value-of select="$Get-exception-text-1/resultSet/outputSet/opResult"/>
+                            </messageCode>
+                        </xsl:if>
+                    </ns1:ActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Get exception text 2">
+                <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+                <pd:x>456</pd:x>
+                <pd:y>257</pd:y>
+                <config>
+                    <timeout>10</timeout>
+                    <maxRows>100</maxRows>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+                    <schema>%%Schema%%</schema>
+                    <ProcedureName>Scala_GetReqErrTxt</ProcedureName>
+                    <parameterTypes>
+                        <parameter>
+                            <colName>@RETURN_VALUE</colName>
+                            <colType>5</colType>
+                            <dataType>4</dataType>
+                            <typeName>int</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@ErrorCode</colName>
+                            <colType>1</colType>
+                            <dataType>4</dataType>
+                            <typeName>int</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@ErrorTxt</colName>
+                            <colType>2</colType>
+                            <dataType>12</dataType>
+                            <typeName>varchar</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@opResult</colName>
+                            <colType>2</colType>
+                            <dataType>4</dataType>
+                            <typeName>int</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@opErrorText</colName>
+                            <colType>2</colType>
+                            <dataType>12</dataType>
+                            <typeName>varchar</typeName>
+                        </parameter>
+                    </parameterTypes>
+                </config>
+                <pd:inputBindings>
+                    <inputs>
+                        <inputSet>
+                            <ErrorCode>
+                                <xsl:value-of select="-($UPD_I_TRF/resultSet/outputSet/RETURN_VALUE)"/>
+                            </ErrorCode>
+                            <ErrorTxt>
+                                <xsl:value-of select="''"/>
+                            </ErrorTxt>
+                            <opResult>
+                                <xsl:value-of select="0"/>
+                            </opResult>
+                            <opErrorText>
+                                <xsl:value-of select="''"/>
+                            </opErrorText>
+                        </inputSet>
+                    </inputs>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Generate Error 2">
+                <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+                <pd:resourceType>ae.activities.throw</pd:resourceType>
+                <pd:x>462</pd:x>
+                <pd:y>364</pd:y>
+                <config>
+                    <faultName/>
+                </config>
+                <pd:inputBindings>
+                    <ns1:ActivityInput>
+                        <xsl:if test="$Get-exception-text-2/resultSet/outputSet/ErrorTxt">
+                            <message>
+                                <xsl:value-of select="$Get-exception-text-2/resultSet/outputSet/ErrorTxt"/>
+                            </message>
+                        </xsl:if>
+                        <xsl:if test="$Get-exception-text-2/resultSet/outputSet/opResult">
+                            <messageCode>
+                                <xsl:value-of select="$Get-exception-text-2/resultSet/outputSet/opResult"/>
+                            </messageCode>
+                        </xsl:if>
+                    </ns1:ActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Get exception text 3">
+                <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+                <pd:x>586</pd:x>
+                <pd:y>257</pd:y>
+                <config>
+                    <timeout>10</timeout>
+                    <maxRows>100</maxRows>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+                    <schema>%%Schema%%</schema>
+                    <ProcedureName>Scala_GetReqErrTxt</ProcedureName>
+                    <parameterTypes>
+                        <parameter>
+                            <colName>@RETURN_VALUE</colName>
+                            <colType>5</colType>
+                            <dataType>4</dataType>
+                            <typeName>int</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@ErrorCode</colName>
+                            <colType>1</colType>
+                            <dataType>4</dataType>
+                            <typeName>int</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@ErrorTxt</colName>
+                            <colType>2</colType>
+                            <dataType>12</dataType>
+                            <typeName>varchar</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@opResult</colName>
+                            <colType>2</colType>
+                            <dataType>4</dataType>
+                            <typeName>int</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@opErrorText</colName>
+                            <colType>2</colType>
+                            <dataType>12</dataType>
+                            <typeName>varchar</typeName>
+                        </parameter>
+                    </parameterTypes>
+                </config>
+                <pd:inputBindings>
+                    <inputs>
+                        <inputSet>
+                            <ErrorCode>
+                                <xsl:value-of select="-($UPD_BRDIV/resultSet/outputSet/RETURN_VALUE)"/>
+                            </ErrorCode>
+                            <ErrorTxt>
+                                <xsl:value-of select="''"/>
+                            </ErrorTxt>
+                            <opResult>
+                                <xsl:value-of select="0"/>
+                            </opResult>
+                            <opErrorText>
+                                <xsl:value-of select="''"/>
+                            </opErrorText>
+                        </inputSet>
+                    </inputs>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Generate Error 3">
+                <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+                <pd:resourceType>ae.activities.throw</pd:resourceType>
+                <pd:x>591</pd:x>
+                <pd:y>364</pd:y>
+                <config>
+                    <faultName/>
+                </config>
+                <pd:inputBindings>
+                    <ns1:ActivityInput>
+                        <xsl:if test="$Get-exception-text-3/resultSet/outputSet/ErrorTxt">
+                            <message>
+                                <xsl:value-of select="$Get-exception-text-3/resultSet/outputSet/ErrorTxt"/>
+                            </message>
+                        </xsl:if>
+                        <xsl:if test="$Get-exception-text-3/resultSet/outputSet/opResult">
+                            <messageCode>
+                                <xsl:value-of select="$Get-exception-text-3/resultSet/outputSet/opResult"/>
+                            </messageCode>
+                        </xsl:if>
+                    </ns1:ActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Get exception text 4">
+                <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+                <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+                <pd:x>728</pd:x>
+                <pd:y>256</pd:y>
+                <config>
+                    <timeout>10</timeout>
+                    <maxRows>100</maxRows>
+                    <emptyStrAsNil>false</emptyStrAsNil>
+                    <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+                    <schema>%%Schema%%</schema>
+                    <ProcedureName>Scala_GetReqErrTxt</ProcedureName>
+                    <parameterTypes>
+                        <parameter>
+                            <colName>@RETURN_VALUE</colName>
+                            <colType>5</colType>
+                            <dataType>4</dataType>
+                            <typeName>int</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@ErrorCode</colName>
+                            <colType>1</colType>
+                            <dataType>4</dataType>
+                            <typeName>int</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@ErrorTxt</colName>
+                            <colType>2</colType>
+                            <dataType>12</dataType>
+                            <typeName>varchar</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@opResult</colName>
+                            <colType>2</colType>
+                            <dataType>4</dataType>
+                            <typeName>int</typeName>
+                        </parameter>
+                        <parameter>
+                            <colName>@opErrorText</colName>
+                            <colType>2</colType>
+                            <dataType>12</dataType>
+                            <typeName>varchar</typeName>
+                        </parameter>
+                    </parameterTypes>
+                </config>
+                <pd:inputBindings>
+                    <inputs>
+                        <inputSet>
+                            <ErrorCode>
+                                <xsl:value-of select="-($INS_UPD_INTR_CNL/resultSet/outputSet/RETURN_VALUE)"/>
+                            </ErrorCode>
+                            <ErrorTxt>
+                                <xsl:value-of select="''"/>
+                            </ErrorTxt>
+                            <opResult>
+                                <xsl:value-of select="0"/>
+                            </opResult>
+                            <opErrorText>
+                                <xsl:value-of select="''"/>
+                            </opErrorText>
+                        </inputSet>
+                    </inputs>
+                </pd:inputBindings>
+            </pd:activity>
+            <pd:activity name="Generate Error 4">
+                <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+                <pd:resourceType>ae.activities.throw</pd:resourceType>
+                <pd:x>731</pd:x>
+                <pd:y>364</pd:y>
+                <config>
+                    <faultName/>
+                </config>
+                <pd:inputBindings>
+                    <ns1:ActivityInput>
+                        <xsl:if test="$Get-exception-text-4/resultSet/outputSet/ErrorTxt">
+                            <message>
+                                <xsl:value-of select="$Get-exception-text-4/resultSet/outputSet/ErrorTxt"/>
+                            </message>
+                        </xsl:if>
+                        <xsl:if test="$Get-exception-text-4/resultSet/outputSet/opResult">
+                            <messageCode>
+                                <xsl:value-of select="$Get-exception-text-4/resultSet/outputSet/opResult"/>
+                            </messageCode>
+                        </xsl:if>
+                    </ns1:ActivityInput>
+                </pd:inputBindings>
+            </pd:activity>
+        </pd:group>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Render error JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render error JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Data Query</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Transaction</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Data Query</pd:from>
+        <pd:to>Transaction</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

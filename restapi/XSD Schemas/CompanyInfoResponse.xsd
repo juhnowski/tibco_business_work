@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           id="CompanyInfoResponse">
+    <xs:include schemaLocation="Response.xsd"/>
+    <xs:include schemaLocation="SPARKinfo.xsd"/>
+    <xs:include schemaLocation="ScoringInfo.xsd"/>
+
+    <xs:element name="resultJSON">
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="Response" type="Response"/>
+                <xs:element name="IsExist" type="IsExist"/>
+                <xs:element name="CompanyInfo" type="SparkInfo" minOccurs="0"/>
+                <xs:element name="ScoringInfo" type="ScoringInfo" minOccurs="0"/>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

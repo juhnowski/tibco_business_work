@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           id="DocumentInfo">
+    <xs:include schemaLocation="CommonTypes.xsd"/>
+    <xs:complexType name="DocumentInfo">
+        <xs:annotation>
+            <xs:documentation>Данные по документу, удостоверяющему личность</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="documentType">
+                <xs:annotation>
+                    <xs:documentation>Тип документа (паспорт, военный билет и т.д.)</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="documentSeries">
+                <xs:annotation>
+                    <xs:documentation>Серия документа</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="documentID">
+                <xs:annotation>
+                    <xs:documentation>Номер документа</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="50"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="documentIssueDate" type="xs:date">
+                <xs:annotation>
+                    <xs:documentation>Дата выдачи документа</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="documentIssuerName">
+                <xs:annotation>
+                    <xs:documentation>Название организации, выдавшей документ</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+</xs:schema>

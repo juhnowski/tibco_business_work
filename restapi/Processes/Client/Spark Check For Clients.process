@@ -1,0 +1,1761 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/pe/CheckpointSchema" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/EntrepreneurShortReport.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ShortReport.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ShortReport.xsd" schemaLocation="/XSD Schemas/ShortReport.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/EntrepreneurShortReport.xsd" schemaLocation="/XSD Schemas/EntrepreneurShortReport.xsd"/>
+    <pd:name>Processes/Client/Spark Check For Clients.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="inputParams">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="adLogin" type="xsd:string"/>
+                    <xsd:element name="clientID" type="xsd:long"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>67</pd:startX>
+    <pd:startY>207</pd:startY>
+    <pd:returnBindings>
+        <JSONoutput>
+            <xsl:value-of select="if (count($Catch/exceptiondata)>0) then &#xA;$Render-error-JSON/ns:ActivityOutputClass/jsonString  else &#xA;if ($Parse-XML/Resultsets/ResultSet1/Record1/ClientType = 2) then&#xA;$Render-JSON-IE/ns:ActivityOutputClass/jsonString&#xA;else&#xA;$Render-JSON/ns:ActivityOutputClass/jsonString"/>
+        </JSONoutput>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="JSONoutput" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>1283</pd:endX>
+    <pd:endY>204</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1521575913877</pd:targetNamespace>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>1282</pd:x>
+        <pd:y>325</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="recordId" type="xsd:long"/>
+                            <xsd:element name="opResult" type="xsd:int"/>
+                            <xsd:element name="opErrorText" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="info" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <recordId>
+                        <xsl:value-of select="$Client-CreateUpdateDelete/resultSet/outputSet/recordId"/>
+                    </recordId>
+                    <opResult>
+                        <xsl:value-of select="$Client-CreateUpdateDelete/resultSet/outputSet/opResult"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="$Client-CreateUpdateDelete/resultSet/outputSet/opErrorText"/>
+                    </opErrorText>
+                    <info>
+                        <xsl:value-of select="concat(&quot;Статус SPARK: &quot;,$Parse-XML-2/Response/Data/Report[1]/Status/@Type,&quot;; Дата статуса: &quot;, $Parse-XML-2/Response/Data/Report[1]/Status/@Date)"/>
+                    </info>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>1042</pd:x>
+        <pd:y>204</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Render error JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>1150</pd:x>
+        <pd:y>204</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="opResult" type="xsd:int"/>
+                            <xsd:element name="opErrorText" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <opResult>
+                        <xsl:value-of select="2"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="$Catch/exceptiondata/*"/>
+                    </opErrorText>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group 2">
+        <pd:type>com.tibco.pe.core.TransactionGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>993</pd:x>
+        <pd:y>244</pd:y>
+        <pd:width>192</pd:width>
+        <pd:height>155</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>transactionGroup</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:transactionType>JDBCTransaction</pd:transactionType>
+            <pd:includeCheckpoint>false</pd:includeCheckpoint>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Client CreateUpdateDelete</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Client CreateUpdateDelete</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Client CreateUpdateDelete">
+            <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+            <pd:x>1084</pd:x>
+            <pd:y>327</pd:y>
+            <config>
+                <timeout>%%Timeout%%</timeout>
+                <maxRows>100</maxRows>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+                <ProcedureName>Client_CreateUpdateDelete;1</ProcedureName>
+                <useSchema>false</useSchema>
+                <schema>%%Schema%%</schema>
+                <parameterTypes>
+                    <parameter>
+                        <colName>@RETURN_VALUE</colName>
+                        <colType>5</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@opType</colName>
+                        <colType>1</colType>
+                        <dataType>-6</dataType>
+                        <typeName>tinyint</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@adLogin</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientType</colName>
+                        <colType>1</colType>
+                        <dataType>-6</dataType>
+                        <typeName>tinyint</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientName</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@companyBranch</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientCharacter</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientInformSource</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientTrademark</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientOrgForm</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientOrgFormIntNum</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@SPARKOrgForm</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientShortName</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@inn</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@www</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientDateReg</colName>
+                        <colType>1</colType>
+                        <dataType>93</dataType>
+                        <typeName>datetime</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@okvedID</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@SPARKokvedID</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@ogrn</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@okpo</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@kpp</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@contactFirstName</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@contactLastName</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@contactMiddleName</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@contactPhone</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@contactPhone2</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@contactEmail</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@SPARKIsActive</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@SPARKStatusDate</colName>
+                        <colType>1</colType>
+                        <dataType>91</dataType>
+                        <typeName>date</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@SPARKStatus</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@legalAddrID</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@contactAddrID</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@operatorConnect</colName>
+                        <colType>1</colType>
+                        <dataType>-6</dataType>
+                        <typeName>tinyint</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@operatorConnectType</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@SPARKLiqDate</colName>
+                        <colType>1</colType>
+                        <dataType>91</dataType>
+                        <typeName>date</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@SPARKCauseLiq</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientFirstName</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientLastName</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientMiddleName</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientParams</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@recordId</colName>
+                        <colType>2</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@opResult</colName>
+                        <colType>2</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@opErrorText</colName>
+                        <colType>2</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                </parameterTypes>
+            </config>
+            <pd:inputBindings>
+                <inputs>
+                    <inputSet>
+                        <opType>
+                            <xsl:value-of select="2"/>
+                        </opType>
+                        <adLogin>
+                            <xsl:value-of select="$Start/inputParams/adLogin"/>
+                        </adLogin>
+                        <clientType>
+                            <xsl:choose>
+                                <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/ClientType)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/ClientType)">
+                                    <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/ClientType)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/ClientType"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </clientType>
+                        <clientName>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ClientName"/>
+                        </clientName>
+                        <companyBranch>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/BranchCode"/>
+                        </companyBranch>
+                        <clientCharacter>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ClientCharacterCode"/>
+                        </clientCharacter>
+                        <clientInformSource>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/InfSourceCode"/>
+                        </clientInformSource>
+                        <clientTrademark>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Trademark"/>
+                        </clientTrademark>
+                        <clientOrgForm>
+                            <xsl:choose>
+                                <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/OrgFormID)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/OrgFormID)">
+                                    <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/OrgFormID)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/OrgFormID"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </clientOrgForm>
+                        <clientOrgFormIntNum xsi:nil="true"/>
+                        <SPARKOrgForm xsi:nil="true"/>
+                        <clientShortName>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ClientShortName"/>
+                        </clientShortName>
+                        <inn>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/inn"/>
+                        </inn>
+                        <www>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/www"/>
+                        </www>
+                        <clientDateReg>
+                            <xsl:choose>
+                                <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/ClientDateReg)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/ClientDateReg)">
+                                    <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/ClientDateReg)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/ClientDateReg"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </clientDateReg>
+                        <okvedID>
+                            <xsl:choose>
+                                <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/OKVEDCodeID)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/OKVEDCodeID)">
+                                    <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/OKVEDCodeID)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/OKVEDCodeID"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </okvedID>
+                        <SPARKokvedID xsi:nil="true"/>
+                        <ogrn>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ogrn"/>
+                        </ogrn>
+                        <okpo>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/okpo"/>
+                        </okpo>
+                        <kpp>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/kpp"/>
+                        </kpp>
+                        <contactFirstName>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ContactFirstName"/>
+                        </contactFirstName>
+                        <contactLastName>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ContactLastName"/>
+                        </contactLastName>
+                        <contactMiddleName>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ContactMiddleName"/>
+                        </contactMiddleName>
+                        <contactPhone>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ContactPhone"/>
+                        </contactPhone>
+                        <contactPhone2>
+                            <xsl:choose>
+                                <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/ContactPhone2)">
+                                    <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ContactPhone2"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </contactPhone2>
+                        <contactEmail>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ContactEmail"/>
+                        </contactEmail>
+                        <SPARKIsActive>
+                            <xsl:choose>
+                                <xsl:when test="exists(if ($Parse-XML-2/Response/Data/Report[1]/IsActing = &quot;true&quot;) then 1 else 0)">
+                                    <xsl:value-of select="if ($Parse-XML-2/Response/Data/Report[1]/IsActing = &quot;true&quot;) then 1 else 0"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </SPARKIsActive>
+                        <SPARKStatusDate>
+                            <xsl:choose>
+                                <xsl:when test="exists($Parse-XML-2/Response/Data/Report[1]/Status/@Date)">
+                                    <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/Status/@Date"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </SPARKStatusDate>
+                        <SPARKStatus>
+                            <xsl:choose>
+                                <xsl:when test="exists($Parse-XML-2/Response/Data/Report[1]/Status/@Type)">
+                                    <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/Status/@Type"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </SPARKStatus>
+                        <legalAddrID>
+                            <xsl:choose>
+                                <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/LegalAddressId)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/LegalAddressId)">
+                                    <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/LegalAddressId)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/LegalAddressId"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </legalAddrID>
+                        <contactAddrID>
+                            <xsl:choose>
+                                <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/ContactAddressId)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/ContactAddressId)">
+                                    <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/ContactAddressId)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/ContactAddressId"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </contactAddrID>
+                        <operatorConnect>
+                            <xsl:choose>
+                                <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/OperatorConnect)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/OperatorConnect)">
+                                    <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/OperatorConnect)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/OperatorConnect"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </operatorConnect>
+                        <operatorConnectType>
+                            <xsl:choose>
+                                <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/CarrierTypeId)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/CarrierTypeId)">
+                                    <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/CarrierTypeId)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/CarrierTypeId"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </operatorConnectType>
+                        <SPARKLiqDate>
+                            <xsl:choose>
+                                <xsl:when test="exists(if($Get-SPARK-Status-Type/resultSet/Record/Status = &quot;ликвидирован&quot;) then ($Parse-XML-2/Response/Data/Report[1]/Status/@Date) else ($Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull))">
+                                    <xsl:value-of select="if($Get-SPARK-Status-Type/resultSet/Record/Status = &quot;ликвидирован&quot;) then ($Parse-XML-2/Response/Data/Report[1]/Status/@Date) else ($Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </SPARKLiqDate>
+                        <SPARKCauseLiq>
+                            <xsl:choose>
+                                <xsl:when test="exists(if($Get-SPARK-Status-Type/resultSet/Record/Status = &quot;ликвидирован&quot;) then ($Get-SPARK-Status-Type/resultSet/Record[1]/Type) else ($Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull))">
+                                    <xsl:value-of select="if($Get-SPARK-Status-Type/resultSet/Record/Status = &quot;ликвидирован&quot;) then ($Get-SPARK-Status-Type/resultSet/Record[1]/Type) else ($Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </SPARKCauseLiq>
+                        <clientFirstName>
+                            <xsl:choose>
+                                <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/ClientFirstName)">
+                                    <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ClientFirstName"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </clientFirstName>
+                        <clientLastName>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ClientLastName"/>
+                        </clientLastName>
+                        <clientMiddleName>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ClientMiddleName"/>
+                        </clientMiddleName>
+                        <clientParams xsi:nil="true"/>
+                        <recordId>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ClientID"/>
+                        </recordId>
+                        <opResult>
+                            <xsl:value-of select="0"/>
+                        </opResult>
+                        <opErrorText>
+                            <xsl:value-of select="0"/>
+                        </opErrorText>
+                    </inputSet>
+                </inputs>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Get Client">
+        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+        <pd:x>185</pd:x>
+        <pd:y>208</pd:y>
+        <config>
+            <timeout>%%Timeout%%</timeout>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <ProcedureName>Client_GetRecord;1</ProcedureName>
+            <useSchema>false</useSchema>
+            <schema>%%Schema%%</schema>
+            <parameterTypes>
+                <parameter>
+                    <colName>@RETURN_VALUE</colName>
+                    <colType>5</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@ID</colName>
+                    <colType>1</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@adLogin</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@opResult</colName>
+                    <colType>2</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@opErrorText</colName>
+                    <colType>2</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+            </parameterTypes>
+        </config>
+        <pd:inputBindings>
+            <inputs>
+                <inputSet>
+                    <ID>
+                        <xsl:value-of select="$Start/inputParams/clientID"/>
+                    </ID>
+                    <adLogin>
+                        <xsl:value-of select="$Start/inputParams/adLogin"/>
+                    </adLogin>
+                    <opResult>
+                        <xsl:value-of select="0"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </opErrorText>
+                </inputSet>
+            </inputs>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>321</pd:x>
+        <pd:y>209</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term>
+                <xsd:element name="Resultsets">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="UpdateCount" type="xsd:int"/>
+                            <xsd:element name="ResultSet1">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="Record1">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="ClientID" type="xsd:long"/>
+                                                    <xsd:element name="ClientType" type="xsd:int"/>
+                                                    <xsd:element name="ClientTypeName" type="xsd:string"/>
+                                                    <xsd:element name="ClientName" type="xsd:string"/>
+                                                    <xsd:element name="SegmentID" type="xsd:long"/>
+                                                    <xsd:element name="SegmentName" type="xsd:string"/>
+                                                    <xsd:element name="OfficialStatus" type="xsd:int"/>
+                                                    <xsd:element name="OfficialStatusName" type="xsd:string"/>
+                                                    <xsd:element name="ClientCharacterCode" type="xsd:string"/>
+                                                    <xsd:element name="ClientCharacterName" type="xsd:string"/>
+                                                    <xsd:element name="MainBranchCode" type="xsd:string"/>
+                                                    <xsd:element name="MainBranchName" type="xsd:string"/>
+                                                    <xsd:element name="BranchCode" type="xsd:string"/>
+                                                    <xsd:element name="BranchName" type="xsd:string"/>
+                                                    <xsd:element name="InfSourceCode" type="xsd:string"/>
+                                                    <xsd:element name="InfSourceName" type="xsd:string"/>
+                                                    <xsd:element name="OrgFormID" type="xsd:long"/>
+                                                    <xsd:element name="OrgFormName" type="xsd:string"/>
+                                                    <xsd:element name="ClientSMID" type="xsd:long"/>
+                                                    <xsd:element name="ClientSM" type="xsd:string"/>
+                                                    <xsd:element name="PersonalManager" type="xsd:string"/>
+                                                    <xsd:element name="Trademark" type="xsd:string"/>
+                                                    <xsd:element name="ClientShortName" type="xsd:string"/>
+                                                    <xsd:element name="inn" type="xsd:string"/>
+                                                    <xsd:element name="LegalAddressId" type="xsd:int"/>
+                                                    <xsd:element name="LegalAddressName" type="xsd:string"/>
+                                                    <xsd:element name="ContactAddressId" type="xsd:int"/>
+                                                    <xsd:element name="ContactAddressName" type="xsd:string"/>
+                                                    <xsd:element name="www" type="xsd:string"/>
+                                                    <xsd:element name="ClientDateReg" type="xsd:dateTime"/>
+                                                    <xsd:element name="OKVEDCodeID" type="xsd:long"/>
+                                                    <xsd:element name="OKVEDCode" type="xsd:string"/>
+                                                    <xsd:element name="OKVEDCodeName" type="xsd:string"/>
+                                                    <xsd:element name="kpp" type="xsd:string"/>
+                                                    <xsd:element name="ogrn" type="xsd:string"/>
+                                                    <xsd:element name="okpo" type="xsd:string"/>
+                                                    <xsd:element name="CreateDate" type="xsd:dateTime"/>
+                                                    <xsd:element name="CreateUser" type="xsd:string"/>
+                                                    <xsd:element name="CreaterID" type="xsd:long"/>
+                                                    <xsd:element name="ContactID" type="xsd:int"/>
+                                                    <xsd:element name="ContactName" type="xsd:string"/>
+                                                    <xsd:element name="ContactFirstName" type="xsd:string"/>
+                                                    <xsd:element name="ContactLastName" type="xsd:string"/>
+                                                    <xsd:element name="ContactMiddleName" type="xsd:string"/>
+                                                    <xsd:element name="ContactPhone" type="xsd:string"/>
+                                                    <xsd:element name="ContactPhone2" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="ContactEmail" type="xsd:string"/>
+                                                    <xsd:element name="companyGroupID" type="xsd:long"/>
+                                                    <xsd:element name="companyGroupName" type="xsd:string"/>
+                                                    <xsd:element name="SPARKLiquidationDate" type="xsd:date"/>
+                                                    <xsd:element name="SPARKCauseLiquidation" type="xsd:string"/>
+                                                    <xsd:element name="OperatorConnect" type="xsd:int"/>
+                                                    <xsd:element name="CarrierTypeId" type="xsd:int"/>
+                                                    <xsd:element name="CarrierTypeName" type="xsd:string"/>
+                                                    <xsd:element name="ClientEditable" type="xsd:int"/>
+                                                    <xsd:element name="ContractCount" type="xsd:int"/>
+                                                    <xsd:element name="ClientManager" type="xsd:string"/>
+                                                    <xsd:element name="UnderControl" type="xsd:int"/>
+                                                    <xsd:element name="SPARKIsActive" type="xsd:int"/>
+                                                    <xsd:element name="SPARKStatusDate" type="xsd:date"/>
+                                                    <xsd:element name="SPARKStatus" type="xsd:string"/>
+                                                    <xsd:element name="ClientFirstName" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="ClientLastName" type="xsd:string"/>
+                                                    <xsd:element name="ClientMiddleName" type="xsd:string"/>
+                                                    <xsd:element name="legalAddressReadyForEdo" type="xsd:int"/>
+                                                    <xsd:element name="alwaysNull" type="xsd:int" minOccurs="0"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Get-Client/resultSet/UnresolvedResultsets"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get SPARK Data">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>441</pd:x>
+        <pd:y>326</pd:y>
+        <config>
+            <processName>/Processes/Spark/_GetCompanyShortReport.process</processName>
+        </config>
+        <pd:inputBindings>
+            <inn>
+                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/inn"/>
+            </inn>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="INN Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>322</pd:x>
+        <pd:y>81</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <message>
+                    <xsl:value-of select="&quot;ИНН клиента не заполнен&quot;"/>
+                </message>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse-XML-1">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>556</pd:x>
+        <pd:y>328</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term>
+                <xsd:element name="xmlData" type="xsd:string"/>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="concat(&quot;&lt;?xml version='1.0' encoding='utf-8'?>&lt;xmlData>&quot;,tib:substring-before-last(substring-after($Get-SPARK-Data/result, &quot;&lt;xmlData>&quot;), &quot;&lt;/xmlData>&quot;),&quot;&lt;/xmlData>&quot;)"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse-XML-2">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>672</pd:x>
+        <pd:y>326</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term ref="pfx:Response"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Parse-XML-1/xmlData"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render JSON IE">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>1280</pd:x>
+        <pd:y>86</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="recordId" type="xsd:long"/>
+                            <xsd:element name="opResult" type="xsd:int"/>
+                            <xsd:element name="opErrorText" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="info" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <recordId>
+                        <xsl:value-of select="$Client-CreateUpdateDelete-IE/resultSet/outputSet/recordId"/>
+                    </recordId>
+                    <opResult>
+                        <xsl:value-of select="$Client-CreateUpdateDelete-IE/resultSet/outputSet/opResult"/>
+                    </opResult>
+                    <xsl:if test="not(($Client-CreateUpdateDelete-IE/resultSet/outputSet/opErrorText/@xsi:nil=(&quot;true&quot;)) or ($Client-CreateUpdateDelete-IE/resultSet/outputSet/opErrorText/@xsi:nil=(&quot;1&quot;)))">
+                        <opErrorText>
+                            <xsl:value-of select="$Client-CreateUpdateDelete-IE/resultSet/outputSet/opErrorText"/>
+                        </opErrorText>
+                    </xsl:if>
+                    <info>
+                        <xsl:value-of select="concat(&quot;Статус SPARK: &quot;,$Parse-XML-2-IE/Response/Data/Report[1]/Status/@Code, &quot; &quot;, $Parse-XML-2-IE/Response/Data/Report[1]/Status/@Text,&quot;; Дата статуса: &quot;, $Parse-XML-2-IE/Response/Data/Report[1]/Status/@Date)"/>
+                    </info>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group 1">
+        <pd:type>com.tibco.pe.core.TransactionGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>995</pd:x>
+        <pd:y>1</pd:y>
+        <pd:width>189</pd:width>
+        <pd:height>153</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>transactionGroup</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:transactionType>JDBCTransaction</pd:transactionType>
+            <pd:includeCheckpoint>false</pd:includeCheckpoint>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Client CreateUpdateDelete IE</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Client CreateUpdateDelete IE</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Client CreateUpdateDelete IE">
+            <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+            <pd:x>1087</pd:x>
+            <pd:y>85</pd:y>
+            <config>
+                <timeout>%%Timeout%%</timeout>
+                <maxRows>100</maxRows>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+                <ProcedureName>Client_CreateUpdateDelete;1</ProcedureName>
+                <useSchema>false</useSchema>
+                <schema>%%Schema%%</schema>
+                <parameterTypes>
+                    <parameter>
+                        <colName>@RETURN_VALUE</colName>
+                        <colType>5</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@opType</colName>
+                        <colType>1</colType>
+                        <dataType>-6</dataType>
+                        <typeName>tinyint</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@adLogin</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientType</colName>
+                        <colType>1</colType>
+                        <dataType>-6</dataType>
+                        <typeName>tinyint</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientName</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@companyBranch</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientCharacter</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientInformSource</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientTrademark</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientOrgForm</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientOrgFormIntNum</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@SPARKOrgForm</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientShortName</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@inn</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@www</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientDateReg</colName>
+                        <colType>1</colType>
+                        <dataType>93</dataType>
+                        <typeName>datetime</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@okvedID</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@SPARKokvedID</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@ogrn</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@okpo</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@kpp</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@contactFirstName</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@contactLastName</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@contactMiddleName</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@contactPhone</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@contactPhone2</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@contactEmail</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@SPARKIsActive</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@SPARKStatusDate</colName>
+                        <colType>1</colType>
+                        <dataType>91</dataType>
+                        <typeName>date</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@SPARKStatus</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@legalAddrID</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@contactAddrID</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@operatorConnect</colName>
+                        <colType>1</colType>
+                        <dataType>-6</dataType>
+                        <typeName>tinyint</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@operatorConnectType</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@SPARKLiqDate</colName>
+                        <colType>1</colType>
+                        <dataType>91</dataType>
+                        <typeName>date</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@SPARKCauseLiq</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientFirstName</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientLastName</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientMiddleName</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientParams</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@recordId</colName>
+                        <colType>2</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@opResult</colName>
+                        <colType>2</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@opErrorText</colName>
+                        <colType>2</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                </parameterTypes>
+            </config>
+            <pd:inputBindings>
+                <inputs>
+                    <inputSet>
+                        <opType>
+                            <xsl:value-of select="2"/>
+                        </opType>
+                        <adLogin>
+                            <xsl:value-of select="$Start/inputParams/adLogin"/>
+                        </adLogin>
+                        <clientType>
+                            <xsl:choose>
+                                <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/ClientType)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/ClientType)">
+                                    <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/ClientType)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/ClientType"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </clientType>
+                        <clientName>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ClientName"/>
+                        </clientName>
+                        <companyBranch>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/BranchCode"/>
+                        </companyBranch>
+                        <clientCharacter>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ClientCharacterCode"/>
+                        </clientCharacter>
+                        <clientInformSource>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/InfSourceCode"/>
+                        </clientInformSource>
+                        <clientTrademark>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Trademark"/>
+                        </clientTrademark>
+                        <clientOrgForm>
+                            <xsl:choose>
+                                <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/OrgFormID)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/OrgFormID)">
+                                    <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/OrgFormID)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/OrgFormID"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </clientOrgForm>
+                        <clientOrgFormIntNum xsi:nil="true"/>
+                        <SPARKOrgForm xsi:nil="true"/>
+                        <clientShortName>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ClientShortName"/>
+                        </clientShortName>
+                        <inn>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/inn"/>
+                        </inn>
+                        <www>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/www"/>
+                        </www>
+                        <clientDateReg>
+                            <xsl:choose>
+                                <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/ClientDateReg)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/ClientDateReg)">
+                                    <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/ClientDateReg)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/ClientDateReg"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </clientDateReg>
+                        <okvedID>
+                            <xsl:choose>
+                                <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/OKVEDCodeID)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/OKVEDCodeID)">
+                                    <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/OKVEDCodeID)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/OKVEDCodeID"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </okvedID>
+                        <SPARKokvedID xsi:nil="true"/>
+                        <ogrn>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ogrn"/>
+                        </ogrn>
+                        <okpo>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/okpo"/>
+                        </okpo>
+                        <kpp>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/kpp"/>
+                        </kpp>
+                        <contactFirstName>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ContactFirstName"/>
+                        </contactFirstName>
+                        <contactLastName>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ContactLastName"/>
+                        </contactLastName>
+                        <contactMiddleName>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ContactMiddleName"/>
+                        </contactMiddleName>
+                        <contactPhone>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ContactPhone"/>
+                        </contactPhone>
+                        <contactPhone2>
+                            <xsl:choose>
+                                <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/ContactPhone2)">
+                                    <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ContactPhone2"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </contactPhone2>
+                        <contactEmail>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ContactEmail"/>
+                        </contactEmail>
+                        <SPARKIsActive>
+                            <xsl:choose>
+                                <xsl:when test="exists(if ($Parse-XML-2-IE/Response/Data/Report[1]/Status/@IsActing) then 1 else 0)">
+                                    <xsl:value-of select="if ($Parse-XML-2-IE/Response/Data/Report[1]/Status/@IsActing) then 1 else 0"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </SPARKIsActive>
+                        <SPARKStatusDate>
+                            <xsl:choose>
+                                <xsl:when test="exists($Parse-XML-2-IE/Response/Data/Report[1]/Status/@Date)">
+                                    <xsl:value-of select="$Parse-XML-2-IE/Response/Data/Report[1]/Status/@Date"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </SPARKStatusDate>
+                        <SPARKStatus>
+                            <xsl:choose>
+                                <xsl:when test="exists(concat($Parse-XML-2-IE/Response/Data/Report[1]/Status/@Code, &quot; &quot;, $Parse-XML-2-IE/Response/Data/Report[1]/Status/@Text))">
+                                    <xsl:value-of select="concat($Parse-XML-2-IE/Response/Data/Report[1]/Status/@Code, &quot; &quot;, $Parse-XML-2-IE/Response/Data/Report[1]/Status/@Text)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </SPARKStatus>
+                        <legalAddrID>
+                            <xsl:choose>
+                                <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/LegalAddressId)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/LegalAddressId)">
+                                    <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/LegalAddressId)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/LegalAddressId"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </legalAddrID>
+                        <contactAddrID>
+                            <xsl:choose>
+                                <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/ContactAddressId)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/ContactAddressId)">
+                                    <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/ContactAddressId)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/ContactAddressId"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </contactAddrID>
+                        <operatorConnect>
+                            <xsl:choose>
+                                <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/OperatorConnect)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/OperatorConnect)">
+                                    <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/OperatorConnect)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/OperatorConnect"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </operatorConnect>
+                        <operatorConnectType>
+                            <xsl:choose>
+                                <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/CarrierTypeId)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/CarrierTypeId)">
+                                    <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/CarrierTypeId)&lt;1) then $Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull else $Parse-XML/Resultsets/ResultSet1/Record1/CarrierTypeId"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </operatorConnectType>
+                        <SPARKLiqDate>
+                            <xsl:choose>
+                                <xsl:when test="exists(if($Get-SPARK-Status-Type-IE/resultSet/Record/Status = &quot;ликвидирован&quot;) then ($Parse-XML-2-IE/Response/Data/Report[1]/Status/@Date) else ($Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull))">
+                                    <xsl:value-of select="if($Get-SPARK-Status-Type-IE/resultSet/Record/Status = &quot;ликвидирован&quot;) then ($Parse-XML-2-IE/Response/Data/Report[1]/Status/@Date) else ($Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </SPARKLiqDate>
+                        <SPARKCauseLiq>
+                            <xsl:choose>
+                                <xsl:when test="exists(if($Get-SPARK-Status-Type-IE/resultSet/Record/Status = &quot;ликвидирован&quot;) then ($Get-SPARK-Status-Type-IE/resultSet/Record[1]/Type) else ($Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull))">
+                                    <xsl:value-of select="if($Get-SPARK-Status-Type-IE/resultSet/Record/Status = &quot;ликвидирован&quot;) then ($Get-SPARK-Status-Type-IE/resultSet/Record[1]/Type) else ($Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </SPARKCauseLiq>
+                        <clientFirstName>
+                            <xsl:choose>
+                                <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/ClientFirstName)">
+                                    <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ClientFirstName"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </clientFirstName>
+                        <clientLastName>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ClientLastName"/>
+                        </clientLastName>
+                        <clientMiddleName>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ClientMiddleName"/>
+                        </clientMiddleName>
+                        <clientParams xsi:nil="true"/>
+                        <recordId>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ClientID"/>
+                        </recordId>
+                        <opResult>
+                            <xsl:value-of select="0"/>
+                        </opResult>
+                        <opErrorText>
+                            <xsl:value-of select="0"/>
+                        </opErrorText>
+                    </inputSet>
+                </inputs>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Get SPARK Data IE">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>439</pd:x>
+        <pd:y>81</pd:y>
+        <config>
+            <processName>/Processes/Spark/_GetEntrepreneurShortReport.process</processName>
+        </config>
+        <pd:inputBindings>
+            <inn>
+                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/inn"/>
+            </inn>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse-XML-1 IE">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>555</pd:x>
+        <pd:y>82</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term>
+                <xsd:element name="xmlData" type="xsd:string"/>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="concat(&quot;&lt;?xml version='1.0' encoding='utf-8'?>&lt;xmlData>&quot;,tib:substring-before-last(substring-after($Get-SPARK-Data-IE/result, &quot;&lt;xmlData>&quot;), &quot;&lt;/xmlData>&quot;),&quot;&lt;/xmlData>&quot;)"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse-XML-2 IE">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>671</pd:x>
+        <pd:y>82</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term ref="pfx2:Response"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Parse-XML-1-IE/xmlData"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Checkpoint">
+        <pd:type>com.tibco.pe.core.CheckpointActivity</pd:type>
+        <pd:resourceType>ae.process.checkpoint</pd:resourceType>
+        <pd:x>439</pd:x>
+        <pd:y>209</pd:y>
+        <config/>
+        <pd:inputBindings>
+            <pfx3:input/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get-SPARK-Status-Type-IE">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>839</pd:x>
+        <pd:y>86</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <statement>SELECT Type, Status FROM %%Schema%%.v_Spark_Status WHERE Code=?</statement>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>Code</parameterName>
+                    <dataType>BIGINT</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>Type</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Status</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <Code>
+                    <xsl:choose>
+                        <xsl:when test="exists($Parse-XML-2-IE/Response/Data/Report[1]/Status/@Code)">
+                            <xsl:value-of select="$Parse-XML-2-IE/Response/Data/Report[1]/Status/@Code"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </Code>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get-SPARK-Status-Type">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>837</pd:x>
+        <pd:y>329</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <statement>SELECT Type, Status FROM %%Schema%%.v_Spark_Status WHERE Code=?</statement>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>Code</parameterName>
+                    <dataType>BIGINT</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>Type</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Status</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <Code>
+                    <xsl:choose>
+                        <xsl:when test="exists($Parse-XML-2/Response/Data/Report[1]/Status/@Code)">
+                            <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/Status/@Code"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </Code>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Render error JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render error JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group 2</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Get Client</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Client</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get SPARK Data</pd:from>
+        <pd:to>Parse-XML-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>INN Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>string-length($Parse-XML/Resultsets/ResultSet1/Record1/inn)&lt;1</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse-XML-1</pd:from>
+        <pd:to>Parse-XML-2</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get SPARK Data IE</pd:from>
+        <pd:to>Parse-XML-1 IE</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse-XML-1 IE</pd:from>
+        <pd:to>Parse-XML-2 IE</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group 1</pd:from>
+        <pd:to>Render JSON IE</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON IE</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>Checkpoint</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Checkpoint</pd:from>
+        <pd:to>Get SPARK Data IE</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Parse-XML/Resultsets/ResultSet1/Record1/ClientType = 2</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Checkpoint</pd:from>
+        <pd:to>Get SPARK Data</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse-XML-2 IE</pd:from>
+        <pd:to>Get-SPARK-Status-Type-IE</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse-XML-2</pd:from>
+        <pd:to>Get-SPARK-Status-Type</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get-SPARK-Status-Type</pd:from>
+        <pd:to>Group 2</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get-SPARK-Status-Type-IE</pd:from>
+        <pd:to>Group 1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

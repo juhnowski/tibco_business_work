@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:include schemaLocation="RFS.xsd"/>
+	<xs:include schemaLocation="CFSAttribute.xsd"/>
+	<xs:include schemaLocation="CFSPricePlan.xsd"/>
+	<xs:complexType name="CFS">
+		<xs:sequence>
+			<xs:element name="Id" type="xs:integer"/>
+			<xs:element name="Name">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="30"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Description">
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Attributes" type="CFSAttribute" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="CFSStructure" type="RFS" maxOccurs="unbounded"/>
+			<xs:element name="CFSPricePlans" type="CFSPricePlan" maxOccurs="unbounded"/>
+			<xs:element name="DiscountRules" type="DiscountRule" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Discounts" type="Discount" minOccurs="0" maxOccurs="unbounded"/>
+			<xs:element name="Dependency" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="CFSId" type="xs:integer"/>
+						<xs:element name="Condition" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="DiscountRule">
+		<xs:all>
+			<xs:element name="Name" type="xs:string"/>
+			<xs:element name="Value" type="xs:string"/>
+		</xs:all>
+	</xs:complexType>
+	<xs:complexType name="Discount">
+		<xs:all>
+			<xs:element name="Name" type="xs:string"/>
+			<xs:element name="Value" type="xs:string"/>
+		</xs:all>
+	</xs:complexType>
+</xs:schema>

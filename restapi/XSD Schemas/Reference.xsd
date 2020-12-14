@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           id="Reference">
+
+<xs:element name="Reference"/>
+
+  <xs:complexType name="Reference">
+    <xs:sequence>
+      <xs:element name="Id" type="xs:integer">
+        <xs:annotation>
+          <xs:documentation>Идентификатор значения из справочника</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element name="Value">
+        <xs:annotation>
+          <xs:documentation>Значение из справочника</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:maxLength value="255"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+  </xs:sequence>
+  </xs:complexType>
+
+</xs:schema>

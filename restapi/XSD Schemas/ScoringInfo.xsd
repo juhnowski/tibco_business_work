@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           id="ScoringInfo">
+    <xs:include schemaLocation="CommonTypes.xsd"/>
+    <xs:complexType name="ScoringInfo">
+        <xs:annotation>
+            <xs:documentation>Значение скоринга, возвращённого из СПАРК</xs:documentation>
+        </xs:annotation>
+        <xs:all>
+            <xs:element name="ShortNameRus" type="xs:string"/>
+            <xs:element name="INN" type="xs:string"/>
+            <xs:element name="OGRN" type="xs:string"/>
+            <xs:element name="OKPO" type="xs:string"/>
+            <xs:element name="OKATO" type="xs:string"/>
+            <xs:element name="StatusDate" type="xs:dateTime"/>
+            <xs:element name="StatusCode" type="xs:string"/>
+            <xs:element name="IsActing" type="xs:string"/>
+            <xs:element name="IndicatorValue" type="xs:string"/>
+            <xs:element name="IndicatorDescription" type="xs:string"/>
+        </xs:all>
+    </xs:complexType>
+</xs:schema>

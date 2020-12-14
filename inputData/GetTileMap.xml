@@ -1,0 +1,4 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<inputParams>
+	<inputJSON>{ 	"input": { 		"ActionInfo": { 			"SystemId": "USSS", 			"UserId": "1" 		}, 		"TileSource": "yandex", 		"z": "11", 		"lat": "44.005986", 		"long": "56.326887" 	} }</inputJSON>
+</inputParams>

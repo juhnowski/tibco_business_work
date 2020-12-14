@@ -1,0 +1,15 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<inputParams>
+    <inputJSON>
+    {
+        "ActionInfo": {
+            "SystemId": "USSS",
+            "UserId": "555",
+            "ActionDate": "2018-10-10T15:00:00",
+            "comment": "Test comment"
+        },
+        "lat": 151.25,
+        "long": 54.1
+    }
+    </inputJSON>
+</inputParams>

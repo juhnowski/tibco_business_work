@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <pd:name>Processes/Contract/_CountContract_SF_UCP.process</pd:name>
+    <pd:description>Поиск и подсчет количества контрактов пользователя по его ИНН в SF и UCP</pd:description>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="inn" type="xsd:string"/>
+    </pd:startType>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings>
+        <result>
+            <xsl:value-of select="if($Get-Open-Contract-from-SF/result !=0) &#xA;then $Get-Open-Contract-from-SF/result&#xA;else $Get-Open-BAN-from-UCP/result"/>
+        </result>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="result" type="xsd:int"/>
+    </pd:endType>
+    <pd:endX>665</pd:endX>
+    <pd:endY>227</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1538742670742</pd:targetNamespace>
+    <pd:activity name="Get Open Contract from SF">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:description>Осуществляет поиск незакрытых контрактов для клиентов с ИНН, переданным на вход по вью V_GlassFish_Contract SF</pd:description>
+        <pd:x>370</pd:x>
+        <pd:y>70</pd:y>
+        <config>
+            <processName>/Processes/Contract/_CountContractByINN_SF.process</processName>
+        </config>
+        <pd:inputBindings>
+            <inn>
+                <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Start/inn"/>
+            </inn>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Open BAN from UCP">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:description>Осуществляет поиск незакрытых BAN по ИНН в UCP по домену app_legal_entity </pd:description>
+        <pd:x>373</pd:x>
+        <pd:y>235</pd:y>
+        <config>
+            <processName>/Processes/BAN/_CountOpenBANByINN.process</processName>
+        </config>
+        <pd:inputBindings>
+            <inn>
+                <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Start/inn"/>
+            </inn>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Get Open Contract from SF</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Open Contract from SF</pd:from>
+        <pd:to>Get Open BAN from UCP</pd:to>
+        <pd:xpathDescription>Not exists</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Open BAN from UCP</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Open Contract from SF</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>Contract exists in SF</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Get-Open-Contract-from-SF/result !=0</pd:xpath>
+    </pd:transition>
+</pd:ProcessDefinition>

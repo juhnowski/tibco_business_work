@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           id="CreateCaseSchema">
+    <xs:include schemaLocation="CRMTypes.xsd"/>
+
+    <xs:element name="inputJSON">
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="createCaseRequest" type="CreateCaseRequest"/>
+                <xs:element name="attachmentRequest" type="AddAttachmentRequestContext" minOccurs="0"/>
+                <xs:element name="activityInfo" type="ActivityInfo"/>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="resultJSON">
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="createCaseResponse" type="CreateCaseResponse"/>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="CreateCaseRequest">
+        <xs:annotation>
+            <xs:documentation>Данные по запросу на создание кейса</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="reporterContactIdent" type="ContactIdent" minOccurs="0"/>
+            <xs:element name="reporterAccountIdent" type="AccountIdent" minOccurs="0"/>
+            <xs:element name="reporterServiceIdent" type="ServiceIdent" minOccurs="0"/>
+            <xs:element name="reporterFinAccountIdent" type="FinAccountIdent" minOccurs="0"/>
+            <xs:element name="reporterScalaIdent" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="50"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="flexibleAttributes" type="FlexibleAttribute" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="externalTTInfo" type="ExternalTTInfo" minOccurs="0"/>
+            <xs:element name="workflowInfo" type="WorkflowInfo" minOccurs="0"/>
+            <xs:element name="notificationInfo" type="NotificationInfo" minOccurs="0"/>
+            <xs:element name="mnpInfo" type="MnpInfo" minOccurs="0"/>
+            <xs:element name="caseTitle">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="80"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="caseTypeLevel1">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="40"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="caseTypeLevel2" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="40"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="caseTypeLevel3" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="40"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="severity" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="priority" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="status" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="parentChild" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="0"/>
+                        <xs:enumeration value="1"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="parentCaseID" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="phoneNote" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="caseNote" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="contactName" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="120"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="address" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="80"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="caseTerritory" type="SiteIdent" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="ContactIdent">
+        <xs:all>
+            <xs:element name="objid" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="80"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="contactID" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="31"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="AccountIdent">
+        <xs:all>
+            <xs:element name="objid" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="80"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="organisationId" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="40"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="ServiceIdent">
+        <xs:all>
+            <xs:element name="objid" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="80"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="serviceID" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="40"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="billingID" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="40"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="FinAccountIdent">
+        <xs:all>
+            <xs:element name="objid" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="80"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="crmFaID" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="80"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="internalFaID" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="80"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="externalFaID" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="80"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="AddAttachmentRequestContext">
+        <xs:sequence>
+            <xs:element name="moveAttachment" type="xs:boolean" minOccurs="0"/>
+            <xs:element name="attachment" type="Attachment" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="CreateCaseResponse">
+        <xs:sequence>
+            <xs:element name="caseId">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="caseObjid">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

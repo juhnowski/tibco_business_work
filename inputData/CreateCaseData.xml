@@ -1,0 +1,97 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<inputParams>
+    <inputJSON>
+        {
+        "createCaseRequest": {
+        "reporterContactIdent": {
+        "objid": "objid",
+        "contactID": "contactID"
+        },
+        "reporterAccountIdent": {
+        "objid": "objid",
+        "organisationId": "organisationId"
+        },
+        "reporterServiceIdent": {
+        "objid": "objid",
+        "serviceID": "serviceID",
+        "billingID": "billingID"
+        },
+        "reporterFinAccountIdent": {
+        "objid": "objid",
+        "crmFaID": "crmFaID",
+        "internalFaID": "internalFaID",
+        "externalFaID": "externalFaID"
+        },
+        "reporterScalaIdent": "reporterScalaIdent",
+        "flexibleAttributes": [
+        {
+        "attrName": "attrName",
+        "attrValue": "attrValue"
+        }
+        ],
+        "externalTTInfo": {
+        "replicateToExternalTT": true,
+        "externalTTNumber": "externalTTNumber",
+        "externalTTStatus": "externalTTStatus",
+        "externalTTSysCode": "externalTTSysCode"
+        },
+        "workflowInfo": {
+        "workflowOperation": "1",
+        "workflowTarget": "workflowTarget"
+        },
+        "notificationInfo": {
+        "notificationIndicator": true,
+        "notificationEmail": "notificationEmail",
+        "notificationPhone": "notificationPhone"
+        },
+        "mnpInfo": {
+        "mnpApplicationID": "mnpApplicationID",
+        "mnpClaimID": "mnpClaimID"
+        },
+        "caseTitle": "caseTitle",
+        "caseTypeLevel1": "caseTypeLevel1",
+        "caseTypeLevel2": "caseTypeLevel2",
+        "caseTypeLevel3": "caseTypeLevel3",
+        "severity": "severity",
+        "priority": "priority",
+        "status": "status",
+        "parentChild": "parentChild",
+        "parentCaseID": "parentCaseID",
+        "phoneNote": "phoneNote",
+        "caseNote": "caseNote",
+        "contactName": "contactName",
+        "address": "address",
+        "caseTerritory": {
+        "mrkCode": "mrkCode",
+        "siteId": "siteId",
+        "externalId": "externalId"
+        }
+        },
+        "attachmentRequest": {
+        "moveAttachment": true,
+        "attachment": [
+        {
+        "fileName": "fileName",
+        "filePath": "filePath",
+        "mimeType": "mimeType",
+        "creator": "creator",
+        "creationDate": "2018-10-05",
+        "title": "title",
+        "type": "type",
+        "subtype": "subtype",
+        "description": "description",
+        "relatedBranches": "relatedBranches"
+        }
+        ]
+        },
+        "activityInfo": {
+        "userName": "userName",
+        "sourceApplication": "sourceApplication",
+        "sourceChannel": "sourceChannel",
+        "activityReason": "activityReason",
+        "requestTime": "2018-10-05",
+        "note": "note"
+        }
+        }
+    </inputJSON>
+</inputParams>

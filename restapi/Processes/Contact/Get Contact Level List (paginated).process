@@ -1,0 +1,326 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <pd:name>Processes/Contact/Get Contact Level List (paginated).process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="inputParams">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="pageNumber" type="xsd:int"/>
+                    <xsd:element name="pageSize" type="xsd:int"/>
+                    <xsd:element name="contactID" type="xsd:long"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>243</pd:startX>
+    <pd:startY>40</pd:startY>
+    <pd:returnBindings>
+        <JSONoutput>
+            <xsl:value-of select="if (count($Catch/exceptiondata)>0) then $Render-error-JSON/ns:ActivityOutputClass/jsonString &#xA; else if (count($Render-JSON-empty-clientId/ns:ActivityOutputClass/jsonString)>0) then $Render-JSON-empty-clientId/ns:ActivityOutputClass/jsonString else&#xA;$Render-JSON/ns:ActivityOutputClass/jsonString"/>
+        </JSONoutput>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="JSONoutput" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>751</pd:endX>
+    <pd:endY>187</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1523262052062</pd:targetNamespace>
+    <pd:activity name="Data Query">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>412</pd:x>
+        <pd:y>190</pd:y>
+        <config>
+            <timeout>%%Timeout%%</timeout>
+            <commit>false</commit>
+            <maxRows>10000</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT RowNum,ContactID,Name
+FROM (
+       SELECT
+         ROW_NUMBER()
+         OVER (
+           ORDER BY [ContactID]) AS RowNum,
+         [ContactID]
+        ,[Name]        
+       FROM %%Schema%%.v_ContactLevelList
+       WHERE ContactID = ?
+     ) AS Results
+WHERE RowNum BETWEEN ? AND ?</statement>
+            <wizardData/>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>RowNum</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-5</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>bigint</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ContactID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Name</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>contactID</parameterName>
+                    <dataType>BIGINT</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>startRow</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>endRow</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <contactID>
+                    <xsl:value-of select="$Start/inputParams/contactID"/>
+                </contactID>
+                <startRow>
+                    <xsl:value-of select="($Start/inputParams/pageNumber - 1) * $Start/inputParams/pageSize + 1"/>
+                </startRow>
+                <endRow>
+                    <xsl:value-of select="$Start/inputParams/pageSize * $Start/inputParams/pageNumber"/>
+                </endRow>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>573</pd:x>
+        <pd:y>189</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="output">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="currentPage" type="xsd:long"/>
+                            <xsd:element name="lastPage" type="xsd:long"/>
+                            <xsd:element name="pageSize" type="xsd:long"/>
+                            <xsd:element name="lastRecord" type="xsd:int"/>
+                            <xsd:element name="contactLevels" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="contactId" type="xsd:long"/>
+                                        <xsd:element name="name" type="xsd:string"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <output>
+                    <currentPage>
+                        <xsl:value-of select="$Start/inputParams/pageNumber"/>
+                    </currentPage>
+                    <lastPage>
+                        <xsl:value-of select="ceiling($Row-count-query/resultSet/Record[1]/OutputColumn1 div $Start/inputParams/pageSize)"/>
+                    </lastPage>
+                    <pageSize>
+                        <xsl:value-of select="$Start/inputParams/pageSize"/>
+                    </pageSize>
+                    <lastRecord>
+                        <xsl:value-of select="$Row-count-query/resultSet/Record[1]/OutputColumn1"/>
+                    </lastRecord>
+                    <xsl:for-each select="$Data-Query/resultSet/Record">
+                        <contactLevels>
+                            <contactId>
+                                <xsl:value-of select="ContactID"/>
+                            </contactId>
+                            <name>
+                                <xsl:value-of select="Name"/>
+                            </name>
+                        </contactLevels>
+                    </xsl:for-each>
+                </output>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Row count query">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>245</pd:x>
+        <pd:y>190</pd:y>
+        <config>
+            <timeout>%%Timeout%%</timeout>
+            <commit>false</commit>
+            <maxRows>1</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT COUNT(*) FROM %%Schema%%.v_ContactLevelList
+where ContactID = ?</statement>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>OutputColumn1</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>contactID</parameterName>
+                    <dataType>BIGINT</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <contactID>
+                    <xsl:value-of select="$Start/inputParams/contactID"/>
+                </contactID>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>462</pd:x>
+        <pd:y>323</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Render error JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>643</pd:x>
+        <pd:y>324</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="opResult" type="xsd:int"/>
+                            <xsd:element name="opErrorText" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <opResult>
+                        <xsl:value-of select="2"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="$Catch/exceptiondata/*"/>
+                    </opErrorText>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render-JSON-empty-clientId">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>555</pd:x>
+        <pd:y>40</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="output">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="opResult" type="xsd:int"/>
+                            <xsd:element name="opErrorText" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <output>
+                    <opResult>
+                        <xsl:value-of select="1"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="'Не указан id'"/>
+                    </opErrorText>
+                </output>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Data Query</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Row count query</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>string-length($Start/inputParams/contactID) &gt; 0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Row count query</pd:from>
+        <pd:to>Data Query</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Render error JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render error JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Render-JSON-empty-clientId</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render-JSON-empty-clientId</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

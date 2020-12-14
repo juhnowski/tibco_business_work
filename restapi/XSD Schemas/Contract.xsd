@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           id="Contract">
+    <xs:include schemaLocation="Client.xsd"/>
+    <xs:include schemaLocation="Address.xsd"/>
+    <xs:element name="Contract">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation>Информация о контракте</xs:documentation>
+            </xs:annotation>
+            <xs:all>
+                <xs:element name="inn" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>ИНН клиента. Должно быть заполнено либо поле inn либо Client
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="255"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element ref="Client" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Информация о клиенте, на котором создается контракт. Должно быть заполнено
+                            либо
+                            поле inn либо Client
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="ContactInfo" type="Contact">
+                    <xs:annotation>
+                        <xs:documentation>Данные по основному контакту</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="AddressInfo" type="Address">
+                    <xs:annotation>
+                        <xs:documentation>Адрес</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="salesperson" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Обязательно для Dealer_population_type=M, в противном случае игнорируется
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="8"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="outlet" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Обязательно для Dealer_population_type=M, в противном случае игнорируется
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="8"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="dealer" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Обязательно для Dealer_population_type=M, в противном случае игнорируется
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="8"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="contractDate" type="xs:dateTime" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Дата договора</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="marketCode" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Обязательно для co_type NEW,MVN,TEN</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="3"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="accountType" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Обязательно для co_type NEW,MVN,TEN</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="3"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="benSelection" type="BenSelectionType" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>D-default ben, E-существующий, N-новый</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="ben" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Заполняется только для ben_selection=E</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="5"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="deliveryType" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Заполняется только для ben_selection=N</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="1"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="deliveryDealer" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Заполняется только для ben_selection=N</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="8"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="deliveryName" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Заполняется только для ben_selection=N</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="200"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="deliveryAddressId" type="Address" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Заполняется только для ben_selection=N</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="deliveryEmail" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Заполняется только для ben_selection=N</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="30"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="productCode" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Код продукта для регистрируемого абонента. Заполнение атрибута обязательно для
+                            вызова Finalize по всем co_type кроме TEN
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="4"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="reserveId" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Id ранее сделанного резерва MSISDN</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="200"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="reserveMsisdn" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Зарезервированный MSISDN или MSISDN, который вызывающая система хочет
+                            зарезервировать для активации
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="11"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="subscriberPersId" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Конечный пользователь</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="18"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="noDepositInd" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Необходимость депозита</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="1"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

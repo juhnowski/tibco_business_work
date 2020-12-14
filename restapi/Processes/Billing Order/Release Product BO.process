@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx2="http://ofmservices.org/" xmlns:pfx="http://sovintel.net/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <wsdl:import namespace="http://sovintel.net/" location="/Connection/OPSFBridge WSDL.wsdl"/>
+    <pd:name>Processes/Billing Order/Release Product BO.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="inputParams">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="oppID" type="xsd:long"/>
+                    <xsd:element name="adLogin" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>62</pd:startX>
+    <pd:startY>261</pd:startY>
+    <pd:returnBindings>
+        <JSONoutput>
+            <xsl:value-of select="$Render-JSON/ns:ActivityOutputClass/jsonString"/>
+        </JSONoutput>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="JSONoutput" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>649</pd:endX>
+    <pd:endY>261</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1521575913877</pd:targetNamespace>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>540</pd:x>
+        <pd:y>263</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="err" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <err>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx:CreateBillingOrdersResponse/pfx:err"/>
+                    </err>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SOAPRequestReply">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>305</pd:x>
+        <pd:y>263</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <timeoutType>Seconds</timeoutType>
+            <service>pfx:OPSFBridgeService</service>
+            <servicePort>OPSFBridgeServiceSoap</servicePort>
+            <operation>CreateBillingOrders</operation>
+            <soapAction>http://sovintel.net/CreateBillingOrders</soapAction>
+            <endpointURL>%%OPSFBridgeEndPoint%%</endpointURL>
+            <authScheme>NTLM</authScheme>
+            <requireBasicAuth>true</requireBasicAuth>
+            <basicHttpAuthIdentity>/Connection/OPSFBridgeIdentity.id</basicHttpAuthIdentity>
+            <domain>%%OPSFBridgeDomain%%</domain>
+            <useProxy>false</useProxy>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <pfx:CreateBillingOrders>
+                    <pfx:opportunityID>
+                        <xsl:value-of select="concat('0x', substring('0000000000000000', 1, 16 - string-length($Java-Code/javaCodeActivityOutput/hexString)), $Java-Code/javaCodeActivityOutput/hexString)"/>
+                    </pfx:opportunityID>
+                    <pfx:BOGroupID>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/BOGroupID"/>
+                    </pfx:BOGroupID>
+                    <pfx:POUserID>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/BOUserID"/>
+                    </pfx:POUserID>
+                </pfx:CreateBillingOrders>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="BO Get User Group">
+        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+        <pd:x>171</pd:x>
+        <pd:y>263</pd:y>
+        <config>
+            <timeout>%%Timeout%%</timeout>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>true</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <ProcedureName>BillingOrder_GetUserGroup;1</ProcedureName>
+            <useSchema>false</useSchema>
+            <schema>%%Schema%%</schema>
+            <parameterTypes>
+                <parameter>
+                    <colName>@RETURN_VALUE</colName>
+                    <colType>5</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@adLogin</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@opResult</colName>
+                    <colType>2</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@opErrorText</colName>
+                    <colType>2</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+            </parameterTypes>
+        </config>
+        <pd:inputBindings>
+            <inputs>
+                <inputSet>
+                    <adLogin>
+                        <xsl:value-of select="$Start/inputParams/adLogin"/>
+                    </adLogin>
+                    <opResult>
+                        <xsl:value-of select="0"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="0"/>
+                    </opErrorText>
+                </inputSet>
+            </inputs>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>174</pd:x>
+        <pd:y>368</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term>
+                <xsd:element name="Resultsets">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="UpdateCount" type="xsd:int"/>
+                            <xsd:element name="ResultSet1">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="Record1">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="BOUserID" type="xsd:long"/>
+                                                    <xsd:element name="BOGroupID" type="xsd:long"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$BO-Get-User-Group/resultSet/UnresolvedResultsets"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>306</pd:x>
+        <pd:y>370</pd:y>
+        <config>
+            <fileName>ReleaseProductBOJavaCode</fileName>
+            <packageName>Processes.BillingOrder.ReleaseProductBO</packageName>
+            <fullsource>package Processes.BillingOrder.ReleaseProductBO;
+import java.util.*;
+import java.io.*;
+public class ReleaseProductBOJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected int input = 0;
+	protected String hexString = "";
+	public int getinput() {
+		return input;
+	}
+	public void setinput(int val) {
+		input = val;
+	}
+	public String gethexString() {
+		return hexString;
+	}
+	public void sethexString(String val) {
+		hexString = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public ReleaseProductBOJavaCode() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : int input
+	Out : String hexString
+* Available Variables: DO NOT MODIFY *****/
+	 
+hexString = Integer.toHexString(input);
+                 
+	}
+}
+</fullsource>
+            <outputData>
+                <row>
+                    <fieldName>hexString</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </outputData>
+            <inputData>
+                <row>
+                    <fieldName>input</fieldName>
+                    <fieldType>int</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </inputData>
+            <byteCode>
+                <class>
+                    <name>ReleaseProductBOJavaCode</name>
+                    <byteCode>yv66vgAAADMAKQkABgAdCQAGAB4KAAcAHwgAIAoAIQAiBwAjBwAkAQAFaW5wdXQBAAFJAQAJaGV4U3RyaW5nAQASTGphdmEvbGFuZy9TdHJpbmc7AQAIZ2V0aW5wdXQBAAMoKUkBAARDb2RlAQAPTGluZU51bWJlclRhYmxlAQAIc2V0aW5wdXQBAAQoSSlWAQAMZ2V0aGV4U3RyaW5nAQAUKClMamF2YS9sYW5nL1N0cmluZzsBAAxzZXRoZXhTdHJpbmcBABUoTGphdmEvbGFuZy9TdHJpbmc7KVYBAAY8aW5pdD4BAAMoKVYBAAZpbnZva2UBAApFeGNlcHRpb25zBwAlAQAKU291cmNlRmlsZQEAHVJlbGVhc2VQcm9kdWN0Qk9KYXZhQ29kZS5qYXZhDAAIAAkMAAoACwwAFgAXAQAABwAmDAAnACgBAEBQcm9jZXNzZXMvQmlsbGluZ09yZGVyL1JlbGVhc2VQcm9kdWN0Qk8vUmVsZWFzZVByb2R1Y3RCT0phdmFDb2RlAQAQamF2YS9sYW5nL09iamVjdAEAE2phdmEvbGFuZy9FeGNlcHRpb24BABFqYXZhL2xhbmcvSW50ZWdlcgEAC3RvSGV4U3RyaW5nAQAVKEkpTGphdmEvbGFuZy9TdHJpbmc7ACEABgAHAAAAAgAEAAgACQAAAAQACgALAAAABgABAAwADQABAA4AAAAdAAEAAQAAAAUqtAABrAAAAAEADwAAAAYAAQAAAAkAAQAQABEAAQAOAAAAIgACAAIAAAAGKhu1AAGxAAAAAQAPAAAACgACAAAADAAFAA0AAQASABMAAQAOAAAAHQABAAEAAAAFKrQAArAAAAABAA8AAAAGAAEAAAAPAAEAFAAVAAEADgAAACIAAgACAAAABiortQACsQAAAAEADwAAAAoAAgAAABIABQATAAEAFgAXAAEADgAAADQAAgABAAAAECq3AAMqA7UAASoSBLUAArEAAAABAA8AAAASAAQAAAAVAAQABgAJAAcADwAWAAEAGAAXAAIADgAAACgAAgABAAAADCoqtAABuAAFtQACsQAAAAEADwAAAAoAAgAAAB0ACwAfABkAAAAEAAEAGgABABsAAAACABw=</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <input>
+                    <xsl:value-of select="$Start/inputParams/oppID"/>
+                </input>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SOAPRequestReply</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>BO Get User Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>BO Get User Group</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>Java Code</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>SOAPRequestReply</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

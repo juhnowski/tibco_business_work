@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           id="Product">
+
+    <xs:include schemaLocation="ProductInfoAttribute.xsd"/>
+    <xs:include schemaLocation="ProductStructure.xsd"/>
+
+        <xs:complexType name="Product">
+            <xs:sequence>
+			    <xs:element name="Id" type="xs:integer"/>
+                <xs:element name="Name">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="255"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="Descr">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="255"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="Attributes" type="ProductInfoAttribute" maxOccurs="unbounded" minOccurs="0"/>
+				<xs:element name="ProductStructure" type="ProductStructure" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+</xs:schema>

@@ -1,0 +1,805 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <pd:name>Processes/Product/Get Extended Product.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="productID" type="xsd:long"/>
+    </pd:startType>
+    <pd:startX>59</pd:startX>
+    <pd:startY>123</pd:startY>
+    <pd:returnBindings>
+        <JSONoutput>
+            <xsl:value-of select="if (count($Catch/exceptiondata)>0) then $Render-error-JSON/ns:ActivityOutputClass/jsonString  else $Render-JSON/ns:ActivityOutputClass/jsonString"/>
+        </JSONoutput>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="JSONoutput" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>680</pd:endX>
+    <pd:endY>128</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1521575913877</pd:targetNamespace>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>572</pd:x>
+        <pd:y>126</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="Product">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="id" type="xsd:long"/>
+                            <xsd:element name="name" type="xsd:string"/>
+                            <xsd:element name="code" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="billing" type="xsd:string"/>
+                            <xsd:element name="comment" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="businessCenterID" type="xsd:long" minOccurs="0"/>
+                            <xsd:element name="commissionSchemeID" type="xsd:long" minOccurs="0"/>
+                            <xsd:element name="consumerID" type="xsd:long" minOccurs="0"/>
+                            <xsd:element name="boComment" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="services" minOccurs="0" maxOccurs="unbounded">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="id" type="xsd:long"/>
+                                        <xsd:element name="productId" type="xsd:long"/>
+                                        <xsd:element name="stringId" type="xsd:string"/>
+                                        <xsd:element name="name" type="xsd:string"/>
+                                        <xsd:element name="comment" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="required" type="xsd:int"/>
+                                        <xsd:element name="maxInstanceNumber" type="xsd:int"/>
+                                        <xsd:element name="instAddressQuantity" type="xsd:int"/>
+                                        <xsd:element name="poCreation" type="xsd:int"/>
+                                        <xsd:element name="hasOneTimePayment" type="xsd:int"/>
+                                        <xsd:element name="hasRecurrentPayment" type="xsd:int"/>
+                                        <xsd:element name="actionType" type="xsd:string"/>
+                                        <xsd:element name="actionDate" type="xsd:dateTime" minOccurs="0"/>
+                                        <xsd:element name="addressАID" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="addressBID" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="businessCenterID" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="commissionSchemeID" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="amountOneTimeFixed" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="amountRecurrentFixed" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="priceOneTimeDiscount" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="priceRecurrentDiscount" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="docNumForDiscount" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="note" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="productServiceParams" minOccurs="0" maxOccurs="unbounded">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="prodID" type="xsd:long"/>
+                                                    <xsd:element name="prodStringID" type="xsd:string"/>
+                                                    <xsd:element name="servID" type="xsd:long"/>
+                                                    <xsd:element name="servStringID" type="xsd:string"/>
+                                                    <xsd:element name="paramStringID" type="xsd:string"/>
+                                                    <xsd:element name="paramName" type="xsd:string"/>
+                                                    <xsd:element name="paramType" type="xsd:int"/>
+                                                    <xsd:element name="valueChoiceID" type="xsd:string"/>
+                                                    <xsd:element name="required" type="xsd:int"/>
+                                                    <xsd:element name="defaultVal" type="xsd:int"/>
+                                                    <xsd:element name="invisible" type="xsd:int"/>
+                                                    <xsd:element name="productServiceParamsValues" minOccurs="0" maxOccurs="unbounded">
+                                                        <xsd:complexType>
+                                                            <xsd:sequence>
+                                                                <xsd:element name="valueChoiceID" type="xsd:string"/>
+                                                                <xsd:element name="id" type="xsd:long"/>
+                                                                <xsd:element name="value" type="xsd:string"/>
+                                                                <xsd:element name="requiredParams" type="xsd:string"/>
+                                                            </xsd:sequence>
+                                                        </xsd:complexType>
+                                                    </xsd:element>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <Product>
+                    <id>
+                        <xsl:value-of select="$Query-1/resultSet/Record[1]/ID"/>
+                    </id>
+                    <name>
+                        <xsl:value-of select="$Query-1/resultSet/Record[1]/Name"/>
+                    </name>
+                    <xsl:if test="$Query-1/resultSet/Record[1]/Code">
+                        <code>
+                            <xsl:value-of select="$Query-1/resultSet/Record[1]/Code"/>
+                        </code>
+                    </xsl:if>
+                    <billing>
+                        <xsl:value-of select="$Query-1/resultSet/Record[1]/Billing"/>
+                    </billing>
+                    <xsl:if test="$Query-1/resultSet/Record[1]/Comment">
+                        <comment>
+                            <xsl:value-of select="$Query-1/resultSet/Record[1]/Comment"/>
+                        </comment>
+                    </xsl:if>
+                    <xsl:if test="$Query-1/resultSet/Record[1]/BusinessCenterID">
+                        <businessCenterID>
+                            <xsl:value-of select="$Query-1/resultSet/Record[1]/BusinessCenterID"/>
+                        </businessCenterID>
+                    </xsl:if>
+                    <xsl:if test="$Query-1/resultSet/Record[1]/CommissionSchemeID">
+                        <commissionSchemeID>
+                            <xsl:value-of select="$Query-1/resultSet/Record[1]/CommissionSchemeID"/>
+                        </commissionSchemeID>
+                    </xsl:if>
+                    <xsl:if test="$Query-1/resultSet/Record[1]/ConsumerID">
+                        <consumerID>
+                            <xsl:value-of select="$Query-1/resultSet/Record[1]/ConsumerID"/>
+                        </consumerID>
+                    </xsl:if>
+                    <xsl:if test="$Query-1/resultSet/Record[1]/BOComment">
+                        <boComment>
+                            <xsl:value-of select="$Query-1/resultSet/Record[1]/BOComment"/>
+                        </boComment>
+                    </xsl:if>
+                    <xsl:for-each select="$Query-2/resultSet/Record">
+                        <services>
+                            <id>
+                                <xsl:value-of select="ID"/>
+                            </id>
+                            <productId>
+                                <xsl:value-of select="ProductID"/>
+                            </productId>
+                            <stringId>
+                                <xsl:value-of select="StringID"/>
+                            </stringId>
+                            <name>
+                                <xsl:value-of select="Name"/>
+                            </name>
+                            <xsl:if test="Comment">
+                                <comment>
+                                    <xsl:value-of select="Comment"/>
+                                </comment>
+                            </xsl:if>
+                            <required>
+                                <xsl:value-of select="Required"/>
+                            </required>
+                            <maxInstanceNumber>
+                                <xsl:value-of select="MaxInstanceNumber"/>
+                            </maxInstanceNumber>
+                            <instAddressQuantity>
+                                <xsl:value-of select="InstAddressQuantity"/>
+                            </instAddressQuantity>
+                            <poCreation>
+                                <xsl:value-of select="POCreation"/>
+                            </poCreation>
+                            <hasOneTimePayment>
+                                <xsl:value-of select="HasOneTimePayment"/>
+                            </hasOneTimePayment>
+                            <hasRecurrentPayment>
+                                <xsl:value-of select="HasRecurrentPayment"/>
+                            </hasRecurrentPayment>
+                            <actionType>
+                                <xsl:value-of select="ActionType"/>
+                            </actionType>
+                            <xsl:if test="ActionDate">
+                                <actionDate>
+                                    <xsl:value-of select="ActionDate"/>
+                                </actionDate>
+                            </xsl:if>
+                            <addressАID>
+                                <xsl:value-of select="AddressAID"/>
+                            </addressАID>
+                            <xsl:if test="AddressBID">
+                                <addressBID>
+                                    <xsl:value-of select="AddressBID"/>
+                                </addressBID>
+                            </xsl:if>
+                            <xsl:if test="BusinessCenterID">
+                                <businessCenterID>
+                                    <xsl:value-of select="BusinessCenterID"/>
+                                </businessCenterID>
+                            </xsl:if>
+                            <xsl:if test="CommissionSchemeID">
+                                <commissionSchemeID>
+                                    <xsl:value-of select="CommissionSchemeID"/>
+                                </commissionSchemeID>
+                            </xsl:if>
+                            <xsl:if test="AmountOneTimeFixed">
+                                <amountOneTimeFixed>
+                                    <xsl:value-of select="AmountOneTimeFixed"/>
+                                </amountOneTimeFixed>
+                            </xsl:if>
+                            <xsl:if test="AmountRecurrentFixed">
+                                <amountRecurrentFixed>
+                                    <xsl:value-of select="AmountRecurrentFixed"/>
+                                </amountRecurrentFixed>
+                            </xsl:if>
+                            <priceOneTimeDiscount>
+                                <xsl:value-of select="PriceOneTimeDiscoun"/>
+                            </priceOneTimeDiscount>
+                            <xsl:if test="PriceRecurrentDiscount">
+                                <priceRecurrentDiscount>
+                                    <xsl:value-of select="PriceRecurrentDiscount"/>
+                                </priceRecurrentDiscount>
+                            </xsl:if>
+                            <xsl:if test="DocNumForDiscount">
+                                <docNumForDiscount>
+                                    <xsl:value-of select="DocNumForDiscount"/>
+                                </docNumForDiscount>
+                            </xsl:if>
+                            <xsl:if test="Note">
+                                <note>
+                                    <xsl:value-of select="Note"/>
+                                </note>
+                            </xsl:if>
+                            <xsl:for-each select="$Query-3/resultSet/Record[ServID = current()/ID]">
+                                <productServiceParams>
+                                    <prodID>
+                                        <xsl:value-of select="ProdID"/>
+                                    </prodID>
+                                    <prodStringID>
+                                        <xsl:value-of select="ProdStringID"/>
+                                    </prodStringID>
+                                    <servID>
+                                        <xsl:value-of select="ServID"/>
+                                    </servID>
+                                    <servStringID>
+                                        <xsl:value-of select="ServStringID"/>
+                                    </servStringID>
+                                    <paramStringID>
+                                        <xsl:value-of select="ParamStringID"/>
+                                    </paramStringID>
+                                    <paramName>
+                                        <xsl:value-of select="ParamName"/>
+                                    </paramName>
+                                    <paramType>
+                                        <xsl:value-of select="ParamType"/>
+                                    </paramType>
+                                    <valueChoiceID>
+                                        <xsl:value-of select="ValueChoiceID"/>
+                                    </valueChoiceID>
+                                    <required>
+                                        <xsl:value-of select="Required"/>
+                                    </required>
+                                    <defaultVal>
+                                        <xsl:value-of select="DefaultVal"/>
+                                    </defaultVal>
+                                    <invisible>
+                                        <xsl:value-of select="Invisible"/>
+                                    </invisible>
+                                    <xsl:for-each select="$ParamsValues/AccumulatedOutput/resultSet/Record[ValueChoiceID = current()/ValueChoiceID]">
+                                        <productServiceParamsValues>
+                                            <valueChoiceID>
+                                                <xsl:value-of select="ValueChoiceID"/>
+                                            </valueChoiceID>
+                                            <id>
+                                                <xsl:value-of select="ID"/>
+                                            </id>
+                                            <value>
+                                                <xsl:value-of select="Value"/>
+                                            </value>
+                                            <requiredParams>
+                                                <xsl:value-of select="RequiredParams"/>
+                                            </requiredParams>
+                                        </productServiceParamsValues>
+                                    </xsl:for-each>
+                                </productServiceParams>
+                            </xsl:for-each>
+                        </services>
+                    </xsl:for-each>
+                </Product>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Query 1">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>159</pd:x>
+        <pd:y>124</pd:y>
+        <config>
+            <timeout>%%Timeout%%</timeout>
+            <commit>false</commit>
+            <maxRows>1</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <wizardData/>
+            <statement>SELECT *
+FROM %%Schema%%.v_Product
+WHERE ID = ?</statement>
+            <processInSubsets>false</processInSubsets>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>productID</parameterName>
+                    <dataType>BIGINT</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Name</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Code</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Billing</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Comment</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-1</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>text</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>BusinessCenterID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CommissionSchemeID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ConsumerID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>BOComment</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <productID>
+                    <xsl:value-of select="$Start/productID"/>
+                </productID>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>568</pd:x>
+        <pd:y>248</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Render error JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>678</pd:x>
+        <pd:y>246</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="opResult" type="xsd:int"/>
+                            <xsd:element name="opErrorText" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <opResult>
+                        <xsl:value-of select="2"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="$Catch/exceptiondata/*"/>
+                    </opErrorText>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Query 2">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>246</pd:x>
+        <pd:y>123</pd:y>
+        <config>
+            <timeout>%%Timeout%%</timeout>
+            <commit>false</commit>
+            <maxRows>100000</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <wizardData/>
+            <statement>SELECT [ID]
+      ,[ProductID]
+      ,[StringID]
+      ,[Name]
+      ,[Comment]
+      ,[Required]
+      ,[MaxInstanceNumber]
+      ,[InstAddressQuantity]
+      ,[POCreation]
+      ,[HasOneTimePayment]
+      ,[HasRecurrentPayment]
+      ,[ActionType]
+      ,[ActionDate]
+      ,[AddressAID]
+      ,[AddressAName]
+      ,[AddressBID]
+      ,[AddressBName]
+      ,[BusinessCenterID]
+      ,[BusinessCenterName]
+      ,[CommissionSchemeID]
+      ,[CommissionSchemeName]
+      ,[AmountOneTimeFixed]
+      ,[AmountRecurrentFixed]
+      ,[PriceOneTimeDiscoun]
+      ,[PriceRecurrentDiscount]
+      ,[DocNumForDiscount]
+      ,[Note]
+FROM %%Schema%%.v_ProductService
+WHERE ProductID = ?</statement>
+            <processInSubsets>false</processInSubsets>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>productID</parameterName>
+                    <dataType>BIGINT</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>ID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ProductID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>StringID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Name</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Comment</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Required</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-6</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>tinyint</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>MaxInstanceNumber</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>InstAddressQuantity</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-6</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>tinyint</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>POCreation</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>HasOneTimePayment</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>HasRecurrentPayment</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ActionType</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ActionDate</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AddressAID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AddressAName</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AddressBID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AddressBName</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>BusinessCenterID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>BusinessCenterName</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CommissionSchemeID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>CommissionSchemeName</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AmountOneTimeFixed</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>AmountRecurrentFixed</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PriceOneTimeDiscoun</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>PriceRecurrentDiscount</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DocNumForDiscount</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Note</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <productID>
+                    <xsl:value-of select="$Start/productID"/>
+                </productID>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Query 3">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>333</pd:x>
+        <pd:y>126</pd:y>
+        <config>
+            <timeout>%%Timeout%%</timeout>
+            <commit>false</commit>
+            <maxRows>100000</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <wizardData/>
+            <statement>SELECT *
+FROM %%Schema%%.v_ProductServiceParam
+WHERE ProdID = ?</statement>
+            <processInSubsets>false</processInSubsets>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>productID</parameterName>
+                    <dataType>BIGINT</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>ProdID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ProdStringID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ServID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ServStringID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ParamStringID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ParamName</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ParamType</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Required</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>ValueChoiceID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>DefaultVal</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>Invisible</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-6</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>tinyint</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <productID>
+                    <xsl:value-of select="$Start/productID"/>
+                </productID>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.LoopGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>394</pd:x>
+        <pd:y>46</pd:y>
+        <pd:width>117</pd:width>
+        <pd:height>140</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>inputLoop</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:over>$Query-3/resultSet/Record</pd:over>
+            <pd:indexSlot>i</pd:indexSlot>
+            <pd:outSlot>ParamsValues</pd:outSlot>
+            <pd:activityOutputName>Query 4</pd:activityOutputName>
+            <pd:accumulateOutput>true</pd:accumulateOutput>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Query 4</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Query 4</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Query 4">
+            <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+            <pd:x>452</pd:x>
+            <pd:y>123</pd:y>
+            <config>
+                <timeout>%%Timeout%%</timeout>
+                <commit>false</commit>
+                <maxRows>100000</maxRows>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+                <wizardData/>
+                <statement>SELECT *
+FROM %%Schema%%.v_ProductServiceParamVal
+WHERE ValueChoiceID = ?</statement>
+                <processInSubsets>false</processInSubsets>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>ValueChoiceID</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+                <oraObjects/>
+                <oraTables/>
+                <QueryOutputCachedSchemaColumns>ValueChoiceID</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ID</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>Value</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>RequiredParams</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            </config>
+            <pd:inputBindings>
+                <jdbcQueryActivityInput>
+                    <ValueChoiceID>
+                        <xsl:choose>
+                            <xsl:when test="exists($Query-3/resultSet/Record[$i]/ValueChoiceID)">
+                                <xsl:value-of select="$Query-3/resultSet/Record[$i]/ValueChoiceID"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </ValueChoiceID>
+                </jdbcQueryActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Query 1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Query 1</pd:from>
+        <pd:to>Query 2</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Render error JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render error JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Query 2</pd:from>
+        <pd:to>Query 3</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Query 3</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

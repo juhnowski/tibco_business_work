@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           id="ReservePhoneNumbersSchema">
+    <xs:include schemaLocation="ActionInfo.xsd"/>
+
+    <xs:element name="inputJSON">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="ActionInfo"/>
+                <xs:element name="ProductId">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="30"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="PhoneNumber" maxOccurs="unbounded">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="11"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="ReservePeriod" type="xs:decimal" minOccurs="0"/>
+                <xs:element name="Scala" minOccurs="0">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="8"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="BAN" minOccurs="0">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="10"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="resultJSON">
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="ReserveId" minOccurs="0">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="20"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="ReserveEndDate" type="xs:dateTime" minOccurs="0"/>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

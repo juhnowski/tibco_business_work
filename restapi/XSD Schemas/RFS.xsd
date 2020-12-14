@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:include schemaLocation="RFSAttribute.xsd"/>
+	<xs:complexType name="RFS">
+		<xs:all>
+			<xs:element name="Id" type="xs:integer"/>
+			<xs:element name="Name" type="xs:string"/>
+			<xs:element name="Description" type="xs:string" minOccurs="0"/>
+			<xs:element name="Attributes" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element ref="RFSAttribute"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="MaxInstanceNumber" type="xs:string" minOccurs="0"/>
+			<xs:element name="InstAddressQuantity" type="xs:string" minOccurs="0"/>
+			<xs:element name="PoCreation" type="xs:string" minOccurs="0"/>
+			<xs:element name="Mandatory" type="xs:string"/>
+			<xs:element name="Dependency" minOccurs="0">
+				<xs:complexType>
+					<xs:sequence>
+						<xs:element name="RFSId" type="xs:string"/>
+						<xs:element name="Condition" type="xs:string"/>
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+</xs:schema>

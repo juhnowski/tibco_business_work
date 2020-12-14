@@ -1,0 +1,114 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<inputParams>
+    <inputJSON>
+        {
+        "ActionInfo": {
+        "SystemId": "USSS",
+        "UserId": "b2badm",
+        "ActionDate": "2018-10-05T13:52:28.564Z",
+        "comment": "Some comment"
+        },
+        "Contract": {
+        "inn": "111111111",
+        "Client": {
+        "clientType": "1",
+        "inn": "111111111",
+        "MarketCode": "string",
+        "companyInfo": {
+        "companyName": "companyName",
+        "shortName": "shortName",
+        "category": "category",
+        "characterization": "characterization",
+        "organisationForm": "organisationForm",
+        "okved": "okved",
+        "ogrn": "ogrn",
+        "okpo": "okpo",
+        "kpp": "kpp",
+        "headQuoter": "headQuoter",
+        "tradeMark": "tradeMark",
+        "website": "website",
+        "resident": "Y",
+        "Citizenship": "Citizenship"
+        },
+        "primaryContactInfo": {
+        "firstName": "firstName",
+        "lastName": "lastName",
+        "middleName": "middleName",
+        "birthdate": "2018-10-05",
+        "position": "position",
+        "department": "department",
+        "phone": "phone",
+        "ext": "ext",
+        "email": "email",
+        "documentInfo": {
+        "documentType": "documentType",
+        "documentSeries": "documentSeries",
+        "documentID": "documentID",
+        "documentIssueDate": "2018-10-05",
+        "documentIssuerName": "documentIssuerName"
+        }
+        },
+        "additionalContactInfo": {
+        "firstName": "firstName1",
+        "lastName": "lastName1",
+        "middleName": "middleName1",
+        "birthdate": "2018-10-05",
+        "position": "position1",
+        "department": "department1",
+        "phone": "phone1",
+        "ext": "ext1",
+        "email": "email1",
+        "documentInfo": {
+        "documentType": "documentType1",
+        "documentSeries": "documentSeries1",
+        "documentID": "documentID1",
+        "documentIssueDate": "2018-10-05",
+        "documentIssuerName": "documentIssuerName1"
+        }
+        },
+        "CompanyGroup": 0,
+        "Source": 1,
+        "PersonalManager": "string",
+        "serviceManager": "string",
+        "description": "string",
+        "comment": "string"
+        },
+        "ContactInfo": {
+        "firstName": "firstName",
+        "lastName": "lastName",
+        "middleName": "middleName",
+        "birthdate": "2018-10-05",
+        "position": "position",
+        "department": "department",
+        "phone": "phone",
+        "ext": "ext",
+        "email": "email",
+        "documentInfo": {
+        "documentType": "documentType",
+        "documentSeries": "documentSeries",
+        "documentID": "documentID",
+        "documentIssueDate": "2018-10-05",
+        "documentIssuerName": "documentIssuerName"
+        }
+        },
+        "AddressInfo": {
+        "PostCode": "PostCode",
+        "Address": "Address",
+        "REGION": "REGION",
+        "RAYON": "RAYON",
+        "CITY": "CITY",
+        "STREETNAME": "STREETNAME",
+        "BUILDINGNUMBER": "BUILDINGNUMBER",
+        "FiasCode": "FiasCode",
+        "FiasRegion": "FiasRegion",
+        "FiasArea": "FiasArea",
+        "FiasCity": "FiasCity",
+        "FiasPlace": "FiasPlace",
+        "FiasStreet": "FiasStreet",
+        "ActualDate": "2018-10-05"
+        }
+        },
+        "BillingType": "Convergent"
+        }
+    </inputJSON>
+</inputParams>

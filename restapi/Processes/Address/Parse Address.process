@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://tempuri.org/" xmlns:pfx="http://ofmservices.org/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <wsdl:import namespace="http://tempuri.org/" location="/Connection/Address WSDL.wsdl"/>
+    <wsdl:import namespace="http://ofmservices.org/"/>
+    <pd:name>Processes/Address/Parse Address.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="inputParams">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="inputJSON" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>115</pd:startX>
+    <pd:startY>180</pd:startY>
+    <pd:returnBindings>
+        <JSONoutput>
+            <xsl:value-of select="if (count($Catch/exceptiondata)>0) then $Render-error-JSON/ns:ActivityOutputClass/jsonString  else $Render-JSON/ns:ActivityOutputClass/jsonString"/>
+        </JSONoutput>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="JSONoutput" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>753</pd:endX>
+    <pd:endY>178</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1521575913877</pd:targetNamespace>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>562</pd:x>
+        <pd:y>179</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="areaId" type="xsd:int"/>
+                            <xsd:element name="area" type="xsd:string"/>
+                            <xsd:element name="areaTypeId" type="xsd:int"/>
+                            <xsd:element name="areaType" type="xsd:string"/>
+                            <xsd:element name="parentAreaId" type="xsd:int"/>
+                            <xsd:element name="parentArea" type="xsd:string"/>
+                            <xsd:element name="cityId" type="xsd:int"/>
+                            <xsd:element name="city" type="xsd:string"/>
+                            <xsd:element name="cityTypeId" type="xsd:int"/>
+                            <xsd:element name="cityType" type="xsd:string"/>
+                            <xsd:element name="streetId" type="xsd:int"/>
+                            <xsd:element name="streetWrong" type="xsd:string"/>
+                            <xsd:element name="street" type="xsd:string"/>
+                            <xsd:element name="streetTypeId" type="xsd:int"/>
+                            <xsd:element name="streetType" type="xsd:string"/>
+                            <xsd:element name="buildingId" type="xsd:int"/>
+                            <xsd:element name="building" type="xsd:string"/>
+                            <xsd:element name="number1" type="xsd:string"/>
+                            <xsd:element name="number1Type" type="xsd:string"/>
+                            <xsd:element name="number1TypeId" type="xsd:int"/>
+                            <xsd:element name="number2" type="xsd:string"/>
+                            <xsd:element name="number2Type" type="xsd:string"/>
+                            <xsd:element name="number2TypeId" type="xsd:int"/>
+                            <xsd:element name="number3" type="xsd:string"/>
+                            <xsd:element name="number3Type" type="xsd:string"/>
+                            <xsd:element name="number3TypeId" type="xsd:int"/>
+                            <xsd:element name="zip" type="xsd:string"/>
+                            <xsd:element name="tail" type="xsd:string"/>
+                            <xsd:element name="latitude" type="xsd:double"/>
+                            <xsd:element name="longtitude" type="xsd:double"/>
+                            <xsd:element name="isExactBuilding" type="xsd:int"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <areaId>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:AreaId"/>
+                    </areaId>
+                    <area>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:Area"/>
+                    </area>
+                    <areaTypeId>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:AreaTypeId"/>
+                    </areaTypeId>
+                    <areaType>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:AreaType"/>
+                    </areaType>
+                    <parentAreaId>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:ParentAreaId"/>
+                    </parentAreaId>
+                    <parentArea>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:ParentArea"/>
+                    </parentArea>
+                    <cityId>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:CityId"/>
+                    </cityId>
+                    <city>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:City"/>
+                    </city>
+                    <cityTypeId>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:CityTypeId"/>
+                    </cityTypeId>
+                    <cityType>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:CityType"/>
+                    </cityType>
+                    <streetId>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:StreetId"/>
+                    </streetId>
+                    <streetWrong>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:StreetWrong"/>
+                    </streetWrong>
+                    <street>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:Street"/>
+                    </street>
+                    <streetTypeId>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:StreetTypeId"/>
+                    </streetTypeId>
+                    <streetType>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:StreetType"/>
+                    </streetType>
+                    <buildingId>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:BuildingId"/>
+                    </buildingId>
+                    <building>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:Building"/>
+                    </building>
+                    <number1>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:Number1"/>
+                    </number1>
+                    <number1Type>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:Number1Type"/>
+                    </number1Type>
+                    <number1TypeId>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:Number1TypeId"/>
+                    </number1TypeId>
+                    <number2>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:Number2"/>
+                    </number2>
+                    <number2Type>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:Number2Type"/>
+                    </number2Type>
+                    <number2TypeId>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:Number2TypeId"/>
+                    </number2TypeId>
+                    <number3>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:Number3"/>
+                    </number3>
+                    <number3Type>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:Number3Type"/>
+                    </number3Type>
+                    <number3TypeId>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:Number3TypeId"/>
+                    </number3TypeId>
+                    <zip>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:Zip"/>
+                    </zip>
+                    <tail>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:Tail"/>
+                    </tail>
+                    <latitude>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:Latitude"/>
+                    </latitude>
+                    <longtitude>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:Longtitude"/>
+                    </longtitude>
+                    <isExactBuilding>
+                        <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx2:ParseAddressResponse/pfx2:ParseAddressResult/pfx2:IsExactBuilding"/>
+                    </isExactBuilding>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>496</pd:x>
+        <pd:y>286</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Render error JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>662</pd:x>
+        <pd:y>287</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="opResult" type="xsd:int"/>
+                            <xsd:element name="opErrorText" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <opResult>
+                        <xsl:value-of select="2"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="$Catch/exceptiondata/*"/>
+                    </opErrorText>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="SOAPRequestReply">
+        <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+        <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+        <pd:x>389</pd:x>
+        <pd:y>180</pd:y>
+        <config>
+            <timeout>0</timeout>
+            <soapAttachmentStyle>SwA</soapAttachmentStyle>
+            <timeoutType>Seconds</timeoutType>
+            <service>pfx2:ParsingService</service>
+            <servicePort>ParsingServiceSoap</servicePort>
+            <operation>ParseAddress</operation>
+            <soapAction>http://tempuri.org/ParseAddress</soapAction>
+            <endpointURL>%%AddressParseSoap%%</endpointURL>
+            <authScheme>NONE</authScheme>
+        </config>
+        <pd:inputBindings>
+            <inputMessage>
+                <pfx2:ParseAddress>
+                    <pfx2:address>
+                        <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/output/addressToParse"/>
+                    </pfx2:address>
+                </pfx2:ParseAddress>
+            </inputMessage>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>242</pd:x>
+        <pd:y>181</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor>
+                <xsd:element name="output">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="addressToParse" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityOutputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/inputParams/inputJSON"/>
+                </jsonString>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Render error JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render error JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>SOAPRequestReply</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>SOAPRequestReply</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

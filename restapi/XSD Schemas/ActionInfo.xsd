@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           id="ActionInfo">
+    <xs:include schemaLocation="CommonTypes.xsd"/>
+    <xs:element name="ActionInfo">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation>Информация о выполняемом действии</xs:documentation>
+            </xs:annotation>
+            <xs:all>
+                <xs:element name="SystemId" type="SystemType">
+                    <xs:annotation>
+                        <xs:documentation>Идентификатор инициирующей системы.
+                            Возможные значение:
+                            • USSS
+                            • MWP
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="UserId">
+                    <xs:annotation>
+                        <xs:documentation>Идентификатор пользователя, инициирующего операцию. В случае, если во внешних
+                            системах идентификатор не определён (не заведён), то допустимо значение «not defined»
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="50"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="ActionDate" type="xs:dateTime" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Дата операции</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="comment" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Комментарий</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="200"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

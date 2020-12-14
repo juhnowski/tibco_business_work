@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProductPricePlanSchema.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ProductPricePlan.xsd">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ProductPricePlan.xsd" schemaLocation="/XSD Schemas/ProductPricePlan.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProductPricePlanSchema.xsd" schemaLocation="/XSD Schemas/GetProductPricePlanSchema.xsd"/>
+    <pd:name>Processes/Product/_GetProductPricePlan.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="inputParams">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="inputJSON" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>167</pd:startX>
+    <pd:startY>113</pd:startY>
+    <pd:returnBindings>
+        <responseJSON>
+            <xsl:value-of select="if (count($Catch/exceptiondata)>0) then $Render-error-JSON/ns:ActivityOutputClass/jsonString  else $Render-JSON/ns:ActivityOutputClass/jsonString"/>
+        </responseJSON>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="responseJSON" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>906</pd:endX>
+    <pd:endY>114</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <databaseMock>
+            <xsd:element name="response">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="cfs" maxOccurs="unbounded">
+                            <xsd:complexType>
+                                <xsd:sequence>
+                                    <xsd:element name="id" type="xsd:string"/>
+                                    <xsd:element name="pricePlan" maxOccurs="unbounded">
+                                        <xsd:complexType>
+                                            <xsd:sequence>
+                                                <xsd:element name="id" type="xsd:int"/>
+                                                <xsd:element name="name" type="xsd:string"/>
+                                                <xsd:element name="monthlyFee" type="xsd:double" minOccurs="0"/>
+                                                <xsd:element name="singlePayment" type="xsd:double" minOccurs="0"/>
+                                                <xsd:element name="minAmount" type="xsd:double" minOccurs="0"/>
+                                                <xsd:element name="dataPricePlan" minOccurs="0">
+                                                    <xsd:complexType>
+                                                        <xsd:sequence>
+                                                            <xsd:element name="unit" type="xsd:string"/>
+                                                            <xsd:element name="price" type="xsd:double"/>
+                                                        </xsd:sequence>
+                                                    </xsd:complexType>
+                                                </xsd:element>
+                                            </xsd:sequence>
+                                        </xsd:complexType>
+                                    </xsd:element>
+                                </xsd:sequence>
+                            </xsd:complexType>
+                        </xsd:element>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </databaseMock>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1538959611521</pd:targetNamespace>
+    <pd:activity name="CIFs for products 900 &amp; 069 stub">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>518</pd:x>
+        <pd:y>46</pd:y>
+        <config>
+            <variableName>databaseMock</variableName>
+        </config>
+        <pd:inputBindings>
+            <response>
+                <xsl:for-each select="$Parse-JSON/ns:ActivityOutputClass/request/CFS">
+                    <cfs>
+                        <id>
+                            <xsl:value-of select="ID"/>
+                        </id>
+                        <pricePlan>
+                            <id>
+                                <xsl:value-of select="12345"/>
+                            </id>
+                            <name>
+                                <xsl:value-of select="&quot;Price plan 12345&quot;"/>
+                            </name>
+                            <monthlyFee>
+                                <xsl:value-of select="100"/>
+                            </monthlyFee>
+                            <singlePayment>
+                                <xsl:value-of select="50"/>
+                            </singlePayment>
+                            <minAmount>
+                                <xsl:value-of select="50"/>
+                            </minAmount>
+                            <dataPricePlan>
+                                <unit>
+                                    <xsl:value-of select="&quot;RUB&quot;"/>
+                                </unit>
+                                <price>
+                                    <xsl:value-of select="100"/>
+                                </price>
+                            </dataPricePlan>
+                        </pricePlan>
+                        <pricePlan>
+                            <id>
+                                <xsl:value-of select="54321"/>
+                            </id>
+                            <name>
+                                <xsl:value-of select="&quot;Price plan 54321&quot;"/>
+                            </name>
+                            <monthlyFee>
+                                <xsl:value-of select="125"/>
+                            </monthlyFee>
+                            <singlePayment>
+                                <xsl:value-of select="115"/>
+                            </singlePayment>
+                            <minAmount>
+                                <xsl:value-of select="100"/>
+                            </minAmount>
+                            <dataPricePlan>
+                                <unit>
+                                    <xsl:value-of select="&quot;USD&quot;"/>
+                                </unit>
+                                <price>
+                                    <xsl:value-of select="10"/>
+                                </price>
+                            </dataPricePlan>
+                        </pricePlan>
+                    </cfs>
+                </xsl:for-each>
+            </response>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="CIFs for products 901 &amp; 941 stub">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>523</pd:x>
+        <pd:y>172</pd:y>
+        <config>
+            <variableName>databaseMock</variableName>
+        </config>
+        <pd:inputBindings>
+            <response>
+                <xsl:for-each xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Parse-JSON/ns:ActivityOutputClass/request/CFS">
+                    <cfs>
+                        <id>
+                            <xsl:value-of select="ID"/>
+                        </id>
+                        <pricePlan>
+                            <id>
+                                <xsl:value-of select="33333"/>
+                            </id>
+                            <name>
+                                <xsl:value-of select="&quot;Price plan 33333&quot;"/>
+                            </name>
+                            <monthlyFee>
+                                <xsl:value-of select="250"/>
+                            </monthlyFee>
+                            <singlePayment>
+                                <xsl:value-of select="100"/>
+                            </singlePayment>
+                            <minAmount>
+                                <xsl:value-of select="200"/>
+                            </minAmount>
+                            <dataPricePlan>
+                                <unit>
+                                    <xsl:value-of select="&quot;RUB&quot;"/>
+                                </unit>
+                                <price>
+                                    <xsl:value-of select="250"/>
+                                </price>
+                            </dataPricePlan>
+                        </pricePlan>
+                        <pricePlan>
+                            <id>
+                                <xsl:value-of select="55555"/>
+                            </id>
+                            <name>
+                                <xsl:value-of select="&quot;Price plan 55555&quot;"/>
+                            </name>
+                            <monthlyFee>
+                                <xsl:value-of select="350"/>
+                            </monthlyFee>
+                            <singlePayment>
+                                <xsl:value-of select="200"/>
+                            </singlePayment>
+                            <minAmount>
+                                <xsl:value-of select="200"/>
+                            </minAmount>
+                            <dataPricePlan>
+                                <unit>
+                                    <xsl:value-of select="&quot;USD&quot;"/>
+                                </unit>
+                                <price>
+                                    <xsl:value-of select="15"/>
+                                </price>
+                            </dataPricePlan>
+                        </pricePlan>
+                    </cfs>
+                </xsl:for-each>
+            </response>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>309</pd:x>
+        <pd:y>114</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ValidateOutputEnable>true</ValidateOutputEnable>
+            <ActivityOutputEditor ref="pfx2:request"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/inputParams/inputJSON"/>
+                </jsonString>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>733</pd:x>
+        <pd:y>114</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor ref="pfx2:response"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <response>
+                    <xsl:for-each select="$databaseMock/response/cfs">
+                        <CFSPP>
+                            <Id>
+                                <xsl:value-of select="id"/>
+                            </Id>
+                            <xsl:for-each select="pricePlan">
+                                <PricePlan>
+                                    <Id>
+                                        <xsl:value-of select="id"/>
+                                    </Id>
+                                    <Name>
+                                        <xsl:value-of select="name"/>
+                                    </Name>
+                                    <TariffPlan>
+                                        <xsl:value-of select="&quot;reserved param&quot;"/>
+                                    </TariffPlan>
+                                    <xsl:if test="monthlyFee">
+                                        <MonthlyFee>
+                                            <xsl:value-of select="monthlyFee"/>
+                                        </MonthlyFee>
+                                    </xsl:if>
+                                    <xsl:if test="singlePayment">
+                                        <SinglePayment>
+                                            <xsl:value-of select="singlePayment"/>
+                                        </SinglePayment>
+                                    </xsl:if>
+                                    <xsl:if test="minAmount">
+                                        <MinAmount>
+                                            <xsl:value-of select="minAmount"/>
+                                        </MinAmount>
+                                    </xsl:if>
+                                    <xsl:for-each select="dataPricePlan">
+                                        <DataPricePlan>
+                                            <Unit>
+                                                <xsl:value-of select="unit"/>
+                                            </Unit>
+                                            <Price>
+                                                <xsl:value-of select="price"/>
+                                            </Price>
+                                        </DataPricePlan>
+                                    </xsl:for-each>
+                                    <VoicePricePlan>
+                                        <xsl:value-of select="&quot;reserved param&quot;"/>
+                                    </VoicePricePlan>
+                                </PricePlan>
+                            </xsl:for-each>
+                        </CFSPP>
+                    </xsl:for-each>
+                </response>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>307</pd:x>
+        <pd:y>274</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat(&quot;Unexpected product id: &quot;, $Parse-JSON/ns:ActivityOutputClass/request/ProductId, &quot;. Valid ids: 069, 900, 901, 941&quot;)"/>
+                </message>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>741</pd:x>
+        <pd:y>292</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Render error JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>910</pd:x>
+        <pd:y>292</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="opResult" type="xsd:int"/>
+                            <xsd:element name="opErrorText" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <opResult>
+                        <xsl:value-of select="2"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="$Catch/exceptiondata/*"/>
+                    </opErrorText>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>CIFs for products 900 &amp; 069 stub</pd:to>
+        <pd:xpathDescription>ProductId 900 &amp; 069</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Parse-JSON/ns:ActivityOutputClass/request/ProductId = "900" or $Parse-JSON/ns:ActivityOutputClass/request/ProductId = "069"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>CIFs for products 901 &amp; 941 stub</pd:to>
+        <pd:xpathDescription>ProductId 901 &amp; 941</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Parse-JSON/ns:ActivityOutputClass/request/ProductId = "901" or $Parse-JSON/ns:ActivityOutputClass/request/ProductId = "941"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CIFs for products 900 &amp; 069 stub</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>CIFs for products 901 &amp; 941 stub</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Render error JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render error JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

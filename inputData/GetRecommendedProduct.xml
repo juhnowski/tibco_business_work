@@ -1,0 +1,4 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<inputParams>
+	<inputJSON>{ 	"input": { 		"ActionInfo": { 			"SystemId": "USSS", 			"UserId": "1" 		}, 		"ConditionType": "1", 		"CTN": "1", 		"Scala": "11", 		"ProductId": "1", 		"RegionId": "1", 		"DealerId": "1", 		"RequestDate": "2018-01-01", 		"Response": "2018-01-01" 	} }</inputJSON>
+</inputParams>

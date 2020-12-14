@@ -1,0 +1,785 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://sovintel.net/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://sovintel.net/">
+    <wsdl:types>
+        <s:schema targetNamespace="http://sovintel.net/" elementFormDefault="qualified">
+            <s:element name="SetPOReady">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="poid" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="priority" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="status" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="term" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="poGoal" type="s:string" maxOccurs="1" minOccurs="0"/>
+                        <s:element name="quickEngaging" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="hasNoPM" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="PMID" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="strEqXML" type="s:string" maxOccurs="1" minOccurs="0"/>
+                        <s:element name="strOrderXML" type="s:string" maxOccurs="1" minOccurs="0"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SetPOReadyResponse">
+                <s:complexType/>
+            </s:element>
+            <s:element name="SetPOArchived">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="poid" type="s:int" maxOccurs="1" minOccurs="1"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SetPOArchivedResponse">
+                <s:complexType/>
+            </s:element>
+            <s:element name="SetSOReady">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="poid" type="s:int" maxOccurs="1" minOccurs="1"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SetSOReadyResponse">
+                <s:complexType/>
+            </s:element>
+            <s:element name="UpdatePO">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="poid" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="priority" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="macroProjectType" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="action" type="s:int" maxOccurs="1" minOccurs="1"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="UpdatePOResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="status" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="errID" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="errorMessage" type="s:string" maxOccurs="1" minOccurs="0"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SetPOAvailFor1S">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="poid" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="poGoal" type="s:string" maxOccurs="1" minOccurs="0"/>
+                        <s:element name="pmID" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="hasNoPM" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="priority" type="s:int" maxOccurs="1" minOccurs="1"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SetPOAvailFor1SResponse">
+                <s:complexType/>
+            </s:element>
+            <s:element name="UnlockOpportunity">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="poid" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="canKeep" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="poGoal" type="s:string" maxOccurs="1" minOccurs="0"/>
+                        <s:element name="quickEngaging" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="pmID" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="hasNoPM" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="strEquipXML" type="s:string" maxOccurs="1" minOccurs="0"/>
+                        <s:element name="strOrderXML" type="s:string" maxOccurs="1" minOccurs="0"/>
+                        <s:element name="priority" type="s:int" maxOccurs="1" minOccurs="1"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="UnlockOpportunityResponse">
+                <s:complexType/>
+            </s:element>
+            <s:element name="UnlockOppForUnstructAddressCorrection">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="poid" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="priority" type="s:int" maxOccurs="1" minOccurs="1"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="UnlockOppForUnstructAddressCorrectionResponse">
+                <s:complexType/>
+            </s:element>
+            <s:element name="SendBONumbersToOP">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="poid" type="s:int" maxOccurs="1" minOccurs="1"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SendBONumbersToOPResponse">
+                <s:complexType/>
+            </s:element>
+            <s:element name="UnlockOpportunityToEditDIDs">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="poid" type="s:int" maxOccurs="1" minOccurs="1"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="UnlockOpportunityToEditDIDsResponse">
+                <s:complexType/>
+            </s:element>
+            <s:element name="LockOpportunityAfterEditingDIDs">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="poid" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="mustBeValid" type="s:int" maxOccurs="1" minOccurs="1"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="LockOpportunityAfterEditingDIDsResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="status" type="s:int" maxOccurs="1" minOccurs="1"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="UpdateOrderManager">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="poid" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="salesMgrID" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="priority" type="s:int" maxOccurs="1" minOccurs="1"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="UpdateOrderManagerResponse">
+                <s:complexType/>
+            </s:element>
+            <s:element name="UpdateAddressContact">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="poid" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="addressID" type="s:string" maxOccurs="1" minOccurs="0"/>
+                        <s:element name="contact" type="tns:OFMContact" maxOccurs="1" minOccurs="1"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="OFMContact">
+                <s:sequence>
+                    <s:element name="ID" type="s:int" maxOccurs="1" minOccurs="1"/>
+                    <s:element name="LastName" type="s:string" maxOccurs="1" minOccurs="0"/>
+                    <s:element name="FirstName" type="s:string" maxOccurs="1" minOccurs="0"/>
+                    <s:element name="MiddleName" type="s:string" maxOccurs="1" minOccurs="0"/>
+                    <s:element name="PhoneNo" type="s:string" maxOccurs="1" minOccurs="0"/>
+                    <s:element name="Extension" type="s:string" maxOccurs="1" minOccurs="0"/>
+                    <s:element name="CellularPhone" type="s:string" maxOccurs="1" minOccurs="0"/>
+                    <s:element name="FaxNo" type="s:string" maxOccurs="1" minOccurs="0"/>
+                    <s:element name="Email" type="s:string" maxOccurs="1" minOccurs="0"/>
+                    <s:element name="ExternalID" type="s:string" maxOccurs="1" minOccurs="0"/>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="UpdateAddressContactResponse">
+                <s:complexType/>
+            </s:element>
+            <s:element name="ReProject">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="poid" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="salesMgrID" type="s:int" maxOccurs="1" minOccurs="1"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="ReProjectResponse">
+                <s:complexType/>
+            </s:element>
+            <s:element name="SetAssistant">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="userFromID" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="userToID" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="dateUntil" type="s:string" maxOccurs="1" minOccurs="0"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="SetAssistantResponse">
+                <s:complexType/>
+            </s:element>
+            <s:element name="CheckScala">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="poid" type="s:int" maxOccurs="1" minOccurs="1"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="CheckScalaResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="errorMessage" type="s:string" maxOccurs="1" minOccurs="0"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="CheckALAfterNCA">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="poid" type="s:int" maxOccurs="1" minOccurs="1"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="CheckALAfterNCAResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="status" type="s:int" maxOccurs="1" minOccurs="1"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="AddServiceToPostSale">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="opportunityID" type="s:string" maxOccurs="1" minOccurs="0"/>
+                        <s:element name="services" type="s:string" maxOccurs="1" minOccurs="0"/>
+                        <s:element name="precedent" type="s:int" maxOccurs="1" minOccurs="1"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="AddServiceToPostSaleResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="addresses" type="s:string" maxOccurs="1" minOccurs="0"/>
+                        <s:element name="xml" type="s:string" maxOccurs="1" minOccurs="0"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="CreateBillingOrders">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="opportunityID" type="s:string" maxOccurs="1" minOccurs="0"/>
+                        <s:element name="BOGroupID" type="s:int" maxOccurs="1" minOccurs="1"/>
+                        <s:element name="POUserID" type="s:int" maxOccurs="1" minOccurs="1"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="CreateBillingOrdersResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element name="err" type="s:string" maxOccurs="1" minOccurs="0"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+        </s:schema>
+    </wsdl:types>
+    <wsdl:message name="SetPOReadySoapIn">
+        <wsdl:part name="parameters" element="tns:SetPOReady"/>
+    </wsdl:message>
+    <wsdl:message name="SetPOReadySoapOut">
+        <wsdl:part name="parameters" element="tns:SetPOReadyResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SetPOArchivedSoapIn">
+        <wsdl:part name="parameters" element="tns:SetPOArchived"/>
+    </wsdl:message>
+    <wsdl:message name="SetPOArchivedSoapOut">
+        <wsdl:part name="parameters" element="tns:SetPOArchivedResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SetSOReadySoapIn">
+        <wsdl:part name="parameters" element="tns:SetSOReady"/>
+    </wsdl:message>
+    <wsdl:message name="SetSOReadySoapOut">
+        <wsdl:part name="parameters" element="tns:SetSOReadyResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UpdatePOSoapIn">
+        <wsdl:part name="parameters" element="tns:UpdatePO"/>
+    </wsdl:message>
+    <wsdl:message name="UpdatePOSoapOut">
+        <wsdl:part name="parameters" element="tns:UpdatePOResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SetPOAvailFor1SSoapIn">
+        <wsdl:part name="parameters" element="tns:SetPOAvailFor1S"/>
+    </wsdl:message>
+    <wsdl:message name="SetPOAvailFor1SSoapOut">
+        <wsdl:part name="parameters" element="tns:SetPOAvailFor1SResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UnlockOpportunitySoapIn">
+        <wsdl:part name="parameters" element="tns:UnlockOpportunity"/>
+    </wsdl:message>
+    <wsdl:message name="UnlockOpportunitySoapOut">
+        <wsdl:part name="parameters" element="tns:UnlockOpportunityResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UnlockOppForUnstructAddressCorrectionSoapIn">
+        <wsdl:part name="parameters" element="tns:UnlockOppForUnstructAddressCorrection"/>
+    </wsdl:message>
+    <wsdl:message name="UnlockOppForUnstructAddressCorrectionSoapOut">
+        <wsdl:part name="parameters" element="tns:UnlockOppForUnstructAddressCorrectionResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SendBONumbersToOPSoapIn">
+        <wsdl:part name="parameters" element="tns:SendBONumbersToOP"/>
+    </wsdl:message>
+    <wsdl:message name="SendBONumbersToOPSoapOut">
+        <wsdl:part name="parameters" element="tns:SendBONumbersToOPResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UnlockOpportunityToEditDIDsSoapIn">
+        <wsdl:part name="parameters" element="tns:UnlockOpportunityToEditDIDs"/>
+    </wsdl:message>
+    <wsdl:message name="UnlockOpportunityToEditDIDsSoapOut">
+        <wsdl:part name="parameters" element="tns:UnlockOpportunityToEditDIDsResponse"/>
+    </wsdl:message>
+    <wsdl:message name="LockOpportunityAfterEditingDIDsSoapIn">
+        <wsdl:part name="parameters" element="tns:LockOpportunityAfterEditingDIDs"/>
+    </wsdl:message>
+    <wsdl:message name="LockOpportunityAfterEditingDIDsSoapOut">
+        <wsdl:part name="parameters" element="tns:LockOpportunityAfterEditingDIDsResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateOrderManagerSoapIn">
+        <wsdl:part name="parameters" element="tns:UpdateOrderManager"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateOrderManagerSoapOut">
+        <wsdl:part name="parameters" element="tns:UpdateOrderManagerResponse"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateAddressContactSoapIn">
+        <wsdl:part name="parameters" element="tns:UpdateAddressContact"/>
+    </wsdl:message>
+    <wsdl:message name="UpdateAddressContactSoapOut">
+        <wsdl:part name="parameters" element="tns:UpdateAddressContactResponse"/>
+    </wsdl:message>
+    <wsdl:message name="ReProjectSoapIn">
+        <wsdl:part name="parameters" element="tns:ReProject"/>
+    </wsdl:message>
+    <wsdl:message name="ReProjectSoapOut">
+        <wsdl:part name="parameters" element="tns:ReProjectResponse"/>
+    </wsdl:message>
+    <wsdl:message name="SetAssistantSoapIn">
+        <wsdl:part name="parameters" element="tns:SetAssistant"/>
+    </wsdl:message>
+    <wsdl:message name="SetAssistantSoapOut">
+        <wsdl:part name="parameters" element="tns:SetAssistantResponse"/>
+    </wsdl:message>
+    <wsdl:message name="CheckScalaSoapIn">
+        <wsdl:part name="parameters" element="tns:CheckScala"/>
+    </wsdl:message>
+    <wsdl:message name="CheckScalaSoapOut">
+        <wsdl:part name="parameters" element="tns:CheckScalaResponse"/>
+    </wsdl:message>
+    <wsdl:message name="CheckALAfterNCASoapIn">
+        <wsdl:part name="parameters" element="tns:CheckALAfterNCA"/>
+    </wsdl:message>
+    <wsdl:message name="CheckALAfterNCASoapOut">
+        <wsdl:part name="parameters" element="tns:CheckALAfterNCAResponse"/>
+    </wsdl:message>
+    <wsdl:message name="AddServiceToPostSaleSoapIn">
+        <wsdl:part name="parameters" element="tns:AddServiceToPostSale"/>
+    </wsdl:message>
+    <wsdl:message name="AddServiceToPostSaleSoapOut">
+        <wsdl:part name="parameters" element="tns:AddServiceToPostSaleResponse"/>
+    </wsdl:message>
+    <wsdl:message name="CreateBillingOrdersSoapIn">
+        <wsdl:part name="parameters" element="tns:CreateBillingOrders"/>
+    </wsdl:message>
+    <wsdl:message name="CreateBillingOrdersSoapOut">
+        <wsdl:part name="parameters" element="tns:CreateBillingOrdersResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="OPSFBridgeServiceSoap">
+        <wsdl:operation name="SetPOReady">
+            <wsdl:input message="tns:SetPOReadySoapIn"/>
+            <wsdl:output message="tns:SetPOReadySoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="SetPOArchived">
+            <wsdl:input message="tns:SetPOArchivedSoapIn"/>
+            <wsdl:output message="tns:SetPOArchivedSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="SetSOReady">
+            <wsdl:input message="tns:SetSOReadySoapIn"/>
+            <wsdl:output message="tns:SetSOReadySoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="UpdatePO">
+            <wsdl:input message="tns:UpdatePOSoapIn"/>
+            <wsdl:output message="tns:UpdatePOSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="SetPOAvailFor1S">
+            <wsdl:input message="tns:SetPOAvailFor1SSoapIn"/>
+            <wsdl:output message="tns:SetPOAvailFor1SSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="UnlockOpportunity">
+            <wsdl:input message="tns:UnlockOpportunitySoapIn"/>
+            <wsdl:output message="tns:UnlockOpportunitySoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="UnlockOppForUnstructAddressCorrection">
+            <wsdl:input message="tns:UnlockOppForUnstructAddressCorrectionSoapIn"/>
+            <wsdl:output message="tns:UnlockOppForUnstructAddressCorrectionSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="SendBONumbersToOP">
+            <wsdl:input message="tns:SendBONumbersToOPSoapIn"/>
+            <wsdl:output message="tns:SendBONumbersToOPSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="UnlockOpportunityToEditDIDs">
+            <wsdl:input message="tns:UnlockOpportunityToEditDIDsSoapIn"/>
+            <wsdl:output message="tns:UnlockOpportunityToEditDIDsSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="LockOpportunityAfterEditingDIDs">
+            <wsdl:input message="tns:LockOpportunityAfterEditingDIDsSoapIn"/>
+            <wsdl:output message="tns:LockOpportunityAfterEditingDIDsSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateOrderManager">
+            <wsdl:input message="tns:UpdateOrderManagerSoapIn"/>
+            <wsdl:output message="tns:UpdateOrderManagerSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateAddressContact">
+            <wsdl:input message="tns:UpdateAddressContactSoapIn"/>
+            <wsdl:output message="tns:UpdateAddressContactSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="ReProject">
+            <wsdl:input message="tns:ReProjectSoapIn"/>
+            <wsdl:output message="tns:ReProjectSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="SetAssistant">
+            <wsdl:input message="tns:SetAssistantSoapIn"/>
+            <wsdl:output message="tns:SetAssistantSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="CheckScala">
+            <wsdl:input message="tns:CheckScalaSoapIn"/>
+            <wsdl:output message="tns:CheckScalaSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="CheckALAfterNCA">
+            <wsdl:input message="tns:CheckALAfterNCASoapIn"/>
+            <wsdl:output message="tns:CheckALAfterNCASoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="AddServiceToPostSale">
+            <wsdl:input message="tns:AddServiceToPostSaleSoapIn"/>
+            <wsdl:output message="tns:AddServiceToPostSaleSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="CreateBillingOrders">
+            <wsdl:input message="tns:CreateBillingOrdersSoapIn"/>
+            <wsdl:output message="tns:CreateBillingOrdersSoapOut"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="OPSFBridgeServiceSoap" type="tns:OPSFBridgeServiceSoap">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="SetPOReady">
+            <soap:operation style="document" soapAction="http://sovintel.net/SetPOReady"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetPOArchived">
+            <soap:operation style="document" soapAction="http://sovintel.net/SetPOArchived"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetSOReady">
+            <soap:operation style="document" soapAction="http://sovintel.net/SetSOReady"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdatePO">
+            <soap:operation style="document" soapAction="http://sovintel.net/UpdatePO"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetPOAvailFor1S">
+            <soap:operation style="document" soapAction="http://sovintel.net/SetPOAvailFor1S"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UnlockOpportunity">
+            <soap:operation style="document" soapAction="http://sovintel.net/UnlockOpportunity"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UnlockOppForUnstructAddressCorrection">
+            <soap:operation style="document" soapAction="http://sovintel.net/UnlockOppForUnstructAddressCorrection"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SendBONumbersToOP">
+            <soap:operation style="document" soapAction="http://sovintel.net/SendBONumbersToOP"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UnlockOpportunityToEditDIDs">
+            <soap:operation style="document" soapAction="http://sovintel.net/UnlockOpportunityToEditDIDs"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="LockOpportunityAfterEditingDIDs">
+            <soap:operation style="document" soapAction="http://sovintel.net/LockOpportunityAfterEditingDIDs"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateOrderManager">
+            <soap:operation style="document" soapAction="http://sovintel.net/UpdateOrderManager"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateAddressContact">
+            <soap:operation style="document" soapAction="http://sovintel.net/UpdateAddressContact"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ReProject">
+            <soap:operation style="document" soapAction="http://sovintel.net/ReProject"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetAssistant">
+            <soap:operation style="document" soapAction="http://sovintel.net/SetAssistant"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CheckScala">
+            <soap:operation style="document" soapAction="http://sovintel.net/CheckScala"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CheckALAfterNCA">
+            <soap:operation style="document" soapAction="http://sovintel.net/CheckALAfterNCA"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="AddServiceToPostSale">
+            <soap:operation style="document" soapAction="http://sovintel.net/AddServiceToPostSale"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CreateBillingOrders">
+            <soap:operation style="document" soapAction="http://sovintel.net/CreateBillingOrders"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="OPSFBridgeServiceSoap12" type="tns:OPSFBridgeServiceSoap">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="SetPOReady">
+            <soap12:operation style="document" soapAction="http://sovintel.net/SetPOReady"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetPOArchived">
+            <soap12:operation style="document" soapAction="http://sovintel.net/SetPOArchived"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetSOReady">
+            <soap12:operation style="document" soapAction="http://sovintel.net/SetSOReady"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdatePO">
+            <soap12:operation style="document" soapAction="http://sovintel.net/UpdatePO"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetPOAvailFor1S">
+            <soap12:operation style="document" soapAction="http://sovintel.net/SetPOAvailFor1S"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UnlockOpportunity">
+            <soap12:operation style="document" soapAction="http://sovintel.net/UnlockOpportunity"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UnlockOppForUnstructAddressCorrection">
+            <soap12:operation style="document" soapAction="http://sovintel.net/UnlockOppForUnstructAddressCorrection"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SendBONumbersToOP">
+            <soap12:operation style="document" soapAction="http://sovintel.net/SendBONumbersToOP"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UnlockOpportunityToEditDIDs">
+            <soap12:operation style="document" soapAction="http://sovintel.net/UnlockOpportunityToEditDIDs"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="LockOpportunityAfterEditingDIDs">
+            <soap12:operation style="document" soapAction="http://sovintel.net/LockOpportunityAfterEditingDIDs"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateOrderManager">
+            <soap12:operation style="document" soapAction="http://sovintel.net/UpdateOrderManager"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="UpdateAddressContact">
+            <soap12:operation style="document" soapAction="http://sovintel.net/UpdateAddressContact"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="ReProject">
+            <soap12:operation style="document" soapAction="http://sovintel.net/ReProject"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="SetAssistant">
+            <soap12:operation style="document" soapAction="http://sovintel.net/SetAssistant"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CheckScala">
+            <soap12:operation style="document" soapAction="http://sovintel.net/CheckScala"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CheckALAfterNCA">
+            <soap12:operation style="document" soapAction="http://sovintel.net/CheckALAfterNCA"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="AddServiceToPostSale">
+            <soap12:operation style="document" soapAction="http://sovintel.net/AddServiceToPostSale"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="CreateBillingOrders">
+            <soap12:operation style="document" soapAction="http://sovintel.net/CreateBillingOrders"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="OPSFBridgeService">
+        <wsdl:port name="OPSFBridgeServiceSoap" binding="tns:OPSFBridgeServiceSoap">
+            <soap:address location="http://sv-114/OPSFBridge/OPSFBridgeService.asmx"/>
+        </wsdl:port>
+        <wsdl:port name="OPSFBridgeServiceSoap12" binding="tns:OPSFBridgeServiceSoap12">
+            <soap12:address location="http://sv-114/OPSFBridge/OPSFBridgeService.asmx"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

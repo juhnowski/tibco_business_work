@@ -1,0 +1,475 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" id="ExtendedReport">
+	<xs:include schemaLocation="CommonTypes.xsd"/>
+	<xs:include schemaLocation="Address.xsd"/>
+	<xs:element name="Response">
+		<xs:annotation>
+			<xs:documentation>Ответ на запрос</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="ResultInfo" type="ResultInfo"/>
+				<xs:element name="Data" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Report" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:all>
+										<xs:element name="SparkID" type="SparkID"/>
+										<xs:element name="CompanyType" type="CompanyType2"/>
+										<xs:element name="Status" minOccurs="0">
+											<xs:complexType>
+												<xs:attribute name="Date" type="xs:date" use="required"/>
+												<xs:attribute name="Type" type="xs:string" use="required"/>
+												<xs:attribute name="Code" type="xs:integer" use="required"/>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="EGRPOIncluded" type="xs:string" minOccurs="0"/>
+										<xs:element name="IsActing" type="xs:string" minOccurs="0"/>
+										<xs:element name="EGRULLikvidation" type="xs:string" minOccurs="0"/>
+										<xs:element name="DateFirstReg" type="xs:date" minOccurs="0"/>
+										<xs:element name="ShortNameRus" type="xs:string" minOccurs="0"/>
+										<xs:element name="ShortNameEn" type="xs:string" minOccurs="0"/>
+										<xs:element name="FullNameRus" type="xs:string" minOccurs="0"/>
+										<xs:element name="NormName" type="xs:string" minOccurs="0"/>
+										<xs:element name="GUID" type="xs:string"/>
+										<xs:element name="INN" type="xs:string" minOccurs="0"/>
+										<xs:element name="KPP" type="xs:string" minOccurs="0"/>
+										<xs:element name="OGRN" type="xs:string" minOccurs="0"/>
+										<xs:element name="OKPO" type="xs:string" minOccurs="0"/>
+										<xs:element name="BIK" type="xs:string" minOccurs="0"/>
+										<xs:element name="FCSMCode" type="xs:string" minOccurs="0"/>
+										<xs:element name="RTS" type="xs:string" minOccurs="0"/>
+										<xs:element name="OKATO" type="OKATO" minOccurs="0"/>
+										<xs:element name="OKTMO" type="OKTMO" minOccurs="0"/>
+										<xs:element name="OKOGU" type="OKOGU" minOccurs="0"/>
+										<xs:element name="OKFS" type="OKFS" minOccurs="0"/>
+										<xs:element name="OKOPF" type="OKOPF" minOccurs="0"/>
+										<xs:element name="OKVEDList" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Виды экономической деятельности ОКВЭД</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="OKVED" type="OKVED" minOccurs="0" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Вид экономической деятельности</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="OKVED2List" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Виды экономической деятельности ОКВЭД2</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="OKVED" type="OKVED" minOccurs="0" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Вид экономической деятельности</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="CharterCapital" type="MyDecimal" minOccurs="0"/>
+										<xs:element name="ChangesInNameAndLegalForm" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Изменения в наименовании и организационно-правовой форме</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Change" type="ChangeInNameAndLegalFormType" minOccurs="1" maxOccurs="unbounded"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="LeaderList" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Leader" minOccurs="0" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:complexContent>
+																<xs:extension base="Leader">
+																	<xs:sequence>
+																		<xs:element name="Disqualification" minOccurs="0" maxOccurs="unbounded">
+																			<xs:complexType>
+																				<xs:attribute name="RegisterNumber" type="xs:string">
+																					<xs:annotation>
+																						<xs:documentation>Номер записи РДЛ</xs:documentation>
+																					</xs:annotation>
+																				</xs:attribute>
+																				<xs:attribute name="Article" type="xs:string">
+																					<xs:annotation>
+																						<xs:documentation>Статья</xs:documentation>
+																					</xs:annotation>
+																				</xs:attribute>
+																				<xs:attribute name="StartDate" type="xs:date">
+																					<xs:annotation>
+																						<xs:documentation>Дата начала дисквалификации</xs:documentation>
+																					</xs:annotation>
+																				</xs:attribute>
+																				<xs:attribute name="EndDate" type="xs:date">
+																					<xs:annotation>
+																						<xs:documentation>Дата окончания дисквалификации</xs:documentation>
+																					</xs:annotation>
+																				</xs:attribute>
+																				<xs:attribute name="Period" type="xs:string">
+																					<xs:annotation>
+																						<xs:documentation>Срок дисквалификации</xs:documentation>
+																					</xs:annotation>
+																				</xs:attribute>
+																				<xs:attribute name="DisqualifiedInCompany" type="xs:string">
+																					<xs:annotation>
+																						<xs:documentation>Наименование компании, в которой была дисквалификация</xs:documentation>
+																					</xs:annotation>
+																				</xs:attribute>
+																			</xs:complexType>
+																		</xs:element>
+																	</xs:sequence>
+																	<xs:attribute name="Position" type="xs:string"/>
+																	<xs:attribute name="INN" type="xs:string"/>
+																	<xs:attribute name="ManagementCompany" type="xs:string"/>
+																	<xs:attribute name="ManagementCompanyINN" type="xs:string"/>
+																</xs:extension>
+															</xs:complexContent>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="LegalAddresses" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Актуальный юр.адрес</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Address" type="AddressActual"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="AdjustAddress" type="AddressActual" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Актуальный уточненный адрес</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="PreviousAddress" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Предыдущие юридические адреса</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Address" type="Address" maxOccurs="unbounded"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="PhoneList" type="PhoneList" minOccurs="0"/>
+										<xs:element name="Email" type="xs:string" minOccurs="0"/>
+										<xs:element name="Www" type="xs:string" minOccurs="0"/>
+										<xs:element name="WorkersRange" type="xs:string" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Численность персонала</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="IncludeInList" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Вхождение в списки</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="ListName" type="IncludeInList" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Вхождение в список</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="ConsolidatedIndicator" type="ConsolidatedIndicator" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Сводный индикатор риска</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="IndexOfDueDiligence" type="IndexOfDueDiligence">
+											<xs:annotation>
+												<xs:documentation>Индекс должной осмотрительности</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="FailureScore" type="FailureScore">
+											<xs:annotation>
+												<xs:documentation>Индекс финансового риска</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="PaymentIndex" type="PaymentIndex" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Индекс платежной дисциплины</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="CompanySize" type="CompanySize" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Размер компании</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="FederalTaxRegistration" type="FederalTaxRegistration" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Регистрация в ФНС</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="FederalTaxRegistrationCurrent" type="FederalTaxRegistration" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Регистрация в ФНС по месту нахождения</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="FederalTaxRegistrationPayment" type="FederalTaxRegistration" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Регистрация в налоговом органе</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="SubmittedStatements" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Сведения о о заявлениях по формам РХХХХ, поданных для государственной регистрации</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Statement" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:attribute name="Form">
+																<xs:annotation>
+																	<xs:documentation>Форма заявления</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+															<xs:attribute name="ReferenceNumber" type="xs:string">
+																<xs:annotation>
+																	<xs:documentation>Входящий номер</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+															<xs:attribute name="SubmissionDate" type="xs:date">
+																<xs:annotation>
+																	<xs:documentation>Дата подачи документов</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+															<xs:attribute name="AvailabilityDate" type="xs:date">
+																<xs:annotation>
+																	<xs:documentation>Дата готовности документов</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+															<xs:attribute name="GRN">
+																<xs:annotation>
+																	<xs:documentation>Код ГРН</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+															<xs:attribute name="DecisionType">
+																<xs:annotation>
+																	<xs:documentation>Вид решения</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="RegistrationCertificates" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Свидетельства о регистрации</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="RegistrationCertificate" type="RegistrationCertificate" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Свидетельство о регистрации</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="StructureInfo">
+											<xs:annotation>
+												<xs:documentation>Сведения о количестве совладельцев, филиалов, дочерних компаний и некоммерческих организаций</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:all>
+													<xs:element name="CountCoownerFCSM" type="xs:integer"/>
+													<xs:element name="CountCoownerRosstat" type="xs:integer"/>
+													<xs:element name="CountCoownerEGRUL" type="xs:integer"/>
+													<xs:element name="CountBranch" type="xs:integer"/>
+													<xs:element name="CountBranchRosstat" type="xs:integer"/>
+													<xs:element name="CountBranchEGRUL" type="xs:integer"/>
+													<xs:element name="CountAffiliatedCompanyFCSM" type="xs:integer"/>
+													<xs:element name="CountAffiliatedCompanyRosstat" type="xs:integer"/>
+													<xs:element name="CountAffiliatedCompanyEGRUL" type="xs:integer"/>
+													<xs:element name="NonprofitOrganizationRosstat" type="xs:integer"/>
+												</xs:all>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="VestnikMessage" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Сведения о сообщениях Вестника государственной регистрации</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Message" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Сообщение Вестника государственной регистрации</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:complexContent>
+																<xs:extension base="Message">
+																	<xs:attribute name="Text" type="xs:string">
+																		<xs:annotation>
+																			<xs:documentation>Текст сообщения</xs:documentation>
+																		</xs:annotation>
+																	</xs:attribute>
+																</xs:extension>
+															</xs:complexContent>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="BankruptcyMessage" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Сведения о сообщениях о банкротствах</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Message" type="BankruptcyMessage" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Сообщение о банкротстве</xs:documentation>
+														</xs:annotation>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="AccessibleFinData" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Список периодов, на которые есть финансовые данные</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Period" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:attribute name="IDPeriod" type="xs:integer" use="required"/>
+															<xs:attribute name="Name" type="xs:string" use="required"/>
+															<xs:attribute name="EndDate" type="xs:date" use="required"/>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="Finance" type="Finance" minOccurs="0"/>
+										<xs:element name="CompanyWithSameInfo" type="CompaniesNumberWithSameInfo">
+											<xs:annotation>
+												<xs:documentation>Количество компаний с аналогичными данными</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="EventsList" type="EventsListType" minOccurs="0"/>
+										<xs:element name="BoardOfDirectors" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Member" type="MemberType" maxOccurs="unbounded"/>
+												</xs:sequence>
+												<xs:attribute name="ActualDate" type="xs:date"/>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="ExecutiveBody" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Member" type="MemberType" maxOccurs="unbounded"/>
+												</xs:sequence>
+												<xs:attribute name="ActualDate" type="xs:date"/>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="PersonsWithoutWarrant" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Лица, имеющие право действовать без доверенности</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Person" maxOccurs="unbounded">
+														<xs:complexType>
+															<xs:attribute name="FIO" type="xs:string" use="required">
+																<xs:annotation>
+																	<xs:documentation>ФИО</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+															<xs:attribute name="DateBirth" type="xs:date">
+																<xs:annotation>
+																	<xs:documentation>Дата рождения</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+															<xs:attribute name="Position" type="xs:string">
+																<xs:annotation>
+																	<xs:documentation>Должность</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+															<xs:attribute name="INN" type="xs:string">
+																<xs:annotation>
+																	<xs:documentation>Код ИНН</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+												<xs:attribute name="ActualDate" type="xs:date"/>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="StateContracts" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Сводные данные по госконтрактам</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="FederalLaw94" minOccurs="0">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Year" type="StateContractsYear" maxOccurs="unbounded"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+													<xs:element name="FederalLaw223" minOccurs="0">
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Year" type="StateContractsYear" maxOccurs="unbounded"/>
+															</xs:sequence>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="ArbitrationCases" type="ArbitrationSummaryShort" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Сводные данные об арбитражных делах</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+										<xs:element name="ExecutionProceedings" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Сводные данные об исполнительных производствах</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:attribute name="Active" type="xs:integer" use="required">
+													<xs:annotation>
+														<xs:documentation>Количество непогашенных обязательств</xs:documentation>
+													</xs:annotation>
+												</xs:attribute>
+												<xs:attribute name="Executed" type="xs:integer" use="required">
+													<xs:annotation>
+														<xs:documentation>Количество погашенных обязательств</xs:documentation>
+													</xs:annotation>
+												</xs:attribute>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="Pledges" type="PledgesSummary" minOccurs="0">
+											<xs:annotation>
+												<xs:documentation>Сводные данные по договорам залога</xs:documentation>
+											</xs:annotation>
+										</xs:element>
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           id="Client">
+    <xs:include schemaLocation="CompanyInfo.xsd"/>
+    <xs:include schemaLocation="Contact.xsd"/>
+    <xs:element name="Client">
+        <xs:complexType>
+            <xs:annotation>
+                <xs:documentation>Клиент</xs:documentation>
+            </xs:annotation>
+            <xs:all>
+                <xs:element name="clientType">
+                    <xs:annotation>
+                        <xs:documentation>Тип клиента (согласно справочнику CRM x_account_type)</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="255"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="inn">
+                    <xs:annotation>
+                        <xs:documentation>ИНН клиента</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="255"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="MarketCode">
+                    <xs:annotation>
+                        <xs:documentation>Маркет-код</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="255"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="companyInfo" type="CompanyInfo" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Информация о компании клиента. Обязательно, если в запросе указан ИНН длиной
+                            10
+                            символов
+                        </xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="primaryContactInfo" type="Contact">
+                    <xs:annotation>
+                        <xs:documentation>Данные по основному контакту</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="additionalContactInfo" type="Contact" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Данные по дополнительному контакту</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="CompanyGroup" type="xs:decimal" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Группа компаний</xs:documentation>
+                    </xs:annotation>
+                </xs:element>
+                <xs:element name="Source" type="ClientInformSourceType" minOccurs="0"/>
+                <xs:element name="PersonalManager" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Личный оператор</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="500"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="serviceManager" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Логин сотрудника, являющегося сервис-менеджером клиента</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="255"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="description" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Описание клиента</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="255"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="comment" minOccurs="0">
+                    <xs:annotation>
+                        <xs:documentation>Комментарий</xs:documentation>
+                    </xs:annotation>
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="500"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+    <xs:simpleType name="ClientInformSourceType">
+        <xs:annotation>
+            <xs:documentation>Источник инф-ции. Значения согласно справочнику:
+                1. Активный поиск - по умолчанию,
+                2. Передача от клиента
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:int">
+            <xs:enumeration value="1"/>
+            <xs:enumeration value="2"/>
+        </xs:restriction>
+    </xs:simpleType>
+</xs:schema>

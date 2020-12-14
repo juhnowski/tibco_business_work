@@ -1,0 +1,52 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<inputParams>
+    <inputJSON>
+        {
+        "caseId": "caseId",
+        "updateCaseRequest": {
+        "severity": "severity",
+        "priority": "priority",
+        "status": "status",
+        "creditNoteNumber": 1,
+        "flexibleAttributes": [
+        {
+        "attrName": "attrName",
+        "attrValue": "attrValue"
+        }
+        ],
+        "externalTTInfo": {
+        "replicateToExternalTT": true,
+        "externalTTNumber": "externalTTNumber",
+        "externalTTStatus": "externalTTStatus",
+        "externalTTSysCode": "externalTTSysCode"
+        },
+        "workflowInfo": {
+        "workflowOperation": "1",
+        "workflowTarget": "workflowTarget"
+        },
+        "notificationInfo": {
+        "notificationIndicator": true,
+        "notificationEmail": "notificationEmail",
+        "notificationPhone": "notificationPhone"
+        },
+        "caseTerritory": {
+        "mrkCode": "mrkCode",
+        "siteId": "siteId",
+        "externalId": "externalId"
+        }
+        },
+        "logCaseNotesRequest": {
+        "caseNote": "caseNote",
+        "logNoteActionType": "logNoteActionType"
+        },
+        "activityInfo": {
+        "userName": "userName",
+        "sourceApplication": "sourceApplication",
+        "sourceChannel": "sourceChannel",
+        "activityReason": "activityReason",
+        "requestTime": "2018-10-05",
+        "note": "note"
+        }
+        }
+    </inputJSON>
+</inputParams>

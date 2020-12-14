@@ -1,0 +1,678 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/pe/WriteToLogActivitySchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <pd:name>Processes/Client/Create Contact (without procedure).process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="inputParams">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="adLogin" type="xsd:string"/>
+                    <xsd:element name="clientID" type="xsd:int"/>
+                    <xsd:element name="firstName" type="xsd:string"/>
+                    <xsd:element name="lastName" type="xsd:string"/>
+                    <xsd:element name="middleName" type="xsd:string"/>
+                    <xsd:element name="contactPhone" type="xsd:string"/>
+                    <xsd:element name="contactEmail" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>32</pd:startX>
+    <pd:startY>122</pd:startY>
+    <pd:returnBindings>
+        <result>
+            <recordId>
+                <xsl:value-of select="if (count($Catch/exceptiondata)>0) then 0 else $Get-ClientSFID/resultSet/outputSet/recordId"/>
+            </recordId>
+            <opResult>
+                <xsl:value-of select="if (count($Catch/exceptiondata)>0) then 2 else 0"/>
+            </opResult>
+            <opErrorText>
+                <xsl:value-of select="if (count($Catch/exceptiondata)>0) then $Catch/exceptiondata/* else &quot;&quot;"/>
+            </opErrorText>
+        </result>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="result">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="recordId" type="xsd:int"/>
+                    <xsd:element name="opResult" type="xsd:int"/>
+                    <xsd:element name="opErrorText" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:endType>
+    <pd:endX>1092</pd:endX>
+    <pd:endY>268</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1521575913877</pd:targetNamespace>
+    <pd:activity name="Check user's existing">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>284</pd:x>
+        <pd:y>127</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <statement>select u.ID as userID, u.SFEmployeeID as clientAM, emp.RN_EMPLOYEE_USER_ID as SFUser
+ from mrm.[Users] u 
+		inner join employee emp on u.SFEmployeeID = emp.employee_id
+		 where u.LoginName = ?</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>adLogin</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>userID</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>clientAM</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-2</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>binary</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>RequiredElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>SFUser</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-2</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>binary</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <adLogin>
+                    <xsl:value-of select="$Start/inputParams/adLogin"/>
+                </adLogin>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Internal Number">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>422</pd:x>
+        <pd:y>125</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <statement>select a as internalNumber from openquery(BRT,'select sf_iface.get_new_contact_person_id a from dual')</statement>
+            <Prepared_Param_DataType/>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>internalNumber</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-9</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>nvarchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>281</pd:x>
+        <pd:y>324</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <pfx:ActivityInput>
+                <message>
+                    <xsl:value-of select="&quot;Пользователь не заведен в системе&quot;"/>
+                </message>
+            </pfx:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>734</pd:x>
+        <pd:y>382</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Get ClientSFID">
+        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+        <pd:x>424</pd:x>
+        <pd:y>248</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <maxRows>1</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <schema>%%Schema%%</schema>
+            <catalog/>
+            <ProcedureName>GetNewId;1</ProcedureName>
+            <useSchema>false</useSchema>
+            <commit>false</commit>
+            <parameterTypes>
+                <parameter>
+                    <colName>@RETURN_VALUE</colName>
+                    <colType>5</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@tableName</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@recordId</colName>
+                    <colType>2</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@opResult</colName>
+                    <colType>2</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@opErrorText</colName>
+                    <colType>2</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+            </parameterTypes>
+        </config>
+        <pd:inputBindings>
+            <inputs>
+                <inputSet>
+                    <tableName>
+                        <xsl:value-of select="&quot;Contact&quot;"/>
+                    </tableName>
+                    <recordId>
+                        <xsl:value-of select="0"/>
+                    </recordId>
+                    <opResult>
+                        <xsl:value-of select="0"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </opErrorText>
+                </inputSet>
+            </inputs>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get newClientSecID">
+        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+        <pd:x>566</pd:x>
+        <pd:y>247</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <maxRows>1</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <schema>%%Schema%%</schema>
+            <catalog/>
+            <ProcedureName>GetNewId;1</ProcedureName>
+            <parameterTypes>
+                <parameter>
+                    <colName>@RETURN_VALUE</colName>
+                    <colType>5</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@tableName</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@recordId</colName>
+                    <colType>2</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@opResult</colName>
+                    <colType>2</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@opErrorText</colName>
+                    <colType>2</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+            </parameterTypes>
+        </config>
+        <pd:inputBindings>
+            <inputs>
+                <inputSet>
+                    <tableName>
+                        <xsl:value-of select="&quot;Contact_sec&quot;"/>
+                    </tableName>
+                    <recordId>
+                        <xsl:value-of select="0"/>
+                    </recordId>
+                    <opResult>
+                        <xsl:value-of select="0"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </opErrorText>
+                </inputSet>
+            </inputs>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Insert data in company table">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>560</pd:x>
+        <pd:y>127</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <statement>insert into Contact (Contact_Id,
+                     First_Name,
+                     Last_Name,
+                     Middle_Name,
+                     Phone,
+                     Email,
+                     Company_Id,
+                     Internal_Number,
+                     rn_descriptor,
+                     Rn_Create_Date,
+                     Rn_Edit_Date,
+                     Rn_Create_User,
+                     Rn_Edit_User)
+values (cast(? as binary(8)), --@newContactID,
+        Left(?, 40), --@firstName,
+        Left(?, 80), --@lastName,
+        Left(?, 40), --@middleName,
+        ?, --@contactPhone,
+        ?, --@contactEmail,
+        CAST(? as BINARY(8)), --@clientID
+        ?, --@internal_number,
+        Left(? + ' ' + ? + ' ' + isnull(?, ''),  80), --@lastName + @firstName + @middleName
+        current_timestamp,
+        current_timestamp,
+        ?, --@SFUser
+        ?) --@SFUser</statement>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>newContacttID</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>firstName</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>lastName</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>middleName</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>contactPhone</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>contactEmail</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>clientID</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>internalNumber</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>lastName</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>firstName</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>middleName</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>SFUser</parameterName>
+                    <dataType>BLOB</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>SFUser</parameterName>
+                    <dataType>BLOB</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <newContacttID>
+                    <xsl:copy-of select="$Get-ClientSFID/resultSet/outputSet/recordId/@xsi:nil"/>
+                    <xsl:value-of select="$Get-ClientSFID/resultSet/outputSet/recordId"/>
+                </newContacttID>
+                <firstName>
+                    <xsl:value-of select="$Start/inputParams/firstName"/>
+                </firstName>
+                <lastName>
+                    <xsl:value-of select="$Start/inputParams/lastName"/>
+                </lastName>
+                <middleName>
+                    <xsl:value-of select="$Start/inputParams/middleName"/>
+                </middleName>
+                <contactPhone>
+                    <xsl:value-of select="$Start/inputParams/contactPhone"/>
+                </contactPhone>
+                <contactEmail>
+                    <xsl:value-of select="$Start/inputParams/contactEmail"/>
+                </contactEmail>
+                <clientID>
+                    <xsl:value-of select="$Start/inputParams/clientID"/>
+                </clientID>
+                <internalNumber>
+                    <xsl:choose>
+                        <xsl:when test="exists($Get-Internal-Number/resultSet/Record[1]/internalNumber)">
+                            <xsl:value-of select="$Get-Internal-Number/resultSet/Record[1]/internalNumber"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </internalNumber>
+                <lastName>
+                    <xsl:value-of select="$Start/inputParams/lastName"/>
+                </lastName>
+                <firstName>
+                    <xsl:value-of select="$Start/inputParams/firstName"/>
+                </firstName>
+                <middleName>
+                    <xsl:value-of select="$Start/inputParams/middleName"/>
+                </middleName>
+                <SFUser>
+                    <xsl:choose>
+                        <xsl:when test="exists($Check-users-existing/resultSet/Record[1]/SFUser)">
+                            <xsl:value-of select="$Check-users-existing/resultSet/Record[1]/SFUser"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </SFUser>
+                <SFUser>
+                    <xsl:choose>
+                        <xsl:when test="exists($Check-users-existing/resultSet/Record[1]/SFUser)">
+                            <xsl:value-of select="$Check-users-existing/resultSet/Record[1]/SFUser"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </SFUser>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Compatibility with SF">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>687</pd:x>
+        <pd:y>130</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <statement>insert into Contact_sec (Contact_sec_Id, 
+                         Contact_Id, 
+                         rn_descriptor,
+                         Rn_Create_Date, 
+                         Rn_Edit_Date, 
+                         Rn_Create_User, 
+                         Rn_Edit_User)
+values (cast(? as binary(8)), --@newContactSecID, 
+        cast(? as binary(8)), --@newContactID, 
+        Null,
+        current_timestamp, 
+        current_timestamp,
+        ?, --@SFUser,
+        ?) --@SFUser</statement>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>newContactSecID</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>newContactID</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>SFUser</parameterName>
+                    <dataType>BLOB</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>SFUser</parameterName>
+                    <dataType>BLOB</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <newContactSecID>
+                    <xsl:copy-of select="$Get-newClientSecID/resultSet/outputSet/recordId/@xsi:nil"/>
+                    <xsl:value-of select="$Get-newClientSecID/resultSet/outputSet/recordId"/>
+                </newContactSecID>
+                <newContactID>
+                    <xsl:copy-of select="$Get-ClientSFID/resultSet/outputSet/recordId/@xsi:nil"/>
+                    <xsl:value-of select="$Get-ClientSFID/resultSet/outputSet/recordId"/>
+                </newContactID>
+                <SFUser>
+                    <xsl:choose>
+                        <xsl:when test="exists($Check-users-existing/resultSet/Record[1]/SFUser)">
+                            <xsl:value-of select="$Check-users-existing/resultSet/Record[1]/SFUser"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </SFUser>
+                <SFUser>
+                    <xsl:choose>
+                        <xsl:when test="exists($Check-users-existing/resultSet/Record[1]/SFUser)">
+                            <xsl:value-of select="$Check-users-existing/resultSet/Record[1]/SFUser"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </SFUser>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Update company">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>834</pd:x>
+        <pd:y>123</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <statement>update company 
+set Main_Contact_Id = ?, --@newContactID
+  Rn_Edit_User = ? --@SFUser 
+where company_id = CAST(? as BINARY(8)) --@clientID </statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>newContactID</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>SFUser</parameterName>
+                    <dataType>BLOB</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>clientID</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <newContactID>
+                    <xsl:copy-of select="$Get-ClientSFID/resultSet/outputSet/recordId/@xsi:nil"/>
+                    <xsl:value-of select="$Get-ClientSFID/resultSet/outputSet/recordId"/>
+                </newContactID>
+                <SFUser>
+                    <xsl:choose>
+                        <xsl:when test="exists($Check-users-existing/resultSet/Record[1]/SFUser)">
+                            <xsl:value-of select="$Check-users-existing/resultSet/Record[1]/SFUser"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </SFUser>
+                <clientID>
+                    <xsl:value-of select="$Start/inputParams/clientID"/>
+                </clientID>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Integration INRS table">
+        <pd:type>com.tibco.plugin.jdbc.JDBCUpdateActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCUpdateActivity</pd:resourceType>
+        <pd:x>982</pd:x>
+        <pd:y>171</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <commit>false</commit>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <statement>insert into
+		openquery(BRT, 'select CONTACT_ID, CUSTOMER_ID, NAME, PHONE, FAX, EMAIL, NOTES, POSITION from CRM_Contact where rownum &lt; 1')
+		select
+		Contact.Internal_Number Contact_Id,
+		Company.Internal_Number Customer_Id,
+		Left(isnull(Contact.Last_Name,'') + isnull(Contact.First_Name,'') + isnull(Contact.Middle_Name,''), 40) Name, 
+		Left(Contact.Phone, 120) Phone, Left(Contact.Fax, 60) Fax, 
+		Left(Contact.Email, 250) Email, Left(Contact.Notes, 4000) Notes, 
+		Left(Contact.Job_Title, 50) Position
+		from Contact 
+		inner join Company on Company.Company_id = Contact.Company_Id where Contact.Contact_Id = cast(? as binary(8))</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>recordId</parameterName>
+                    <dataType>VARCHAR</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+        </config>
+        <pd:inputBindings>
+            <jdbcUpdateActivityInput>
+                <recordId>
+                    <xsl:copy-of select="$Get-ClientSFID/resultSet/outputSet/recordId/@xsi:nil"/>
+                    <xsl:value-of select="$Get-ClientSFID/resultSet/outputSet/recordId"/>
+                </recordId>
+            </jdbcUpdateActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Insert data in company table</pd:from>
+        <pd:to>Compatibility with SF</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check user's existing</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check user's existing</pd:from>
+        <pd:to>Get Internal Number</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>exists($Check-users-existing/resultSet/Record/userID)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Internal Number</pd:from>
+        <pd:to>Get ClientSFID</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get newClientSecID</pd:from>
+        <pd:to>Insert data in company table</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get ClientSFID</pd:from>
+        <pd:to>Get newClientSecID</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Check user's existing</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Compatibility with SF</pd:from>
+        <pd:to>Update company</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Update company</pd:from>
+        <pd:to>Integration INRS table</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Integration INRS table</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

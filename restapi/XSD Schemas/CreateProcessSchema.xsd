@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" id="CreateProcess">
+	<xs:include schemaLocation="ActionInfo.xsd"/>
+	<xs:include schemaLocation="Attribute.xsd"/>
+	<xs:include schemaLocation="Response.xsd"/>
+	<xs:element name="input">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ActionInfo"/>
+				<xs:element name="ProductId" >
+				<xs:annotation>
+						<xs:documentation>Идентификатор продукта</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="255"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ProductName">
+					<xs:annotation>
+						<xs:documentation>Наименование продукта</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="255"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ProcessType">
+					<xs:annotation>
+						<xs:documentation>Тип создаваемого процесса</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="255"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="StepAttributes" minOccurs="0" maxOccurs="unbounded">
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="result">
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="Response" type="Response"/>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

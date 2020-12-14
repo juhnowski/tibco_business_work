@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" id="GetAbilityQuicklyConnectProductSchema">
+	<xs:include schemaLocation="ActionInfo.xsd"/>
+	<xs:include schemaLocation="ProductInstance.xsd"/>
+	<xs:include schemaLocation="Response.xsd"/>
+	
+	<xs:element name="input">
+		<xs:annotation>
+			<xs:documentation>Входные параметры</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ActionInfo"/>
+				<xs:element ref="ProductInstance"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="Response" type="Response">
+		<xs:annotation>
+			<xs:documentation>Результат выполнения</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:simpleType name="Result">
+		<xs:annotation>
+			<xs:documentation>Результат возможности быстрого подключения:
+              1 – если возможность есть,
+              0 - иначе
+    </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:integer">
+			<xs:enumeration value="0"/>
+			<xs:enumeration value="1"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:element name="Result" type="Result">
+		<xs:annotation>
+			<xs:documentation>Результат выполнения</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	
+	
+	<xs:element name="result">
+		<xs:annotation>
+			<xs:documentation>Результирующие параметры</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Response"/>
+				<xs:element ref="Result"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+</xs:schema>

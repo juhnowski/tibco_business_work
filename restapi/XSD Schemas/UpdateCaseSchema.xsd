@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           id="UpdateCaseSchema">
+    <xs:include schemaLocation="CRMTypes.xsd"/>
+
+    <xs:element name="inputJSON">
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="caseId">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="255"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="updateCaseRequest" type="UpdateCaseRequest" minOccurs="0"/>
+                <xs:element name="logCaseNotesRequest" type="LogCaseNotesRequest" minOccurs="0"/>
+                <xs:element name="activityInfo" type="ActivityInfo"/>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="resultJSON">
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="updateCaseResponse" type="xs:string"/>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+
+    <xs:complexType name="UpdateCaseRequest">
+        <xs:sequence>
+            <xs:element name="severity" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="priority" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="status" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="creditNoteNumber" type="xs:long" minOccurs="0"/>
+            <xs:element name="flexibleAttributes" type="FlexibleAttribute" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="externalTTInfo" type="ExternalTTInfo" minOccurs="0"/>
+            <xs:element name="workflowInfo" type="WorkflowInfo" minOccurs="0"/>
+            <xs:element name="notificationInfo" type="NotificationInfo" minOccurs="0"/>
+            <xs:element name="caseTerritory" type="SiteIdent" minOccurs="0"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="LogCaseNotesRequest">
+        <xs:all>
+            <xs:element name="caseNote" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="logNoteActionType" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="40"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+
+</xs:schema>

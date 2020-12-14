@@ -1,0 +1,453 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetAddressCoordinatesSchema.xsd" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Response.xsd" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/AddressParsedModel.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ActionInfo.xsd">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ActionInfo.xsd" schemaLocation="/XSD Schemas/ActionInfo.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/AddressParsedModel.xsd" schemaLocation="/XSD Schemas/AddressParsedModel.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Response.xsd" schemaLocation="/XSD Schemas/Response.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetAddressCoordinatesSchema.xsd" schemaLocation="/XSD Schemas/GetAddressCoordinatesSchema.xsd"/>
+    <pd:name>Processes/Address/_GetAddressCoordinates.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="inputParams">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="inputJSON" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>126</pd:startX>
+    <pd:startY>104</pd:startY>
+    <pd:returnBindings>
+        <responseJSON>
+            <xsl:value-of select="if (count($Catch/exceptiondata)>0) then $Render-error-JSON/ns:ActivityOutputClass/jsonString  else $Render-JSON/ns:ActivityOutputClass/jsonString"/>
+        </responseJSON>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="responseJSON" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>626</pd:endX>
+    <pd:endY>104</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <mock>
+            <xsd:element name="response">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="AddressParsedModel" type="pfx2:AddressParsedModel" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </mock>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1539102362489</pd:targetNamespace>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>249</pd:x>
+        <pd:y>104</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ValidateOutputEnable>true</ValidateOutputEnable>
+            <ActivityOutputEditor ref="pfx4:request"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/inputParams/inputJSON"/>
+                </jsonString>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="MDMS stub">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>376</pd:x>
+        <pd:y>104</pd:y>
+        <config>
+            <variableName>mock</variableName>
+        </config>
+        <pd:inputBindings>
+            <response>
+                <AddressParsedModel>
+                    <area>
+                        <xsl:value-of select="&quot;test area&quot;"/>
+                    </area>
+                    <areaId>
+                        <xsl:value-of select="123"/>
+                    </areaId>
+                    <areaType>
+                        <xsl:value-of select="&quot;test area type&quot;"/>
+                    </areaType>
+                    <areaTypeId>
+                        <xsl:value-of select="123"/>
+                    </areaTypeId>
+                    <building>
+                        <xsl:value-of select="&quot;5&quot;"/>
+                    </building>
+                    <buildingId>
+                        <xsl:value-of select="123"/>
+                    </buildingId>
+                    <city>
+                        <xsl:value-of select="&quot;test city&quot;"/>
+                    </city>
+                    <cityId>
+                        <xsl:value-of select="123"/>
+                    </cityId>
+                    <cityType>
+                        <xsl:value-of select="&quot;test city type&quot;"/>
+                    </cityType>
+                    <cityTypeId>
+                        <xsl:value-of select="123"/>
+                    </cityTypeId>
+                    <isExactBuilding>
+                        <xsl:value-of select="1"/>
+                    </isExactBuilding>
+                    <latitude>
+                        <xsl:value-of select="125.12"/>
+                    </latitude>
+                    <longtitude>
+                        <xsl:value-of select="56.11"/>
+                    </longtitude>
+                    <number1>
+                        <xsl:value-of select="&quot;test number1&quot;"/>
+                    </number1>
+                    <number1Type>
+                        <xsl:value-of select="&quot;test number1 type&quot;"/>
+                    </number1Type>
+                    <number1TypeId>
+                        <xsl:value-of select="123"/>
+                    </number1TypeId>
+                    <number2>
+                        <xsl:value-of select="&quot;test number2&quot;"/>
+                    </number2>
+                    <number2Type>
+                        <xsl:value-of select="&quot;test number2 type&quot;"/>
+                    </number2Type>
+                    <number2TypeId>
+                        <xsl:value-of select="123"/>
+                    </number2TypeId>
+                    <number3>
+                        <xsl:value-of select="&quot;test number3&quot;"/>
+                    </number3>
+                    <number3Type>
+                        <xsl:value-of select="&quot;test number3 type&quot;"/>
+                    </number3Type>
+                    <number3TypeId>
+                        <xsl:value-of select="123"/>
+                    </number3TypeId>
+                    <opResult>
+                        <xsl:value-of select="0"/>
+                    </opResult>
+                    <parentArea>
+                        <xsl:value-of select="&quot;test parent area&quot;"/>
+                    </parentArea>
+                    <parentAreaId>
+                        <xsl:value-of select="123"/>
+                    </parentAreaId>
+                    <street>
+                        <xsl:value-of select="&quot;test street&quot;"/>
+                    </street>
+                    <streetId>
+                        <xsl:value-of select="123"/>
+                    </streetId>
+                    <streetType>
+                        <xsl:value-of select="&quot;test street type&quot;"/>
+                    </streetType>
+                    <streetTypeId>
+                        <xsl:value-of select="123"/>
+                    </streetTypeId>
+                    <streetWrong>
+                        <xsl:value-of select="&quot;test street wrong&quot;"/>
+                    </streetWrong>
+                    <tail>
+                        <xsl:value-of select="&quot;test tail&quot;"/>
+                    </tail>
+                    <zip>
+                        <xsl:value-of select="&quot;test zip&quot;"/>
+                    </zip>
+                </AddressParsedModel>
+            </response>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>503</pd:x>
+        <pd:y>104</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor ref="pfx4:response"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <response>
+                    <Response>
+                        <opResult>
+                            <xsl:value-of select="0"/>
+                        </opResult>
+                        <ObjectId>
+                            <xsl:value-of select="&quot;testObjectId&quot;"/>
+                        </ObjectId>
+                        <opErrorText>
+                            <xsl:value-of select="&quot;testText&quot;"/>
+                        </opErrorText>
+                    </Response>
+                    <xsl:for-each select="$mock/response/AddressParsedModel">
+                        <AddressParsedModel>
+                            <xsl:if test="area">
+                                <area>
+                                    <xsl:value-of select="area"/>
+                                </area>
+                            </xsl:if>
+                            <xsl:if test="areaId">
+                                <areaId>
+                                    <xsl:value-of select="areaId"/>
+                                </areaId>
+                            </xsl:if>
+                            <xsl:if test="areaType">
+                                <areaType>
+                                    <xsl:value-of select="areaType"/>
+                                </areaType>
+                            </xsl:if>
+                            <xsl:if test="areaTypeId">
+                                <areaTypeId>
+                                    <xsl:value-of select="areaTypeId"/>
+                                </areaTypeId>
+                            </xsl:if>
+                            <xsl:if test="building">
+                                <building>
+                                    <xsl:value-of select="building"/>
+                                </building>
+                            </xsl:if>
+                            <xsl:if test="buildingId">
+                                <buildingId>
+                                    <xsl:value-of select="buildingId"/>
+                                </buildingId>
+                            </xsl:if>
+                            <xsl:if test="city">
+                                <city>
+                                    <xsl:value-of select="city"/>
+                                </city>
+                            </xsl:if>
+                            <xsl:if test="cityId">
+                                <cityId>
+                                    <xsl:value-of select="cityId"/>
+                                </cityId>
+                            </xsl:if>
+                            <xsl:if test="cityType">
+                                <cityType>
+                                    <xsl:value-of select="cityType"/>
+                                </cityType>
+                            </xsl:if>
+                            <xsl:if test="cityTypeId">
+                                <cityTypeId>
+                                    <xsl:value-of select="cityTypeId"/>
+                                </cityTypeId>
+                            </xsl:if>
+                            <xsl:if test="isExactBuilding">
+                                <isExactBuilding>
+                                    <xsl:value-of select="isExactBuilding"/>
+                                </isExactBuilding>
+                            </xsl:if>
+                            <xsl:if test="latitude">
+                                <latitude>
+                                    <xsl:value-of select="latitude"/>
+                                </latitude>
+                            </xsl:if>
+                            <xsl:if test="longtitude">
+                                <longtitude>
+                                    <xsl:value-of select="longtitude"/>
+                                </longtitude>
+                            </xsl:if>
+                            <xsl:if test="number1">
+                                <number1>
+                                    <xsl:value-of select="number1"/>
+                                </number1>
+                            </xsl:if>
+                            <xsl:if test="number1Type">
+                                <number1Type>
+                                    <xsl:value-of select="number1Type"/>
+                                </number1Type>
+                            </xsl:if>
+                            <xsl:if test="number1TypeId">
+                                <number1TypeId>
+                                    <xsl:value-of select="number1TypeId"/>
+                                </number1TypeId>
+                            </xsl:if>
+                            <xsl:if test="number2">
+                                <number2>
+                                    <xsl:value-of select="number2"/>
+                                </number2>
+                            </xsl:if>
+                            <xsl:if test="number2Type">
+                                <number2Type>
+                                    <xsl:value-of select="number2Type"/>
+                                </number2Type>
+                            </xsl:if>
+                            <xsl:if test="number2TypeId">
+                                <number2TypeId>
+                                    <xsl:value-of select="number2TypeId"/>
+                                </number2TypeId>
+                            </xsl:if>
+                            <xsl:if test="number3">
+                                <number3>
+                                    <xsl:value-of select="number3"/>
+                                </number3>
+                            </xsl:if>
+                            <xsl:if test="number3Type">
+                                <number3Type>
+                                    <xsl:value-of select="number3Type"/>
+                                </number3Type>
+                            </xsl:if>
+                            <xsl:if test="number3TypeId">
+                                <number3TypeId>
+                                    <xsl:value-of select="number3TypeId"/>
+                                </number3TypeId>
+                            </xsl:if>
+                            <xsl:if test="opResult">
+                                <opResult>
+                                    <xsl:value-of select="opResult"/>
+                                </opResult>
+                            </xsl:if>
+                            <xsl:if test="parentArea">
+                                <parentArea>
+                                    <xsl:value-of select="parentArea"/>
+                                </parentArea>
+                            </xsl:if>
+                            <xsl:if test="parentAreaId">
+                                <parentAreaId>
+                                    <xsl:value-of select="parentAreaId"/>
+                                </parentAreaId>
+                            </xsl:if>
+                            <xsl:if test="street">
+                                <street>
+                                    <xsl:value-of select="street"/>
+                                </street>
+                            </xsl:if>
+                            <xsl:if test="streetId">
+                                <streetId>
+                                    <xsl:value-of select="streetId"/>
+                                </streetId>
+                            </xsl:if>
+                            <xsl:if test="streetType">
+                                <streetType>
+                                    <xsl:value-of select="streetType"/>
+                                </streetType>
+                            </xsl:if>
+                            <xsl:if test="streetTypeId">
+                                <streetTypeId>
+                                    <xsl:value-of select="streetTypeId"/>
+                                </streetTypeId>
+                            </xsl:if>
+                            <xsl:if test="streetWrong">
+                                <streetWrong>
+                                    <xsl:value-of select="streetWrong"/>
+                                </streetWrong>
+                            </xsl:if>
+                            <xsl:if test="tail">
+                                <tail>
+                                    <xsl:value-of select="tail"/>
+                                </tail>
+                            </xsl:if>
+                            <xsl:if test="zip">
+                                <zip>
+                                    <xsl:value-of select="zip"/>
+                                </zip>
+                            </xsl:if>
+                        </AddressParsedModel>
+                    </xsl:for-each>
+                </response>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>506</pd:x>
+        <pd:y>214</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Render error JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>629</pd:x>
+        <pd:y>214</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="opResult" type="xsd:int"/>
+                            <xsd:element name="opErrorText" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <opResult>
+                        <xsl:value-of select="2"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="$Catch/exceptiondata/*"/>
+                    </opErrorText>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>MDMS stub</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>MDMS stub</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Render error JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render error JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

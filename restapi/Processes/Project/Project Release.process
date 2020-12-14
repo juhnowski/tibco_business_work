@@ -1,0 +1,1126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://www.tibco.com/pe/EngineTypes" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://ofmservices.org/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <wsdl:import namespace="http://ofmservices.org/"/>
+    <wsdl:import namespace="http://ofmservices.org/" location="/Connection/OFM WSDL.wsdl"/>
+    <pd:name>Processes/Project/Project Release.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="oppInfo">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="adLogin" type="xsd:string"/>
+                    <xsd:element name="inputJSON" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>47</pd:startX>
+    <pd:startY>93</pd:startY>
+    <pd:returnBindings>
+        <JSONoutput>
+            <xsl:value-of select="if (count($Catch/exceptiondata)>0) then $Render-error-JSON/ns:ActivityOutputClass/jsonString  else $Render-JSON/ns:ActivityOutputClass/jsonString"/>
+        </JSONoutput>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="JSONoutput" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>1207</pd:endX>
+    <pd:endY>78</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1524147483971</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>892</pd:x>
+        <pd:y>70</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Render error JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>1123</pd:x>
+        <pd:y>77</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="opResult" type="int"/>
+                            <xsd:element name="opErrorText" type="string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <opResult>
+                        <xsl:value-of select="2"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="$Java-Code/javaCodeActivityOutput/errorText"/>
+                    </opErrorText>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get deal">
+        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+        <pd:x>148</pd:x>
+        <pd:y>203</pd:y>
+        <config>
+            <timeout>%%Timeout%%</timeout>
+            <maxRows>1</maxRows>
+            <emptyStrAsNil>true</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <schema>%%Schema%%</schema>
+            <catalog/>
+            <ProcedureName>Opportunity_GetRecord;1</ProcedureName>
+            <parameterTypes>
+                <parameter>
+                    <colName>@RETURN_VALUE</colName>
+                    <colType>5</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@ID</colName>
+                    <colType>1</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@adLogin</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@opResult</colName>
+                    <colType>2</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@opErrorText</colName>
+                    <colType>2</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+            </parameterTypes>
+        </config>
+        <pd:inputBindings>
+            <inputs>
+                <inputSet>
+                    <ID>
+                        <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/poData/oppID"/>
+                    </ID>
+                    <adLogin>
+                        <xsl:value-of select="$Start/oppInfo/adLogin"/>
+                    </adLogin>
+                    <opResult>
+                        <xsl:value-of select="0"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="0"/>
+                    </opErrorText>
+                </inputSet>
+            </inputs>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>236</pd:x>
+        <pd:y>206</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term>
+                <xsd:element name="Resultsets">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="ResultSet1">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="Record1">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="ID" type="xsd:long"/>
+                                                    <xsd:element name="Type1" type="xsd:string"/>
+                                                    <xsd:element name="Type2" type="xsd:string"/>
+                                                    <xsd:element name="Priority" type="xsd:string"/>
+                                                    <xsd:element name="SaleProc" type="xsd:string"/>
+                                                    <xsd:element name="SaleStep" type="xsd:string"/>
+                                                    <xsd:element name="Status" type="xsd:string"/>
+                                                    <xsd:element name="ClientID" type="xsd:long"/>
+                                                    <xsd:element name="ClientName" type="xsd:string"/>
+                                                    <xsd:element name="ClientINN" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="Seller" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="ContractID" type="xsd:long" minOccurs="0"/>
+                                                    <xsd:element name="ContractNumber" type="xsd:string"/>
+                                                    <xsd:element name="ScalaID" type="xsd:long"/>
+                                                    <xsd:element name="ScalaNumber" type="xsd:string"/>
+                                                    <xsd:element name="ContractType" type="xsd:string"/>
+                                                    <xsd:element name="ContractAM" type="xsd:string"/>
+                                                    <xsd:element name="ContractSignDate" type="xsd:dateTime" minOccurs="0"/>
+                                                    <xsd:element name="ProjectNumber" type="xsd:long"/>
+                                                    <xsd:element name="ProjectComment" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="ProjectContactID" type="xsd:int" minOccurs="0"/>
+                                                    <xsd:element name="ProjectStatus" type="xsd:string"/>
+                                                    <xsd:element name="ProccessStepObjID" type="xsd:int"/>
+                                                    <xsd:element name="ProccessStep" type="xsd:int"/>
+                                                    <xsd:element name="Editable" type="xsd:int"/>
+                                                    <xsd:element name="PlannedFinishDate" type="xsd:dateTime" minOccurs="0"/>
+                                                    <xsd:element name="alwaysNull" type="xsd:int" minOccurs="0"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Get-deal/resultSet/UnresolvedResultsets"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>50</pd:x>
+        <pd:y>202</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor>
+                <xsd:element name="poData">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="oppID" type="xsd:long"/>
+                            <xsd:element name="projContactID" type="xsd:long"/>
+                            <xsd:element name="projComment" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityOutputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/oppInfo/inputJSON"/>
+                </jsonString>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>1205</pd:x>
+        <pd:y>199</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="recordId" type="xsd:long"/>
+                            <xsd:element name="opResult" type="xsd:int"/>
+                            <xsd:element name="opErrorText" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <recordId>
+                        <xsl:value-of select="$Deal-Update-2/resultSet/outputSet/recordId"/>
+                    </recordId>
+                    <opResult>
+                        <xsl:value-of select="$Deal-Update-2/resultSet/outputSet/opResult"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="$Deal-Update-2/resultSet/outputSet/opErrorText"/>
+                    </opErrorText>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.TransactionGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>318</pd:x>
+        <pd:y>1</pd:y>
+        <pd:width>544</pd:width>
+        <pd:height>388</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>transactionGroup</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:transactionType>JDBCTransaction</pd:transactionType>
+            <pd:includeCheckpoint>false</pd:includeCheckpoint>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Deal Update 1</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Deal Update 2</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Deal Validate</pd:from>
+            <pd:to>Deal Validation Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>count($Deal-Validate/resultSet/Record)&gt;0</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Deal Validate</pd:from>
+            <pd:to>Create PO XML</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Create PO XML</pd:from>
+            <pd:to>XML Creation Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>count($Create-PO-XML/resultSet/Record)&lt;1</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Create PO XML</pd:from>
+            <pd:to>SOAPRequestReply</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>SOAPRequestReply</pd:from>
+            <pd:to>Deal Update 2</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Deal Update 1</pd:from>
+            <pd:to>Deal Validate</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Deal Update 1</pd:from>
+            <pd:to>Update 1 Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$Deal-Update-1/resultSet/outputSet/opResult !=0</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Deal Update 2</pd:from>
+            <pd:to>Update 2 Error</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$Deal-Update-2/resultSet/outputSet/opResult !=0</pd:xpath>
+        </pd:transition>
+        <pd:activity name="SOAPRequestReply">
+            <pd:type>com.tibco.plugin.soap.SOAPSendReceiveActivity</pd:type>
+            <pd:resourceType>ae.activities.SOAPSendReceiveUI</pd:resourceType>
+            <pd:x>622</pd:x>
+            <pd:y>203</pd:y>
+            <config>
+                <timeout>0</timeout>
+                <soapAttachmentStyle>SwA</soapAttachmentStyle>
+                <timeoutType>Seconds</timeoutType>
+                <service>pfx:OPExtInterface</service>
+                <servicePort>OPExtInterfaceSoap</servicePort>
+                <operation>CreatePO</operation>
+                <soapAction>http://ofmservices.org/CreatePO</soapAction>
+                <endpointURL>%%OfmSoap%%</endpointURL>
+                <authScheme>NONE</authScheme>
+            </config>
+            <pd:inputBindings>
+                <inputMessage>
+                    <pfx:CreatePO>
+                        <pfx:strXml>
+                            <xsl:value-of select="$Create-PO-XML/resultSet/Record[1]/oppXML"/>
+                        </pfx:strXml>
+                        <pfx:CreateNew>
+                            <xsl:value-of select="1"/>
+                        </pfx:CreateNew>
+                    </pfx:CreatePO>
+                </inputMessage>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Deal Validation Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>396</pd:x>
+            <pd:y>306</pd:y>
+            <config>
+                <faultName/>
+            </config>
+            <pd:inputBindings>
+                <ns2:ActivityInput>
+                    <message>
+                        <xsl:value-of select="$Deal-Validate/resultSet/Record[1]/ErrText"/>
+                    </message>
+                    <messageCode>
+                        <xsl:value-of select="$Deal-Validate/resultSet/Record[1]/StrType"/>
+                    </messageCode>
+                </ns2:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Deal Validate">
+            <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+            <pd:x>394</pd:x>
+            <pd:y>201</pd:y>
+            <config>
+                <timeout>%%Timeout%%</timeout>
+                <commit>false</commit>
+                <maxRows>100</maxRows>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <statement>SELECT StrType,ErrText FROM [%%Schema%%].[Opportunity_ValidateBeforePO] (?)</statement>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>oppID</parameterName>
+                        <dataType>BIGINT</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+                <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+                <oraObjects/>
+                <oraTables/>
+                <QueryOutputCachedSchemaColumns>StrType</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>-6</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>tinyint</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <QueryOutputCachedSchemaColumns>ErrText</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            </config>
+            <pd:inputBindings>
+                <jdbcQueryActivityInput>
+                    <oppID>
+                        <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/poData/oppID"/>
+                    </oppID>
+                </jdbcQueryActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Create PO XML">
+            <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+            <pd:x>507</pd:x>
+            <pd:y>200</pd:y>
+            <config>
+                <timeout>%%Timeout%%</timeout>
+                <commit>false</commit>
+                <maxRows>100</maxRows>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+                <statement>select oppXML from [%%Schema%%].[Opportunity_GetPOXML] (?, ?)</statement>
+                <oraObjects/>
+                <oraTables/>
+                <QueryOutputCachedSchemaColumns>oppXML</QueryOutputCachedSchemaColumns>
+                <QueryOutputCachedSchemaDataTypes>-16</QueryOutputCachedSchemaDataTypes>
+                <QueryOutputCachedSchemaDataTypesName>xml</QueryOutputCachedSchemaDataTypesName>
+                <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+                <Prepared_Param_DataType>
+                    <parameter>
+                        <parameterName>oppID</parameterName>
+                        <dataType>BIGINT</dataType>
+                    </parameter>
+                    <parameter>
+                        <parameterName>adLogin</parameterName>
+                        <dataType>VARCHAR</dataType>
+                    </parameter>
+                </Prepared_Param_DataType>
+            </config>
+            <pd:inputBindings>
+                <jdbcQueryActivityInput>
+                    <oppID>
+                        <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/poData/oppID"/>
+                    </oppID>
+                    <adLogin>
+                        <xsl:value-of select="$Start/oppInfo/adLogin"/>
+                    </adLogin>
+                </jdbcQueryActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="XML Creation Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>507</pd:x>
+            <pd:y>298</pd:y>
+            <config>
+                <faultName/>
+            </config>
+            <pd:inputBindings>
+                <ns2:ActivityInput>
+                    <message>
+                        <xsl:value-of select="&quot;Create PO XML creation failed&quot;"/>
+                    </message>
+                </ns2:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Deal Update 2">
+            <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+            <pd:x>755</pd:x>
+            <pd:y>201</pd:y>
+            <config>
+                <timeout>%%Timeout%%</timeout>
+                <maxRows>100</maxRows>
+                <emptyStrAsNil>true</emptyStrAsNil>
+                <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+                <ProcedureName>Opportunity_CreateUpdateDelete;1</ProcedureName>
+                <useSchema>false</useSchema>
+                <schema>%%Schema%%</schema>
+                <parameterTypes>
+                    <parameter>
+                        <colName>@RETURN_VALUE</colName>
+                        <colType>5</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@opType</colName>
+                        <colType>1</colType>
+                        <dataType>-6</dataType>
+                        <typeName>tinyint</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@adLogin</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientID</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@oppType1</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@oppType2</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@oppPriority</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@saleProc</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@saleStep</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@projContactID</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@projComment</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@projNumber</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@procStep</colName>
+                        <colType>1</colType>
+                        <dataType>-6</dataType>
+                        <typeName>tinyint</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@procStepObjID</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@contractID</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@scalaID</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@plannedFinishDate</colName>
+                        <colType>1</colType>
+                        <dataType>93</dataType>
+                        <typeName>datetime</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@recordId</colName>
+                        <colType>2</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@opResult</colName>
+                        <colType>2</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@opErrorText</colName>
+                        <colType>2</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                </parameterTypes>
+            </config>
+            <pd:inputBindings>
+                <inputs>
+                    <inputSet>
+                        <opType>
+                            <xsl:value-of select="2"/>
+                        </opType>
+                        <adLogin>
+                            <xsl:value-of select="$Start/oppInfo/adLogin"/>
+                        </adLogin>
+                        <clientID>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ClientID"/>
+                        </clientID>
+                        <oppType1>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Type1"/>
+                        </oppType1>
+                        <oppType2>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Type2"/>
+                        </oppType2>
+                        <oppPriority>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Priority"/>
+                        </oppPriority>
+                        <saleProc>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/SaleProc"/>
+                        </saleProc>
+                        <saleStep>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/SaleStep"/>
+                        </saleStep>
+                        <projContactID>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/poData/projContactID"/>
+                        </projContactID>
+                        <projComment>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/poData/projComment"/>
+                        </projComment>
+                        <projNumber>
+                            <xsl:value-of select="$SOAPRequestReply/outputMessage/pfx:CreatePOResponse/pfx:result"/>
+                        </projNumber>
+                        <procStep>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ProccessStep"/>
+                        </procStep>
+                        <procStepObjID>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ProccessStepObjID"/>
+                        </procStepObjID>
+                        <contractID>
+                            <xsl:choose>
+                                <xsl:when test="exists(if (string-length($Parse-XML/Resultsets/ResultSet1/Record1/ContractID)&lt;1) then ($Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull) else ($Parse-XML/Resultsets/ResultSet1/Record1/ContractID))">
+                                    <xsl:value-of select="if (string-length($Parse-XML/Resultsets/ResultSet1/Record1/ContractID)&lt;1) then ($Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull) else ($Parse-XML/Resultsets/ResultSet1/Record1/ContractID)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </contractID>
+                        <scalaID>
+                            <xsl:choose>
+                                <xsl:when test="exists(if (string-length($Parse-XML/Resultsets/ResultSet1/Record1/ScalaID)&lt;1) then ($Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull) else ($Parse-XML/Resultsets/ResultSet1/Record1/ScalaID))">
+                                    <xsl:value-of select="if (string-length($Parse-XML/Resultsets/ResultSet1/Record1/ScalaID)&lt;1) then ($Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull) else ($Parse-XML/Resultsets/ResultSet1/Record1/ScalaID)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </scalaID>
+                        <plannedFinishDate>
+                            <xsl:choose>
+                                <xsl:when test="exists(if (string-length($Parse-XML/Resultsets/ResultSet1/Record1/PlannedFinishDate)&lt;1)  then ($Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull) else ($Parse-XML/Resultsets/ResultSet1/Record1/PlannedFinishDate))">
+                                    <xsl:value-of select="if (string-length($Parse-XML/Resultsets/ResultSet1/Record1/PlannedFinishDate)&lt;1)  then ($Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull) else ($Parse-XML/Resultsets/ResultSet1/Record1/PlannedFinishDate)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </plannedFinishDate>
+                        <recordId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/poData/oppID"/>
+                        </recordId>
+                        <opResult>
+                            <xsl:value-of select="0"/>
+                        </opResult>
+                        <opErrorText>
+                            <xsl:value-of select="0"/>
+                        </opErrorText>
+                    </inputSet>
+                </inputs>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Deal Update 1">
+            <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+            <pd:x>391</pd:x>
+            <pd:y>63</pd:y>
+            <config>
+                <timeout>%%Timeout%%</timeout>
+                <maxRows>100</maxRows>
+                <emptyStrAsNil>true</emptyStrAsNil>
+                <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+                <ProcedureName>Opportunity_CreateUpdateDelete;1</ProcedureName>
+                <useSchema>false</useSchema>
+                <schema>%%Schema%%</schema>
+                <parameterTypes>
+                    <parameter>
+                        <colName>@RETURN_VALUE</colName>
+                        <colType>5</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@opType</colName>
+                        <colType>1</colType>
+                        <dataType>-6</dataType>
+                        <typeName>tinyint</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@adLogin</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@clientID</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@oppType1</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@oppType2</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@oppPriority</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@saleProc</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@saleStep</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@projContactID</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@projComment</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@projNumber</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@procStep</colName>
+                        <colType>1</colType>
+                        <dataType>-6</dataType>
+                        <typeName>tinyint</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@procStepObjID</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@contractID</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@scalaID</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@plannedFinishDate</colName>
+                        <colType>1</colType>
+                        <dataType>93</dataType>
+                        <typeName>datetime</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@recordId</colName>
+                        <colType>2</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@opResult</colName>
+                        <colType>2</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@opErrorText</colName>
+                        <colType>2</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                </parameterTypes>
+            </config>
+            <pd:inputBindings>
+                <inputs>
+                    <inputSet>
+                        <opType>
+                            <xsl:value-of select="2"/>
+                        </opType>
+                        <adLogin>
+                            <xsl:value-of select="$Start/oppInfo/adLogin"/>
+                        </adLogin>
+                        <clientID>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ClientID"/>
+                        </clientID>
+                        <oppType1>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Type1"/>
+                        </oppType1>
+                        <oppType2>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Type2"/>
+                        </oppType2>
+                        <oppPriority>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Priority"/>
+                        </oppPriority>
+                        <saleProc>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/SaleProc"/>
+                        </saleProc>
+                        <saleStep>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/SaleStep"/>
+                        </saleStep>
+                        <projContactID>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/poData/projContactID"/>
+                        </projContactID>
+                        <projComment>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/poData/projComment"/>
+                        </projComment>
+                        <projNumber>
+                            <xsl:value-of select="if (string-length($Parse-XML/Resultsets/ResultSet1/Record1/ProjectNumber)&lt;1) then 0 else $Parse-XML/Resultsets/ResultSet1/Record1/ProjectNumber"/>
+                        </projNumber>
+                        <procStep>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ProccessStep"/>
+                        </procStep>
+                        <procStepObjID>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ProccessStepObjID"/>
+                        </procStepObjID>
+                        <contractID>
+                            <xsl:choose>
+                                <xsl:when test="exists(if (string-length($Parse-XML/Resultsets/ResultSet1/Record1/ContractID)&lt;1) then ($Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull) else ($Parse-XML/Resultsets/ResultSet1/Record1/ContractID))">
+                                    <xsl:value-of select="if (string-length($Parse-XML/Resultsets/ResultSet1/Record1/ContractID)&lt;1) then ($Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull) else ($Parse-XML/Resultsets/ResultSet1/Record1/ContractID)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </contractID>
+                        <scalaID>
+                            <xsl:choose>
+                                <xsl:when test="exists(if (string-length($Parse-XML/Resultsets/ResultSet1/Record1/ScalaID)&lt;1) then ($Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull) else ($Parse-XML/Resultsets/ResultSet1/Record1/ScalaID))">
+                                    <xsl:value-of select="if (string-length($Parse-XML/Resultsets/ResultSet1/Record1/ScalaID)&lt;1) then ($Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull) else ($Parse-XML/Resultsets/ResultSet1/Record1/ScalaID)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </scalaID>
+                        <plannedFinishDate>
+                            <xsl:choose>
+                                <xsl:when test="exists(if (string-length($Parse-XML/Resultsets/ResultSet1/Record1/PlannedFinishDate)&lt;1)  then ($Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull) else ($Parse-XML/Resultsets/ResultSet1/Record1/PlannedFinishDate))">
+                                    <xsl:value-of select="if (string-length($Parse-XML/Resultsets/ResultSet1/Record1/PlannedFinishDate)&lt;1)  then ($Parse-XML/Resultsets/ResultSet1/Record1/alwaysNull) else ($Parse-XML/Resultsets/ResultSet1/Record1/PlannedFinishDate)"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </plannedFinishDate>
+                        <recordId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/poData/oppID"/>
+                        </recordId>
+                        <opResult>
+                            <xsl:value-of select="0"/>
+                        </opResult>
+                        <opErrorText>
+                            <xsl:value-of select="0"/>
+                        </opErrorText>
+                    </inputSet>
+                </inputs>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Update 1 Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>628</pd:x>
+            <pd:y>64</pd:y>
+            <config>
+                <faultName/>
+            </config>
+            <pd:inputBindings>
+                <ns2:ActivityInput>
+                    <xsl:if test="not(($Deal-Update-1/resultSet/outputSet/opErrorText/@xsi:nil=(&quot;true&quot;)) or ($Deal-Update-1/resultSet/outputSet/opErrorText/@xsi:nil=(&quot;1&quot;)))">
+                        <message>
+                            <xsl:value-of select="$Deal-Update-1/resultSet/outputSet/opErrorText"/>
+                        </message>
+                    </xsl:if>
+                    <xsl:if test="not(($Deal-Update-1/resultSet/outputSet/opResult/@xsi:nil=(&quot;true&quot;)) or ($Deal-Update-1/resultSet/outputSet/opResult/@xsi:nil=(&quot;1&quot;)))">
+                        <messageCode>
+                            <xsl:value-of select="$Deal-Update-1/resultSet/outputSet/opResult"/>
+                        </messageCode>
+                    </xsl:if>
+                </ns2:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Update 2 Error">
+            <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+            <pd:resourceType>ae.activities.throw</pd:resourceType>
+            <pd:x>758</pd:x>
+            <pd:y>296</pd:y>
+            <config>
+                <faultName/>
+            </config>
+            <pd:inputBindings>
+                <ns1:ActivityInput xmlns:ns1="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+                    <xsl:if test="not(($Deal-Update-2/resultSet/outputSet/opErrorText/@xsi:nil=(&quot;true&quot;)) or ($Deal-Update-2/resultSet/outputSet/opErrorText/@xsi:nil=(&quot;1&quot;)))">
+                        <message>
+                            <xsl:value-of select="$Deal-Update-2/resultSet/outputSet/opErrorText"/>
+                        </message>
+                    </xsl:if>
+                    <xsl:if test="not(($Deal-Update-2/resultSet/outputSet/opResult/@xsi:nil=(&quot;true&quot;)) or ($Deal-Update-2/resultSet/outputSet/opResult/@xsi:nil=(&quot;1&quot;)))">
+                        <messageCode>
+                            <xsl:value-of select="$Deal-Update-2/resultSet/outputSet/opResult"/>
+                        </messageCode>
+                    </xsl:if>
+                </ns1:ActivityInput>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Java Code">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>1009</pd:x>
+        <pd:y>75</pd:y>
+        <config>
+            <fileName>ProjectReleaseJavaCode</fileName>
+            <packageName>Processes.Project.ProjectRelease</packageName>
+            <fullsource>package Processes.Project.ProjectRelease;
+import java.util.*;
+import java.io.*;
+public class ProjectReleaseJavaCode{
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String stackTrace = "";
+	protected String errorText = "";
+	public String getstackTrace() {
+		return stackTrace;
+	}
+	public void setstackTrace(String val) {
+		stackTrace = val;
+	}
+	public String geterrorText() {
+		return errorText;
+	}
+	public void seterrorText(String val) {
+		errorText = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public ProjectReleaseJavaCode() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String stackTrace
+	Out : String errorText
+* Available Variables: DO NOT MODIFY *****/
+		 if (stackTrace.indexOf("]") &gt; 0 )
+                      errorText =  stackTrace.substring(stackTrace.indexOf("]")+1, stackTrace.indexOf("at "));  
+                 else  errorText = stackTrace ;
+	}
+}
+</fullsource>
+            <inputData>
+                <row>
+                    <fieldName>stackTrace</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </inputData>
+            <outputData>
+                <row>
+                    <fieldName>errorText</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>required</fieldRequired>
+                </row>
+            </outputData>
+            <byteCode>
+                <class>
+                    <name>ProjectReleaseJavaCode</name>
+                    <byteCode>yv66vgAAADMALwkACQAeCQAJAB8KAAoAIAgAIQgAIgoAIwAkCAAlCgAjACYHACcHACgBAApzdGFja1RyYWNlAQASTGphdmEvbGFuZy9TdHJpbmc7AQAJZXJyb3JUZXh0AQANZ2V0c3RhY2tUcmFjZQEAFCgpTGphdmEvbGFuZy9TdHJpbmc7AQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEADXNldHN0YWNrVHJhY2UBABUoTGphdmEvbGFuZy9TdHJpbmc7KVYBAAxnZXRlcnJvclRleHQBAAxzZXRlcnJvclRleHQBAAY8aW5pdD4BAAMoKVYBAAZpbnZva2UBAA1TdGFja01hcFRhYmxlAQAKRXhjZXB0aW9ucwcAKQEAClNvdXJjZUZpbGUBABtQcm9qZWN0UmVsZWFzZUphdmFDb2RlLmphdmEMAAsADAwADQAMDAAWABcBAAABAAFdBwAqDAArACwBAANhdCAMAC0ALgEAN1Byb2Nlc3Nlcy9Qcm9qZWN0L1Byb2plY3RSZWxlYXNlL1Byb2plY3RSZWxlYXNlSmF2YUNvZGUBABBqYXZhL2xhbmcvT2JqZWN0AQATamF2YS9sYW5nL0V4Y2VwdGlvbgEAEGphdmEvbGFuZy9TdHJpbmcBAAdpbmRleE9mAQAVKExqYXZhL2xhbmcvU3RyaW5nOylJAQAJc3Vic3RyaW5nAQAWKElJKUxqYXZhL2xhbmcvU3RyaW5nOwAhAAkACgAAAAIABAALAAwAAAAEAA0ADAAAAAYAAQAOAA8AAQAQAAAAHQABAAEAAAAFKrQAAbAAAAABABEAAAAGAAEAAAAJAAEAEgATAAEAEAAAACIAAgACAAAABiortQABsQAAAAEAEQAAAAoAAgAAAAwABQANAAEAFAAPAAEAEAAAAB0AAQABAAAABSq0AAKwAAAAAQARAAAABgABAAAADwABABUAEwABABAAAAAiAAIAAgAAAAYqK7UAArEAAAABABEAAAAKAAIAAAASAAUAEwABABYAFwABABAAAAA1AAIAAQAAABEqtwADKhIEtQABKhIEtQACsQAAAAEAEQAAABIABAAAABUABAAGAAoABwAQABYAAQAYABcAAgAQAAAAZQAFAAEAAAA3KrQAARIFtgAGngAlKiq0AAEqtAABEgW2AAYEYCq0AAESB7YABrYACLUAAqcACyoqtAABtQACsQAAAAIAEQAAABIABAAAABwADAAdAC4AHgA2AB8AGQAAAAQAAi4HABoAAAAEAAEAGwABABwAAAACAB0=</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <stackTrace>
+                    <xsl:value-of select="$Catch/exceptiondata/*"/>
+                </stackTrace>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Java Code</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render error JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get deal</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>Get deal</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Java Code</pd:from>
+        <pd:to>Render error JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

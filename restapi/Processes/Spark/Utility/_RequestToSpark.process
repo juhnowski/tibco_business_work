@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/pe/DeployedVarsType" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns1="http://xmlns.tibco.com/encodings/mime" xmlns:ns="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions">
+    <pd:name>Processes/Spark/Utility/_RequestToSpark.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="inputParams">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="inn" type="xsd:string"/>
+                    <xsd:element name="method" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>77</pd:startX>
+    <pd:startY>223</pd:startY>
+    <pd:returnBindings>
+        <result>
+            <xsl:value-of select="if (count($Catch/exceptiondata)>0) then $Catch/exceptiondata/* else $BizRequest/RequestActivityOutput/asciiContent"/>
+        </result>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="result" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>695</pd:endX>
+    <pd:endY>225</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <connect>
+            <xsd:element name="connect_params">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="login" type="xsd:string"/>
+                        <xsd:element name="pass" type="xsd:string"/>
+                        <xsd:element name="host" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </connect>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1526384096151</pd:targetNamespace>
+    <pd:activity name="Authorization">
+        <pd:type>com.tibco.plugin.http.client.HttpRequestActivity</pd:type>
+        <pd:resourceType>httppalette.httpRequest</pd:resourceType>
+        <pd:x>410</pd:x>
+        <pd:y>223</pd:y>
+        <config>
+            <inputOutputVersion>5.3.0</inputOutputVersion>
+            <newMimeSupport>true</newMimeSupport>
+            <authScheme>NONE</authScheme>
+            <serverhost/>
+            <customField/>
+            <serverport>80</serverport>
+            <policies>
+                <incomingAttachmentPolicy>
+                    <writeToFile>false</writeToFile>
+                    <writeToFileDir>D:\tibco</writeToFileDir>
+                </incomingAttachmentPolicy>
+            </policies>
+            <InputHeaders>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Accept" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Charset" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="SOAPAction" type="xsd:string"/>
+                            <xsd:element name="Accept-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </InputHeaders>
+            <OutputHeaders>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Allow" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Length" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Date" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </OutputHeaders>
+        </config>
+        <pd:inputBindings>
+            <RequestActivityInput>
+                <Host>
+                    <xsl:value-of select="$connect/connect_params/host"/>
+                </Host>
+                <Port>
+                    <xsl:value-of select="80"/>
+                </Port>
+                <Method>
+                    <xsl:value-of select="&quot;POST&quot;"/>
+                </Method>
+                <RequestURI>
+                    <xsl:value-of select="&quot;/iFaxWebService/iFaxWebService.asmx&quot;"/>
+                </RequestURI>
+                <PostData>
+                    <xsl:value-of select="concat(&quot;&lt;soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ifax='http://interfax.ru/ifax'>&lt;soapenv:Header/>&lt;soapenv:Body>&lt;ifax:Authmethod>&lt;ifax:Login>&quot;,&#xA;$connect/connect_params/login,&#xA;&quot;&lt;/ifax:Login>&lt;ifax:Password>&quot;,&#xA;$connect/connect_params/pass,&#xA;&quot;&lt;/ifax:Password>&lt;/ifax:Authmethod>&lt;/soapenv:Body>&lt;/soapenv:Envelope>&quot;)"/>
+                </PostData>
+                <Headers>
+                    <SOAPAction>
+                        <xsl:value-of select="&quot;http://interfax.ru/ifax/Authmethod&quot;"/>
+                    </SOAPAction>
+                    <Accept-Encoding>
+                        <xsl:value-of select="&quot;identity&quot;"/>
+                    </Accept-Encoding>
+                    <Content-Type>
+                        <xsl:value-of select="&quot;text/xml; charset=utf-8&quot;"/>
+                    </Content-Type>
+                </Headers>
+            </RequestActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>692</pd:x>
+        <pd:y>352</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="INN Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>78</pd:x>
+        <pd:y>345</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <message>
+                    <xsl:value-of select="&quot;ИНН должен иметь от 9 до 12 цифр&quot;"/>
+                </message>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Auth Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>412</pd:x>
+        <pd:y>347</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <message>
+                    <xsl:value-of select="&quot;Ошибка аутентификации в Spark&quot;"/>
+                </message>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="BizRequest">
+        <pd:type>com.tibco.plugin.http.client.HttpRequestActivity</pd:type>
+        <pd:resourceType>httppalette.httpRequest</pd:resourceType>
+        <pd:description>формирование запроса  в спарк для получения нужной информации</pd:description>
+        <pd:x>574</pd:x>
+        <pd:y>223</pd:y>
+        <config>
+            <inputOutputVersion>5.3.0</inputOutputVersion>
+            <newMimeSupport>true</newMimeSupport>
+            <authScheme>NONE</authScheme>
+            <serverhost>http://sparkgatetest.interfax.ru</serverhost>
+            <customField/>
+            <serverport>80</serverport>
+            <policies>
+                <incomingAttachmentPolicy>
+                    <writeToFile>false</writeToFile>
+                    <writeToFileDir>D:\tibco</writeToFileDir>
+                </incomingAttachmentPolicy>
+            </policies>
+            <InputHeaders>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Accept" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Charset" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="SOAPAction" type="xsd:string"/>
+                            <xsd:element name="Accept-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </InputHeaders>
+            <OutputHeaders>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Allow" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Length" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Date" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </OutputHeaders>
+        </config>
+        <pd:inputBindings>
+            <RequestActivityInput>
+                <Host>
+                    <xsl:value-of select="&quot;sparkgatetest.interfax.ru&quot;"/>
+                </Host>
+                <Port>
+                    <xsl:value-of select="80"/>
+                </Port>
+                <Method>
+                    <xsl:value-of select="&quot;POST&quot;"/>
+                </Method>
+                <RequestURI>
+                    <xsl:value-of select="&quot;/iFaxWebService/iFaxWebService.asmx&quot;"/>
+                </RequestURI>
+                <PostData>
+                    <xsl:value-of select="concat(&quot;&lt;soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:ifax='http://interfax.ru/ifax'>&lt;soapenv:Header/>&lt;soapenv:Body>&lt;ifax:&quot;,&#xA;$Start/inputParams/method,&#xA;&quot;>&lt;ifax:inn>&quot;,&#xA;$Start/inputParams/inn,&#xA; &quot;&lt;/ifax:inn>&lt;/ifax:&quot;,&#xA;$Start/inputParams/method,&#xA;&quot;>&lt;/soapenv:Body>&lt;/soapenv:Envelope>&quot;)"/>
+                </PostData>
+                <Headers>
+                    <SOAPAction>
+                        <xsl:value-of select="concat(&quot;http://interfax.ru/ifax/&quot;, $Start/inputParams/method)"/>
+                    </SOAPAction>
+                    <Accept-Encoding>
+                        <xsl:value-of select="&quot;identity&quot;"/>
+                    </Accept-Encoding>
+                    <Content-Type>
+                        <xsl:value-of select="&quot;text/xml; charset=utf-8&quot;"/>
+                    </Content-Type>
+                    <xsl:if test="$Authorization/RequestActivityOutput/Headers/Set-Cookie">
+                        <Cookie>
+                            <xsl:value-of select="$Authorization/RequestActivityOutput/Headers/Set-Cookie"/>
+                        </Cookie>
+                    </xsl:if>
+                </Headers>
+            </RequestActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="connect_params">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>233</pd:x>
+        <pd:y>223</pd:y>
+        <config>
+            <variableName>connect</variableName>
+        </config>
+        <pd:inputBindings>
+            <connect_params>
+                <login>
+                    <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/SparkLogin"/>
+                </login>
+                <pass>
+                    <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/SparkPass"/>
+                </pass>
+                <host>
+                    <xsl:value-of select="$_globalVariables/ns2:GlobalVariables/SparkHost"/>
+                </host>
+            </connect_params>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>INN Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>string-length($Start/inputParams/inn)&lt;9 or string-length($Start/inputParams/inn)&gt;12</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Authorization</pd:from>
+        <pd:to>Auth Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>not(contains($Authorization/RequestActivityOutput/asciiContent, "&gt;True&lt;"))</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Authorization</pd:from>
+        <pd:to>BizRequest</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>BizRequest</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>connect_params</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>connect_params</pd:from>
+        <pd:to>Authorization</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

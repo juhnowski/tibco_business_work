@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           id="RegistrationContractSchema">
+    <xs:include schemaLocation="ActionInfo.xsd"/>
+    <xs:include schemaLocation="Contract.xsd"/>
+    <xs:include schemaLocation="Response.xsd"/>
+
+    <xs:element name="inputJSON">
+        <xs:complexType>
+            <xs:all>
+                <xs:element ref="ActionInfo"/>
+                <xs:element ref="Contract"/>
+                <xs:element name="BillingType" type="BillingType"/>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="resultJSON">
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="Response" type="Response"/>
+                <xs:element name="BAN" type="xs:string" minOccurs="0"/>
+                <xs:element name="Scala" type="xs:string" minOccurs="0"/>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

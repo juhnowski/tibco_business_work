@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/CreateCaseRequest.xsd" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Contract.xsd" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Client.xsd" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/RegistrationClientResponse.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/RegistrationClientRequest.xsd" xmlns:pfx7="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/UpdateCaseSchema.xsd" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/UpdateCaseRequest.xsd">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/RegistrationClientRequest.xsd" schemaLocation="/XSD Schemas/RegistrationClientRequest.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/RegistrationClientResponse.xsd" schemaLocation="/XSD Schemas/RegistrationClientResponse.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Client.xsd" schemaLocation="/XSD Schemas/Client.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Contract.xsd" schemaLocation="/XSD Schemas/Contract.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/CreateCaseRequest.xsd" schemaLocation="/XSD Schemas/CreateCaseRequest.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/UpdateCaseRequest.xsd" schemaLocation="/XSD Schemas/UpdateCaseRequest.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/UpdateCaseSchema.xsd" schemaLocation="/XSD Schemas/UpdateCaseSchema.xsd"/>
+    <pd:name>Processes/Case/_UpdateCaseGFMock.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="inputParams">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="inputJSON" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>145</pd:startX>
+    <pd:startY>50</pd:startY>
+    <pd:returnBindings>
+        <JSONoutput>
+            <xsl:value-of select="$Render-JSON/ns:ActivityOutputClass/jsonString"/>
+        </JSONoutput>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="JSONoutput" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>884</pd:endX>
+    <pd:endY>50</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1538981951298</pd:targetNamespace>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>394</pd:x>
+        <pd:y>55</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ValidateOutputEnable>true</ValidateOutputEnable>
+            <ActivityOutputEditor ref="pfx7:inputJSON"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/inputParams/inputJSON"/>
+                </jsonString>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>655</pd:x>
+        <pd:y>53</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor ref="pfx7:inputJSON"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <xsl:copy-of select="$Parse-JSON/ns:ActivityOutputClass/inputJSON"/>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,547 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/CompanyInfoResponse.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ShortReport.xsd" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/EntrepreneurShortReport.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ExtendedReport.xsd">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/EntrepreneurShortReport.xsd" schemaLocation="/XSD Schemas/EntrepreneurShortReport.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ShortReport.xsd" schemaLocation="/XSD Schemas/ShortReport.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ExtendedReport.xsd" schemaLocation="/XSD Schemas/ExtendedReport.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/CompanyInfoResponse.xsd" schemaLocation="/XSD Schemas/CompanyInfoResponse.xsd"/>
+    <pd:name>Processes/Spark/_GetCompanyInfoFromSPARK.process</pd:name>
+    <pd:description>Получение информации об организации по ИНН из СПАРК</pd:description>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="inn" type="xsd:string"/>
+    </pd:startType>
+    <pd:startX>39</pd:startX>
+    <pd:startY>140</pd:startY>
+    <pd:returnBindings>
+        <JSONoutput>
+            <xsl:value-of select="if($Render-Company-JSON/ns1:ActivityOutputClass/jsonString !='') then $Render-Company-JSON/ns1:ActivityOutputClass/jsonString&#xA;else $Render-Entrepreneur-JSON/ns1:ActivityOutputClass/jsonString"/>
+        </JSONoutput>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="JSONoutput" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>976</pd:endX>
+    <pd:endY>142</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1538634658777</pd:targetNamespace>
+    <pd:activity name="INN Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>37</pd:x>
+        <pd:y>344</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInput>
+                <message>
+                    <xsl:value-of select="&quot;Некорректный ИНН&quot;"/>
+                </message>
+            </ns:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Company Info">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:description>Получение информации о Юридическом лице</pd:description>
+        <pd:x>185</pd:x>
+        <pd:y>46</pd:y>
+        <config>
+            <processName>/Processes/Spark/_GetCompanyExtendedReport.process</processName>
+        </config>
+        <pd:inputBindings>
+            <inn>
+                <xsl:value-of select="$Start/inn"/>
+            </inn>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Entrepreneur Info">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:description>Получение информации об ИП</pd:description>
+        <pd:x>179</pd:x>
+        <pd:y>338</pd:y>
+        <config>
+            <processName>/Processes/Spark/_GetEntrepreneurShortReport.process</processName>
+        </config>
+        <pd:inputBindings>
+            <inn>
+                <xsl:value-of select="$Start/inn"/>
+            </inn>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render Company JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:description>Формируем результирующий JSON для Организации</pd:description>
+        <pd:x>777</pd:x>
+        <pd:y>58</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor ref="pfx4:resultJSON"/>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInputClass>
+                <resultJSON>
+                    <Response>
+                        <opResult>
+                            <xsl:value-of select="1"/>
+                        </opResult>
+                        <xsl:if test="if($Parse-XML-2/Response/ResultInfo/ErrorInfo/Message !='')&#xA;then $Parse-XML-2/Response/ResultInfo/ErrorInfo/Message&#xA;else $Parse-XML-2/Response/ResultInfo/@ResultType">
+                            <opErrorText>
+                                <xsl:value-of select="if($Parse-XML-2/Response/ResultInfo/ErrorInfo/Message !='')&#xA;then $Parse-XML-2/Response/ResultInfo/ErrorInfo/Message&#xA;else $Parse-XML-2/Response/ResultInfo/@ResultType"/>
+                            </opErrorText>
+                        </xsl:if>
+                    </Response>
+                    <IsExist>
+                        <xsl:value-of select="&quot;F&quot;"/>
+                    </IsExist>
+                    <CompanyInfo>
+                        <FullNameRus>
+                            <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/FullNameRus"/>
+                        </FullNameRus>
+                        <OKOPF>
+                            <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/OKOPF/@Name"/>
+                        </OKOPF>
+                        <ShortNameRus>
+                            <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/ShortNameRus"/>
+                        </ShortNameRus>
+                        <Address>
+                            <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/LegalAddresses/Address/Address"/>
+                        </Address>
+                        <Www>
+                            <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/Www"/>
+                        </Www>
+                        <DateFirstReg>
+                            <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/DateFirstReg"/>
+                        </DateFirstReg>
+                        <INN>
+                            <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/INN"/>
+                        </INN>
+                        <OKVED>
+                            <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/OKVED2List/OKVED[@IsMain='true']/@Code"/>
+                        </OKVED>
+                        <OGRN>
+                            <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/OGRN"/>
+                        </OGRN>
+                        <OKPO>
+                            <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/OKPO"/>
+                        </OKPO>
+                        <KPP>
+                            <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/KPP"/>
+                        </KPP>
+                        <StatusDate>
+                            <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/Status/@Date"/>
+                        </StatusDate>
+                        <StatusCode>
+                            <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/Status/@Code"/>
+                        </StatusCode>
+                        <IsActing>
+                            <xsl:value-of select="if($Parse-XML-2/Response/Data/Report[1]/IsActing = &quot;true&quot;)&#xA;then &quot;1&quot;&#xA;else &quot;0&quot;"/>
+                        </IsActing>
+                        <SPARKLiqDate>
+                            <xsl:value-of select="if($_GetSparkStatus/result=&quot;ликвидирован&quot;)&#xA;then $Parse-XML-2/Response/Data/Report[1]/Status/@Date&#xA;else &quot;&quot;"/>
+                        </SPARKLiqDate>
+                        <SPARKCauseLiq>
+                            <xsl:value-of select="if($_GetSparkStatus/result=&quot;ликвидирован&quot;)&#xA;then $Parse-XML-2/Response/Data/Report[1]/Status/@Type&#xA;else &quot;&quot;"/>
+                        </SPARKCauseLiq>
+                        <HasStateContract>
+                            <xsl:value-of select="if($Parse-XML-2/Response/Data/Report[1]/StateContracts/* !='')&#xA;then &quot;1&quot;&#xA;else &quot;0&quot;"/>
+                        </HasStateContract>
+                        <xsl:if test="$Parse-XML-2/Response/Data/Report[1]/PersonsWithoutWarrant/@ActualDate">
+                            <PersonsWWActualDate>
+                                <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/PersonsWithoutWarrant/@ActualDate"/>
+                            </PersonsWWActualDate>
+                        </xsl:if>
+                        <xsl:for-each select="$Parse-XML-2/Response/Data/Report/PersonsWithoutWarrant/Person">
+                            <PersonsWithoutWarrant>
+                                <FIO>
+                                    <xsl:value-of select="@FIO"/>
+                                </FIO>
+                                <xsl:if test="@DateBirth">
+                                    <DateBirth>
+                                        <xsl:value-of select="@DateBirth"/>
+                                    </DateBirth>
+                                </xsl:if>
+                                <xsl:if test="@Position">
+                                    <Position>
+                                        <xsl:value-of select="@Position"/>
+                                    </Position>
+                                </xsl:if>
+                                <xsl:if test="@INN">
+                                    <INN>
+                                        <xsl:value-of select="@INN"/>
+                                    </INN>
+                                </xsl:if>
+                            </PersonsWithoutWarrant>
+                        </xsl:for-each>
+                    </CompanyInfo>
+                    <ScoringInfo>
+                        <ShortNameRus>
+                            <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/ShortNameRus"/>
+                        </ShortNameRus>
+                        <INN>
+                            <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/INN"/>
+                        </INN>
+                        <OGRN>
+                            <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/OGRN"/>
+                        </OGRN>
+                        <OKPO>
+                            <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/OKPO"/>
+                        </OKPO>
+                        <OKATO>
+                            <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/OKATO/@Code"/>
+                        </OKATO>
+                        <StatusDate>
+                            <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/Status/@Date"/>
+                        </StatusDate>
+                        <StatusCode>
+                            <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/Status/@Code"/>
+                        </StatusCode>
+                        <IsActing>
+                            <xsl:value-of select="if($Parse-XML-2/Response/Data/Report[1]/IsActing = &quot;true&quot;)&#xA;then &quot;1&quot;&#xA;else &quot;0&quot;"/>
+                        </IsActing>
+                        <IndicatorValue>
+                            <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/ConsolidatedIndicator/@Value"/>
+                        </IndicatorValue>
+                        <IndicatorDescription>
+                            <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/ConsolidatedIndicator/@Description"/>
+                        </IndicatorDescription>
+                    </ScoringInfo>
+                </resultJSON>
+            </ns1:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render Entrepreneur JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:description>Формируем результирующий JSON для ИП</pd:description>
+        <pd:x>819</pd:x>
+        <pd:y>331</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor ref="pfx4:resultJSON"/>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInputClass>
+                <resultJSON>
+                    <Response>
+                        <opResult>
+                            <xsl:value-of select="0"/>
+                        </opResult>
+                        <xsl:if test="if($Parse-XML-2-IE/Response/ResultInfo/ErrorInfo/Message !='')&#xA;then $Parse-XML-2-IE/Response/ResultInfo/ErrorInfo/Message&#xA;else $Parse-XML-2-IE/Response/ResultInfo/@ResultType">
+                            <opErrorText>
+                                <xsl:value-of select="if($Parse-XML-2-IE/Response/ResultInfo/ErrorInfo/Message !='')&#xA;then $Parse-XML-2-IE/Response/ResultInfo/ErrorInfo/Message&#xA;else $Parse-XML-2-IE/Response/ResultInfo/@ResultType"/>
+                            </opErrorText>
+                        </xsl:if>
+                    </Response>
+                    <IsExist>
+                        <xsl:value-of select="&quot;F&quot;"/>
+                    </IsExist>
+                    <CompanyInfo>
+                        <FullNameRus>
+                            <xsl:value-of select="$Parse-XML-2-IE/Response/Data/Report[1]/FullNameRus"/>
+                        </FullNameRus>
+                        <OKOPF>
+                            <xsl:value-of select="$Parse-XML-2-IE/Response/Data/Report[1]/OKOPF/@Code"/>
+                        </OKOPF>
+                        <ShortNameRus>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </ShortNameRus>
+                        <Address>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </Address>
+                        <Www>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </Www>
+                        <DateFirstReg>
+                            <xsl:value-of select="$Parse-XML-2-IE/Response/Data/Report[1]/DateReg"/>
+                        </DateFirstReg>
+                        <INN>
+                            <xsl:value-of select="$Parse-XML-2-IE/Response/Data/Report[1]/INN"/>
+                        </INN>
+                        <OKVED>
+                            <xsl:value-of select="$Parse-XML-2-IE/Response/Data/Report[1]/OKVED2List/OKVED[@IsMain='true']/@Code"/>
+                        </OKVED>
+                        <OGRN>
+                            <xsl:value-of select="$Parse-XML-2-IE/Response/Data/Report[1]/OGRNIP"/>
+                        </OGRN>
+                        <OKPO>
+                            <xsl:value-of select="$Parse-XML-2-IE/Response/Data/Report[1]/OKPO"/>
+                        </OKPO>
+                        <KPP>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </KPP>
+                        <StatusDate>
+                            <xsl:value-of select="$Parse-XML-2-IE/Response/Data/Report[1]/Status/@Date"/>
+                        </StatusDate>
+                        <StatusCode>
+                            <xsl:value-of select="$Parse-XML-2-IE/Response/Data/Report[1]/Status/@Code"/>
+                        </StatusCode>
+                        <IsActing>
+                            <xsl:value-of select="$Parse-XML-2-IE/Response/Data/Report[1]/Status/@IsActing"/>
+                        </IsActing>
+                        <SPARKLiqDate>
+                            <xsl:value-of select="if($_GetSparkStatus-IE/result=&quot;ликвидирован&quot;)&#xA;then $Parse-XML-2-IE/Response/Data/Report[1]/Status/@Date&#xA;else &quot;&quot;"/>
+                        </SPARKLiqDate>
+                        <SPARKCauseLiq>
+                            <xsl:value-of select="if($_GetSparkStatus-IE/result=&quot;ликвидирован&quot;)&#xA;then $Parse-XML-2-IE/Response/Data/Report[1]/Status/@Text&#xA;else &quot;&quot;"/>
+                        </SPARKCauseLiq>
+                        <HasStateContract>
+                            <xsl:value-of select="if($Parse-XML-2-IE/Response/Data/Report[1]/StateContracts/* !='')&#xA;then &quot;1&quot;&#xA;else &quot;0&quot;"/>
+                        </HasStateContract>
+                    </CompanyInfo>
+                </resultJSON>
+            </ns1:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse-XML-1 IE">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:description>Парсим XML из формата SPARK в формат XSD для ИП</pd:description>
+        <pd:x>326</pd:x>
+        <pd:y>333</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term>
+                <xsd:element name="xmlData" type="xsd:string"/>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="concat(&quot;&lt;?xml version='1.0' encoding='utf-8'?>&lt;xmlData>&quot;,tib:substring-before-last(substring-after($Get-Entrepreneur-Info/result, &quot;&lt;xmlData>&quot;), &quot;&lt;/xmlData>&quot;),&quot;&lt;/xmlData>&quot;)"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse-XML-2 IE">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:description>Парсим XML в сущности для ИП</pd:description>
+        <pd:x>472</pd:x>
+        <pd:y>328</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term ref="pfx2:Response"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Parse-XML-1-IE/xmlData"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse-XML-1">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:description>Парсим XML из формата SPARK в формат XSD для Организации</pd:description>
+        <pd:x>319</pd:x>
+        <pd:y>49</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term>
+                <xsd:element name="xmlData" type="xsd:string"/>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="concat(&quot;&lt;?xml version='1.0' encoding='utf-8'?>&lt;xmlData>&quot;,tib:substring-before-last(substring-after($Get-Company-Info/result, &quot;&lt;xmlData>&quot;), &quot;&lt;/xmlData>&quot;),&quot;&lt;/xmlData>&quot;)"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse-XML-2">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:description>Парсим XML в сущности для Организации</pd:description>
+        <pd:x>464</pd:x>
+        <pd:y>50</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term ref="pfx:Response"/>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Parse-XML-1/xmlData"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="_GetSparkStatus">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>594</pd:x>
+        <pd:y>53</pd:y>
+        <config>
+            <processName>/Processes/Spark/_GetSparkStatus_SF.process</processName>
+        </config>
+        <pd:inputBindings>
+            <code>
+                <xsl:value-of select="$Parse-XML-2/Response/Data/Report[1]/Status/@Code"/>
+            </code>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="_GetSparkStatus-IE">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>635</pd:x>
+        <pd:y>327</pd:y>
+        <config>
+            <processName>/Processes/Spark/_GetSparkStatus_SF.process</processName>
+        </config>
+        <pd:inputBindings>
+            <code>
+                <xsl:value-of select="$Parse-XML-2-IE/Response/Data/Report[1]/Status/@Code"/>
+            </code>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="DataNotFound">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:description>Данные не найдены</pd:description>
+        <pd:x>471</pd:x>
+        <pd:y>182</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput xmlns:ns1="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+                <message>
+                    <xsl:value-of select="concat(&quot;Data not found for INN:&quot;, $Start/inn)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="404"/>
+                </messageCode>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:description>ИНН содержит 9-10 цифр</pd:description>
+        <pd:from>Start</pd:from>
+        <pd:to>Get Company Info</pd:to>
+        <pd:xpathDescription>INN 9-10 digits</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>string-length($Start/inn)=9 or string-length($Start/inn)=10</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:description>ИНН содержит 11-12 цифр</pd:description>
+        <pd:from>Start</pd:from>
+        <pd:to>Get Entrepreneur Info</pd:to>
+        <pd:xpathDescription>INN 11-12 digits</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>string-length($Start/inn)=11 or string-length($Start/inn)=12</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:description>Некорректный ИНН</pd:description>
+        <pd:from>Start</pd:from>
+        <pd:to>INN Error</pd:to>
+        <pd:xpathDescription>Otherwise</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Company Info</pd:from>
+        <pd:to>Parse-XML-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Entrepreneur Info</pd:from>
+        <pd:to>Parse-XML-1 IE</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse-XML-1 IE</pd:from>
+        <pd:to>Parse-XML-2 IE</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse-XML-2 IE</pd:from>
+        <pd:to>_GetSparkStatus-IE</pd:to>
+        <pd:xpathDescription>Otherwise</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse-XML-1</pd:from>
+        <pd:to>Parse-XML-2</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse-XML-2</pd:from>
+        <pd:to>_GetSparkStatus</pd:to>
+        <pd:xpathDescription>Otherwise</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Company JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Entrepreneur JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>_GetSparkStatus</pd:from>
+        <pd:to>Render Company JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>_GetSparkStatus-IE</pd:from>
+        <pd:to>Render Entrepreneur JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse-XML-2</pd:from>
+        <pd:to>DataNotFound</pd:to>
+        <pd:xpathDescription>Data not found</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Parse-XML-2/Response/ResultInfo/@ResultType = "Data not found"</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse-XML-2 IE</pd:from>
+        <pd:to>DataNotFound</pd:to>
+        <pd:xpathDescription>Data not found</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Parse-XML-2-IE/Response/ResultInfo/@ResultType = "Data not found"</pd:xpath>
+    </pd:transition>
+</pd:ProcessDefinition>

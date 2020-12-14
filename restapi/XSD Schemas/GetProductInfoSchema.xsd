@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           id="GetProductInfoSchema">
+    <xs:include schemaLocation="ActionInfo.xsd"/>
+    <xs:include schemaLocation="CFSInfo.xsd"/>
+    <xs:include schemaLocation="Response.xsd"/>
+    <xs:include schemaLocation="Product.xsd"/>
+
+    <xs:element name="inputJSON">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="SystemId">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="255"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="ProductId">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="30"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element ref="ActionInfo" minOccurs="0"/>
+                <xs:element name="ActionId" minOccurs="0">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="255"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="Level" minOccurs="0">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:maxLength value="255"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+				<xs:element name="CFSInfo" type="CFSInfo" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="RequestData" type="xs:dateTime" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Дата, на которую нужно получить информацию. </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+    <xs:element name="resultJSON">
+        <xs:complexType>
+            <xs:all>
+                <xs:element name="Response" type="Response"/>
+                <xs:element name="Product" type="Product"/>
+            </xs:all>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

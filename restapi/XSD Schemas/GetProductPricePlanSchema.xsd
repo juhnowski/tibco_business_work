@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 id="GetProductPricePlanSchema"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:include schemaLocation="CFSPricePlan.xsd"/>
+	<xs:include schemaLocation="CFSInfo.xsd"/>
+	<xs:include schemaLocation="ActionInfo.xsd"/>
+	<xs:complexType name="CFSPP">
+		<xs:sequence>
+			<xs:element name="Id" type="xs:integer"/>
+			<xs:element name="PricePlan" type="CFSPricePlan" maxOccurs="unbounded"/>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="request">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ActionInfo"/>
+				<xs:element name="ProductId">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="30"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RegionId" type="xs:string"/>
+				<xs:element name="ClientSegment" type="xs:string" minOccurs="0"/>
+				<xs:element name="CFS" type="CFSInfo" maxOccurs="unbounded"/>
+				<xs:element name="RequestData" type="xs:dateTime" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="response">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="CFSPP" type="CFSPP" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

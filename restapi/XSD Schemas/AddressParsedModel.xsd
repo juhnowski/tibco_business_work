@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 id="AddressParsedModel"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:complexType name="AddressParsedModel">
+		<xs:all>
+			<xs:element name="area" type="xs:string" minOccurs="0"/>
+			<xs:element name="areaId" type="xs:integer" minOccurs="0"/>
+			<xs:element name="areaType" type="xs:string" minOccurs="0"/>
+			<xs:element name="areaTypeId" type="xs:integer" minOccurs="0"/>
+			<xs:element name="building" type="xs:string" minOccurs="0"/>
+			<xs:element name="buildingId" type="xs:integer" minOccurs="0"/>
+			<xs:element name="city" type="xs:string" minOccurs="0"/>
+			<xs:element name="cityId" type="xs:integer" minOccurs="0"/>
+			<xs:element name="cityType" type="xs:string" minOccurs="0"/>
+			<xs:element name="cityTypeId" type="xs:integer" minOccurs="0"/>
+			<xs:element name="isExactBuilding" type="xs:integer" minOccurs="0"/>
+			<xs:element name="latitude" type="xs:decimal" minOccurs="0"/>
+			<xs:element name="longtitude" type="xs:decimal" minOccurs="0"/>
+			<xs:element name="number1" type="xs:string" minOccurs="0"/>
+			<xs:element name="number1Type" type="xs:string" minOccurs="0"/>
+			<xs:element name="number1TypeId" type="xs:integer" minOccurs="0"/>
+			<xs:element name="number2" type="xs:string" minOccurs="0"/>
+			<xs:element name="number2Type" type="xs:string" minOccurs="0"/>
+			<xs:element name="number2TypeId" type="xs:integer" minOccurs="0"/>
+			<xs:element name="number3" type="xs:string" minOccurs="0"/>
+			<xs:element name="number3Type" type="xs:string" minOccurs="0"/>
+			<xs:element name="number3TypeId" type="xs:integer" minOccurs="0"/>
+			<xs:element name="opResult" type="xs:integer" minOccurs="0"/>
+			<xs:element name="parentArea" type="xs:string" minOccurs="0"/>
+			<xs:element name="parentAreaId" type="xs:integer" minOccurs="0"/>
+			<xs:element name="street" type="xs:string" minOccurs="0"/>
+			<xs:element name="streetId" type="xs:integer" minOccurs="0"/>
+			<xs:element name="streetType" type="xs:string" minOccurs="0"/>
+			<xs:element name="streetTypeId" type="xs:integer" minOccurs="0"/>
+			<xs:element name="streetWrong" type="xs:string" minOccurs="0"/>
+			<xs:element name="tail" type="xs:string" minOccurs="0"/>
+			<xs:element name="zip" type="xs:string" minOccurs="0"/>
+		</xs:all>
+	</xs:complexType>
+</xs:schema>

@@ -1,0 +1,4 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<inputParams>
+	<inputJSON>{"input":{   "ActionInfo":{     "SystemId":"USSS",     "UserId":"UserId"   }, 	"ProductInstance":{ 		"ProductInstanceId":"1.0", 		"ProductId":"qqqqqq", 		"ProductStructure":[{ 			"Id":"1", 			"CFSStructure":{ 				"Id":"1"       }, 			"CFSPricePlans":{ 				"Id":"1", 				"Name":"qqqqqq", 				"VoicePricePlan":"qqqqqqq" 			} 		}]   }  } }</inputJSON>
+</inputParams>

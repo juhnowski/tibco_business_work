@@ -1,0 +1,404 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx10="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProductInfoSchema.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/RegistrationClientRequest.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:pfx5="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/PhoneNumber.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Contract.xsd" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Client.xsd" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/RegistrationClientResponse.xsd" xmlns:pfx9="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProductInfoInputJSON.xsd" xmlns:pfx8="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProcessInfoSchema.xsd" xmlns:pfx7="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetFreePhoneNumbersSchema.xsd" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetFreePhoneNumbersRequest.xsd">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/RegistrationClientRequest.xsd" schemaLocation="/XSD Schemas/RegistrationClientRequest.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/RegistrationClientResponse.xsd" schemaLocation="/XSD Schemas/RegistrationClientResponse.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Client.xsd" schemaLocation="/XSD Schemas/Client.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Contract.xsd" schemaLocation="/XSD Schemas/Contract.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/PhoneNumber.xsd" schemaLocation="/XSD Schemas/PhoneNumber.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetFreePhoneNumbersRequest.xsd" schemaLocation="/XSD Schemas/GetFreePhoneNumbersRequest.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetFreePhoneNumbersSchema.xsd" schemaLocation="/XSD Schemas/GetFreePhoneNumbersSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProcessInfoSchema.xsd" schemaLocation="/XSD Schemas/GetProcessInfoSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProductInfoInputJSON.xsd" schemaLocation="/XSD Schemas/GetProductInfoInputJSON.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProductInfoSchema.xsd" schemaLocation="/XSD Schemas/GetProductInfoSchema.xsd"/>
+    <pd:name>Processes/Product/_GetProductInfoMock.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="inputParams">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="inputJSON" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>145</pd:startX>
+    <pd:startY>50</pd:startY>
+    <pd:returnBindings>
+        <JSONoutput>
+            <xsl:value-of select="$Render-JSON/ns:ActivityOutputClass/jsonString"/>
+        </JSONoutput>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="JSONoutput" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>884</pd:endX>
+    <pd:endY>50</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1538981951298</pd:targetNamespace>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>394</pd:x>
+        <pd:y>56</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ValidateOutputEnable>true</ValidateOutputEnable>
+            <ActivityOutputEditor ref="pfx10:inputJSON"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/inputParams/inputJSON"/>
+                </jsonString>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>657</pd:x>
+        <pd:y>53</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ValidateIntputEnable>true</ValidateIntputEnable>
+            <ActivityInputEditor ref="pfx10:resultJSON"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <resultJSON>
+                    <Response>
+                        <ObjectId>
+                            <xsl:value-of select="&quot;kekeke&quot;"/>
+                        </ObjectId>
+                        <opResult>
+                            <xsl:value-of select="222"/>
+                        </opResult>
+                        <opErrorText>
+                            <xsl:value-of select="&quot;kekeke&quot;"/>
+                        </opErrorText>
+                    </Response>
+                    <Product>
+                        <Id>
+                            <xsl:value-of select="2"/>
+                        </Id>
+                        <Name>
+                            <xsl:value-of select="&quot;kekeke&quot;"/>
+                        </Name>
+                        <Descr>
+                            <xsl:value-of select="&quot;kekeke&quot;"/>
+                        </Descr>
+                        <Attributes>
+                            <Id>
+                                <xsl:value-of select="111"/>
+                            </Id>
+                            <Name>
+                                <xsl:value-of select="&quot;kekeke&quot;"/>
+                            </Name>
+                            <DataType>
+                                <xsl:value-of select="&quot;kekeke&quot;"/>
+                            </DataType>
+                            <Description>
+                                <xsl:value-of select="&quot;kekeke&quot;"/>
+                            </Description>
+                            <DefaultValue>
+                                <xsl:value-of select="&quot;kekeke&quot;"/>
+                            </DefaultValue>
+                            <TopValue>
+                                <xsl:value-of select="&quot;kekeke&quot;"/>
+                            </TopValue>
+                            <BottomValue>
+                                <xsl:value-of select="&quot;kekeke&quot;"/>
+                            </BottomValue>
+                            <Reference>
+                                <Id>
+                                    <xsl:value-of select="111"/>
+                                </Id>
+                                <Value>
+                                    <xsl:value-of select="&quot;kekeke&quot;"/>
+                                </Value>
+                            </Reference>
+                            <IsEditable>
+                                <action>
+                                    <xsl:value-of select="&quot;kekeke&quot;"/>
+                                </action>
+                            </IsEditable>
+                            <StoredIn>
+                                <xsl:value-of select="&quot;kekeke&quot;"/>
+                            </StoredIn>
+                            <Get>
+                                <xsl:value-of select="&quot;kekeke&quot;"/>
+                            </Get>
+                            <Put>
+                                <xsl:value-of select="&quot;kekeke&quot;"/>
+                            </Put>
+                        </Attributes>
+                        <ProductStructure>
+                            <CFS>
+                                <Id>
+                                    <xsl:value-of select="11"/>
+                                </Id>
+                                <Name>
+                                    <xsl:value-of select="&quot;kekeke&quot;"/>
+                                </Name>
+                                <Description>
+                                    <xsl:value-of select="&quot;kekeke&quot;"/>
+                                </Description>
+                                <Attributes>
+                                    <Id>
+                                        <xsl:value-of select="1"/>
+                                    </Id>
+                                    <Name>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </Name>
+                                    <DataType>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </DataType>
+                                    <required>
+                                        <xsl:value-of select="&quot;1&quot;"/>
+                                    </required>
+                                    <Description>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </Description>
+                                    <DefaultValue>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </DefaultValue>
+                                    <TopValue>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </TopValue>
+                                    <BottomValue>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </BottomValue>
+                                    <IsBillingAttr>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </IsBillingAttr>
+                                    <IsQuickOnAttr>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </IsQuickOnAttr>
+                                    <Priority>
+                                        <xsl:value-of select="&quot;1&quot;"/>
+                                    </Priority>
+                                    <Reference>
+                                        <Id>
+                                            <xsl:value-of select="1"/>
+                                        </Id>
+                                        <Value>
+                                            <xsl:value-of select="&quot;value&quot;"/>
+                                        </Value>
+                                    </Reference>
+                                    <IsEditable>
+                                        <action>
+                                            <xsl:value-of select="&quot;value&quot;"/>
+                                        </action>
+                                    </IsEditable>
+                                    <StoredIn>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </StoredIn>
+                                    <comment>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </comment>
+                                    <Get>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </Get>
+                                    <Put>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </Put>
+                                </Attributes>
+                                <CFSStructure>
+                                    <Id>
+                                        <xsl:value-of select="1"/>
+                                    </Id>
+                                    <Name>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </Name>
+                                    <Description>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </Description>
+                                    <Attributes>
+                                        <RFSAttribute>
+                                            <Id>
+                                                <xsl:value-of select="1"/>
+                                            </Id>
+                                            <Name>
+                                                <xsl:value-of select="&quot;value&quot;"/>
+                                            </Name>
+                                            <DataType>
+                                                <xsl:value-of select="&quot;value&quot;"/>
+                                            </DataType>
+                                            <Description>
+                                                <xsl:value-of select="&quot;value&quot;"/>
+                                            </Description>
+                                            <DefaultValue>
+                                                <xsl:value-of select="&quot;value&quot;"/>
+                                            </DefaultValue>
+                                            <TopValue>
+                                                <xsl:value-of select="&quot;value&quot;"/>
+                                            </TopValue>
+                                            <BottomValue>
+                                                <xsl:value-of select="&quot;value&quot;"/>
+                                            </BottomValue>
+                                            <IsCFSAttr>
+                                                <xsl:value-of select="&quot;value&quot;"/>
+                                            </IsCFSAttr>
+                                            <IsBillingAttr>
+                                                <xsl:value-of select="&quot;value&quot;"/>
+                                            </IsBillingAttr>
+                                            <IsQuickOnAttr>
+                                                <xsl:value-of select="&quot;value&quot;"/>
+                                            </IsQuickOnAttr>
+                                            <Priority>
+                                                <xsl:value-of select="&quot;v&quot;"/>
+                                            </Priority>
+                                            <Reference>
+                                                <Id>
+                                                    <xsl:value-of select="1"/>
+                                                </Id>
+                                                <Value>
+                                                    <xsl:value-of select="&quot;value&quot;"/>
+                                                </Value>
+                                            </Reference>
+                                            <IsEditable>
+                                                <action>
+                                                    <xsl:value-of select="&quot;value&quot;"/>
+                                                </action>
+                                            </IsEditable>
+                                            <StoredIn>
+                                                <xsl:value-of select="&quot;value&quot;"/>
+                                            </StoredIn>
+                                            <Comment>
+                                                <xsl:value-of select="&quot;value&quot;"/>
+                                            </Comment>
+                                            <Get>
+                                                <xsl:value-of select="&quot;value&quot;"/>
+                                            </Get>
+                                            <Put>
+                                                <xsl:value-of select="&quot;value&quot;"/>
+                                            </Put>
+                                        </RFSAttribute>
+                                    </Attributes>
+                                    <MaxInstanceNumber>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </MaxInstanceNumber>
+                                    <InstAddressQuantity>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </InstAddressQuantity>
+                                    <PoCreation>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </PoCreation>
+                                    <Mandatory>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </Mandatory>
+                                    <Dependency>
+                                        <RFSId>
+                                            <xsl:value-of select="&quot;value&quot;"/>
+                                        </RFSId>
+                                        <Condition>
+                                            <xsl:value-of select="&quot;value&quot;"/>
+                                        </Condition>
+                                    </Dependency>
+                                </CFSStructure>
+                                <CFSPricePlans>
+                                    <Id>
+                                        <xsl:value-of select="1"/>
+                                    </Id>
+                                    <Name>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </Name>
+                                    <TariffPlan>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </TariffPlan>
+                                    <MonthlyFee>
+                                        <xsl:value-of select="1.1"/>
+                                    </MonthlyFee>
+                                    <SinglePayment>
+                                        <xsl:value-of select="1.1"/>
+                                    </SinglePayment>
+                                    <MinAmount>
+                                        <xsl:value-of select="1.1"/>
+                                    </MinAmount>
+                                    <DataPricePlan>
+                                        <Unit>
+                                            <xsl:value-of select="&quot;value&quot;"/>
+                                        </Unit>
+                                        <Price>
+                                            <xsl:value-of select="1.1"/>
+                                        </Price>
+                                    </DataPricePlan>
+                                    <VoicePricePlan>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </VoicePricePlan>
+                                </CFSPricePlans>
+                                <DiscountRules>
+                                    <Name>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </Name>
+                                    <Value>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </Value>
+                                </DiscountRules>
+                                <Discounts>
+                                    <Name>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </Name>
+                                    <Value>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </Value>
+                                </Discounts>
+                                <Dependency>
+                                    <CFSId>
+                                        <xsl:value-of select="1"/>
+                                    </CFSId>
+                                    <Condition>
+                                        <xsl:value-of select="&quot;value&quot;"/>
+                                    </Condition>
+                                </Dependency>
+                            </CFS>
+                            <QuantityMin>
+                                <xsl:value-of select="11"/>
+                            </QuantityMin>
+                            <QuantityMax>
+                                <xsl:value-of select="11"/>
+                            </QuantityMax>
+                            <QuantityConditional>
+                                <CFS>
+                                    <xsl:value-of select="&quot;CFSString&quot;"/>
+                                </CFS>
+                                <QuantityMin>
+                                    <xsl:value-of select="11"/>
+                                </QuantityMin>
+                                <QuantityMax>
+                                    <xsl:value-of select="11"/>
+                                </QuantityMax>
+                            </QuantityConditional>
+                        </ProductStructure>
+                    </Product>
+                </resultJSON>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

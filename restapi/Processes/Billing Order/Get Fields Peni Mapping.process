@@ -1,0 +1,396 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <pd:name>Processes/Billing Order/Get Fields Peni Mapping.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="inputParams">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="contractId" type="xsd:int"/>
+                    <xsd:element name="contractTypeId" type="xsd:int" minOccurs="0"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>75</pd:startX>
+    <pd:startY>59</pd:startY>
+    <pd:returnBindings>
+        <JSONoutput>
+            <xsl:value-of select="if (count($Catch/exceptiondata)>0) then $Render-error-JSON/ns:ActivityOutputClass/jsonString  else $Render-JSON/ns:ActivityOutputClass/jsonString"/>
+        </JSONoutput>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="JSONoutput" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>755</pd:endX>
+    <pd:endY>65</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1536219488519</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>311</pd:x>
+        <pd:y>249</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>545</pd:x>
+        <pd:y>61</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="output">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="o_s_peni" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="o_s_peni_w" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="o_peni_tp" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="o_peni_tp_w" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="o_peni" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="o_peni_w" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="o_refin_rate" type="xsd:integer" minOccurs="0"/>
+                            <xsd:element name="o_refin_rate_w" type="xsd:integer" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <output>
+                    <xsl:if test="not(($JDBC-Call-Procedure/resultSet/outputSet/O_S_PENI/@xsi:nil=(&quot;true&quot;)) or ($JDBC-Call-Procedure/resultSet/outputSet/O_S_PENI/@xsi:nil=(&quot;1&quot;)))">
+                        <o_s_peni>
+                            <xsl:value-of select="round($JDBC-Call-Procedure/resultSet/outputSet/O_S_PENI)"/>
+                        </o_s_peni>
+                    </xsl:if>
+                    <xsl:if test="not(($JDBC-Call-Procedure/resultSet/outputSet/O_S_PENI_W/@xsi:nil=(&quot;true&quot;)) or ($JDBC-Call-Procedure/resultSet/outputSet/O_S_PENI_W/@xsi:nil=(&quot;1&quot;)))">
+                        <o_s_peni_w>
+                            <xsl:value-of select="round($JDBC-Call-Procedure/resultSet/outputSet/O_S_PENI_W)"/>
+                        </o_s_peni_w>
+                    </xsl:if>
+                    <xsl:if test="not(($JDBC-Call-Procedure/resultSet/outputSet/O_PENI_TP/@xsi:nil=(&quot;true&quot;)) or ($JDBC-Call-Procedure/resultSet/outputSet/O_PENI_TP/@xsi:nil=(&quot;1&quot;)))">
+                        <o_peni_tp>
+                            <xsl:value-of select="round($JDBC-Call-Procedure/resultSet/outputSet/O_PENI_TP)"/>
+                        </o_peni_tp>
+                    </xsl:if>
+                    <xsl:if test="not(($JDBC-Call-Procedure/resultSet/outputSet/O_PENI_TP_W/@xsi:nil=(&quot;true&quot;)) or ($JDBC-Call-Procedure/resultSet/outputSet/O_PENI_TP_W/@xsi:nil=(&quot;1&quot;)))">
+                        <o_peni_tp_w>
+                            <xsl:value-of select="round($JDBC-Call-Procedure/resultSet/outputSet/O_PENI_TP_W)"/>
+                        </o_peni_tp_w>
+                    </xsl:if>
+                    <xsl:if test="not(($JDBC-Call-Procedure/resultSet/outputSet/O_PENI/@xsi:nil=(&quot;true&quot;)) or ($JDBC-Call-Procedure/resultSet/outputSet/O_PENI/@xsi:nil=(&quot;1&quot;)))">
+                        <o_peni>
+                            <xsl:value-of select="round($JDBC-Call-Procedure/resultSet/outputSet/O_PENI)"/>
+                        </o_peni>
+                    </xsl:if>
+                    <xsl:if test="not(($JDBC-Call-Procedure/resultSet/outputSet/O_PENI_W/@xsi:nil=(&quot;true&quot;)) or ($JDBC-Call-Procedure/resultSet/outputSet/O_PENI_W/@xsi:nil=(&quot;1&quot;)))">
+                        <o_peni_w>
+                            <xsl:value-of select="round($JDBC-Call-Procedure/resultSet/outputSet/O_PENI_W)"/>
+                        </o_peni_w>
+                    </xsl:if>
+                    <xsl:if test="not(($JDBC-Call-Procedure/resultSet/outputSet/O_REFIN_RATE/@xsi:nil=(&quot;true&quot;)) or ($JDBC-Call-Procedure/resultSet/outputSet/O_REFIN_RATE/@xsi:nil=(&quot;1&quot;)))">
+                        <o_refin_rate>
+                            <xsl:value-of select="round($JDBC-Call-Procedure/resultSet/outputSet/O_REFIN_RATE)"/>
+                        </o_refin_rate>
+                    </xsl:if>
+                    <xsl:if test="not(($JDBC-Call-Procedure/resultSet/outputSet/O_REFIN_RATE_W/@xsi:nil=(&quot;true&quot;)) or ($JDBC-Call-Procedure/resultSet/outputSet/O_REFIN_RATE_W/@xsi:nil=(&quot;1&quot;)))">
+                        <o_refin_rate_w>
+                            <xsl:value-of select="round($JDBC-Call-Procedure/resultSet/outputSet/O_REFIN_RATE_W)"/>
+                        </o_refin_rate_w>
+                    </xsl:if>
+                </output>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render error JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>537</pd:x>
+        <pd:y>247</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="opResult" type="xsd:int"/>
+                            <xsd:element name="opErrorText" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <root>
+                    <opResult>
+                        <xsl:value-of select="-1"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="$Catch/exceptiondata/*"/>
+                    </opErrorText>
+                </root>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JDBC Query">
+        <pd:type>com.tibco.plugin.jdbc.JDBCQueryActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCQueryActivity</pd:resourceType>
+        <pd:x>229</pd:x>
+        <pd:y>61</pd:y>
+        <config>
+            <timeout>%%Timeout%%</timeout>
+            <commit>false</commit>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <statement>SELECT    i_bu_cod, 
+                    i_cln_seg, 
+                    i_cntrtp, 
+                    i_inv_from
+FROM   [%%Schema%%].[Contract_fnd_peni_Mapping] (?, ?)</statement>
+            <Prepared_Param_DataType>
+                <parameter>
+                    <parameterName>ContractID</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+                <parameter>
+                    <parameterName>ContractTypeID</parameterName>
+                    <dataType>INTEGER</dataType>
+                </parameter>
+            </Prepared_Param_DataType>
+            <oraObjects/>
+            <oraTables/>
+            <QueryOutputCachedSchemaColumns>i_bu_cod</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>4</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>int</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>i_cln_seg</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>-6</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>tinyint</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>i_cntrtp</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+            <QueryOutputCachedSchemaColumns>i_inv_from</QueryOutputCachedSchemaColumns>
+            <QueryOutputCachedSchemaDataTypes>12</QueryOutputCachedSchemaDataTypes>
+            <QueryOutputCachedSchemaDataTypesName>varchar</QueryOutputCachedSchemaDataTypesName>
+            <QueryOutputCachedSchemaStatus>OptionalElement</QueryOutputCachedSchemaStatus>
+        </config>
+        <pd:inputBindings>
+            <jdbcQueryActivityInput>
+                <ContractID>
+                    <xsl:value-of select="$Start/inputParams/contractId"/>
+                </ContractID>
+                <ContractTypeID>
+                    <xsl:choose>
+                        <xsl:when test="exists($Start/inputParams/contractTypeId)">
+                            <xsl:value-of select="$Start/inputParams/contractTypeId"/>
+                        </xsl:when>
+                        <xsl:otherwise>
+                            <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                        </xsl:otherwise>
+                    </xsl:choose>
+                </ContractTypeID>
+            </jdbcQueryActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="JDBC Call Procedure">
+        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+        <pd:x>380</pd:x>
+        <pd:y>69</pd:y>
+        <config>
+            <timeout>%%Timeout%%</timeout>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/Oracle BO Connection.sharedjdbc</jdbcSharedConfig>
+            <schema>%%BO_Schema%%</schema>
+            <ProcedureName>FND_PENI</ProcedureName>
+            <useSchema>false</useSchema>
+            <oraObjects/>
+            <oraTables/>
+            <parameterTypes>
+                <parameter>
+                    <colName>RETURN_VALUE</colName>
+                    <colType>5</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_BU_COD</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CLN_SEG</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CNTRTP</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_INV_FROM</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>O_S_PENI</colName>
+                    <colType>4</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>O_S_PENI_W</colName>
+                    <colType>4</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>O_PENI_TP</colName>
+                    <colType>4</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>O_PENI_TP_W</colName>
+                    <colType>4</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>O_PENI</colName>
+                    <colType>4</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>O_PENI_W</colName>
+                    <colType>4</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>O_REFIN_RATE</colName>
+                    <colType>4</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>O_REFIN_RATE_W</colName>
+                    <colType>4</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+            </parameterTypes>
+        </config>
+        <pd:inputBindings>
+            <inputs>
+                <inputSet>
+                    <I_BU_COD>
+                        <xsl:choose>
+                            <xsl:when test="exists($JDBC-Query/resultSet/Record[1]/i_bu_cod)">
+                                <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/i_bu_cod"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_BU_COD>
+                    <I_CLN_SEG>
+                        <xsl:choose>
+                            <xsl:when test="exists($JDBC-Query/resultSet/Record[1]/i_cln_seg)">
+                                <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/i_cln_seg"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CLN_SEG>
+                    <I_CNTRTP>
+                        <xsl:choose>
+                            <xsl:when test="exists($JDBC-Query/resultSet/Record[1]/i_cntrtp)">
+                                <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/i_cntrtp"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CNTRTP>
+                    <I_INV_FROM>
+                        <xsl:choose>
+                            <xsl:when test="exists($JDBC-Query/resultSet/Record[1]/i_inv_from)">
+                                <xsl:value-of select="$JDBC-Query/resultSet/Record[1]/i_inv_from"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_INV_FROM>
+                </inputSet>
+            </inputs>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Render error JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render error JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>JDBC Query</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JDBC Query</pd:from>
+        <pd:to>JDBC Call Procedure</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>JDBC Call Procedure</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

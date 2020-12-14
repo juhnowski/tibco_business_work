@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           id="Address">
+    <xs:include schemaLocation="CommonTypes.xsd"/>
+    <xs:complexType name="Address">
+        <xs:annotation>
+            <xs:documentation>Адрес российской компании</xs:documentation>
+        </xs:annotation>
+        <xs:all>
+            <xs:element name="PostCode" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Почтовый индекс</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Address" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Полный адрес</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="REGION" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Регион</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="RAYON" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Область</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="CITY" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Город</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="STREETNAME" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Улица</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="BUILDINGNUMBER" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Дом</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="FiasCode" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Код адреса по ФИАС</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="FiasRegion" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Код региона по ФИАС</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="FiasArea" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Код области по ФИАС</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="FiasCity" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Код города по ФИАС</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="FiasPlace" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Код населенного пункта по ФИАС</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="FiasStreet" type="xs:string" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Код улицы по ФИАС</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="ActualDate" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Дата актуальности</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+    <xs:complexType name="AddressActual">
+        <xs:annotation>
+            <xs:documentation>Актуальный адрес российской компании</xs:documentation>
+        </xs:annotation>
+        <xs:complexContent>
+            <xs:extension base="Address">
+                <xs:attribute name="Housing" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>Корпус</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="Block" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>Строение</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="Room" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>Квартира/офис/помещение</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+                <xs:attribute name="BusinessCenterName" type="xs:string">
+                    <xs:annotation>
+                        <xs:documentation>Наименование бизнес-центра</xs:documentation>
+                    </xs:annotation>
+                </xs:attribute>
+            </xs:extension>
+        </xs:complexContent>
+    </xs:complexType>
+    <xs:complexType name="AddressUA">
+        <xs:annotation>
+            <xs:documentation>Адрес украинской компании</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="PostCode" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>Почтовый индекс</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Address" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>Полный адрес</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="ActualDate" type="xs:date">
+            <xs:annotation>
+                <xs:documentation>Дата актуальности</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+    <xs:complexType name="AddressKZ">
+        <xs:annotation>
+            <xs:documentation>Адрес казахстанской компании</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="PostCode" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>Почтовый индекс</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Address" type="xs:string" use="required">
+            <xs:annotation>
+                <xs:documentation>Полный адрес</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="REGION" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>Регион</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="RAYON" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>Область</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="CITY" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>Город</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="STREETNAME" type="xs:string">
+            <xs:annotation>
+                <xs:documentation>Улица</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="ActualDate" type="xs:date">
+            <xs:annotation>
+                <xs:documentation>Дата актуальности</xs:documentation>
+            </xs:annotation>
+        </xs:attribute>
+    </xs:complexType>
+</xs:schema>

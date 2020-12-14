@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Contact.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Client.xsd">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Client.xsd" schemaLocation="/XSD Schemas/Client.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Contact.xsd" schemaLocation="/XSD Schemas/Contact.xsd"/>
+    <pd:name>Processes/Validation/_ValidateContactModel.process</pd:name>
+    <pd:description>Валидация модели данных Contact</pd:description>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx2:Contact"/>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>450</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1539885718738</pd:targetNamespace>
+    <pd:activity name="Field Required">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>295</pd:x>
+        <pd:y>225</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput xmlns:ns1="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+                <message>
+                    <xsl:value-of select="&quot;Fields [phone] or [email] required&quot;"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="400"/>
+                </messageCode>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>All fields valid</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>string-length($Start/Contact/phone)&gt;0 or string-length($Start/Contact/email)&gt;0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Field Required</pd:to>
+        <pd:xpathDescription>Otherwise</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

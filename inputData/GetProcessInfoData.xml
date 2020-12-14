@@ -1,0 +1,17 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<inputParams>
+    <inputJSON>
+    {
+        "ContractInfo": {
+            "fixContractId": 987,
+            "scala": "654",
+            "BEN": "5"
+        },
+        "ProcessType": "TYPE",
+        "StepId": "123123",
+        "ProductId": "900",
+        "DateFrom": "2017-01-01T00:00:00",
+        "DateTo": "2017-12-31T23:59:59"
+    }
+    </inputJSON>
+</inputParams>

@@ -1,0 +1,4 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<inputParams>
+	<inputJSON>{"input":{"ActionInfo":{"SystemId": "USSS", "UserId": "1"},"ProcessId": "1","StepAttributes": [{ "Name": "Name-1","Value": "Value-1"},{ "Name": "Name-2","Value": "Value-2"}]}}</inputJSON>
+</inputParams>

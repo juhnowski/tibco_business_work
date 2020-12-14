@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 id="GetProcessCurrentStepSchema"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:include schemaLocation="ActionInfo.xsd"/>
+	<xs:include schemaLocation="Response.xsd"/>
+	<xs:include schemaLocation="StepInfo.xsd"/>
+	<xs:element name="request">
+		<xs:complexType>
+			<xs:all>
+				<xs:element ref="ActionInfo"/>
+				<xs:element name="ProcessId" type="xs:string"/>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="response">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Response" type="Response"/>
+				<xs:element name="ProductId" type="xs:string"/>
+				<xs:element name="ProductName" type="xs:string"/>
+				<xs:element name="StepName" type="xs:string"/>
+				<xs:element name="Attributes" type="Attribute" maxOccurs="unbounded"/>
+				<xs:element name="PassedStepInfo" type="StepInfo" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

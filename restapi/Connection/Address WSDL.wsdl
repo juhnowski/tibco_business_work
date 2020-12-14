@@ -1,0 +1,232 @@
+<wsdl:definitions xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" targetNamespace="http://tempuri.org/">
+    <wsdl:types>
+        <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+            <s:element name="ParseAddress">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="address" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="ParseAddressResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="1" maxOccurs="1" name="ParseAddressResult" type="tns:ParsedAddress"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="ParsedAddress">
+                <s:sequence>
+                    <s:element minOccurs="1" maxOccurs="1" name="AreaId" type="s:int"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Area" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="AreaTypeId" type="s:int"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="AreaType" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="ParentAreaId" type="s:int"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="ParentArea" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="CityId" type="s:int"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="City" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="CityTypeId" type="s:int"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="CityType" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="StreetId" type="s:int"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="StreetWrong" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Street" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="StreetTypeId" type="s:int"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="StreetType" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="BuildingId" type="s:int"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Building" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Number1" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Number1Type" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="Number1TypeId" type="s:int"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Number2" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Number2Type" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="Number2TypeId" type="s:int"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Number3" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Number3Type" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="Number3TypeId" type="s:int"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Zip" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Tail" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="Latitude" type="s:double"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="Longtitude" type="s:double"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="IsExactBuilding" type="s:int"/>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="Parse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="address" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="ParseResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="ParseResult" type="tns:ParserResult"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:complexType name="ParserResult">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="1" name="ErrorCode" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="ErrorDescription" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Result" type="tns:ArrayOfAddressResult"/>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="ArrayOfAddressResult">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="unbounded" name="AddressResult" nillable="true" type="tns:AddressResult"/>
+                </s:sequence>
+            </s:complexType>
+            <s:complexType name="AddressResult">
+                <s:sequence>
+                    <s:element minOccurs="0" maxOccurs="1" name="ZipCode" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="CountryId" type="s:int"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Country" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="RegionId" type="s:int"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Region" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="RegionTypeId" type="s:int"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="RegionType" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="StreetId" type="s:int"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Street" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="StreetTypeId" type="s:int"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="StreetType" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="BuildingId" type="s:int"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Number1" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="NumberType1Id" type="s:int"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="NumberType1" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Number2" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="NumberType2Id" type="s:int"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="NumberType2" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Number3" type="s:string"/>
+                    <s:element minOccurs="1" maxOccurs="1" name="NumberType3Id" type="s:int"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="NumberType3" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Porch" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="LevelTypeId" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="LevelType" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Floor" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="BlockOfficeFlatRoom" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Block" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Office" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Flat" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Room" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="ShortComment" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="AddressString" type="s:string"/>
+                    <s:element minOccurs="0" maxOccurs="1" name="Tail" type="s:string"/>
+                </s:sequence>
+            </s:complexType>
+            <s:element name="GetPostIndex">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="address" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+            <s:element name="GetPostIndexResponse">
+                <s:complexType>
+                    <s:sequence>
+                        <s:element minOccurs="0" maxOccurs="1" name="GetPostIndexResult" type="s:string"/>
+                    </s:sequence>
+                </s:complexType>
+            </s:element>
+        </s:schema>
+    </wsdl:types>
+    <wsdl:message name="ParseAddressSoapIn">
+        <wsdl:part name="parameters" element="tns:ParseAddress"/>
+    </wsdl:message>
+    <wsdl:message name="ParseAddressSoapOut">
+        <wsdl:part name="parameters" element="tns:ParseAddressResponse"/>
+    </wsdl:message>
+    <wsdl:message name="ParseSoapIn">
+        <wsdl:part name="parameters" element="tns:Parse"/>
+    </wsdl:message>
+    <wsdl:message name="ParseSoapOut">
+        <wsdl:part name="parameters" element="tns:ParseResponse"/>
+    </wsdl:message>
+    <wsdl:message name="GetPostIndexSoapIn">
+        <wsdl:part name="parameters" element="tns:GetPostIndex"/>
+    </wsdl:message>
+    <wsdl:message name="GetPostIndexSoapOut">
+        <wsdl:part name="parameters" element="tns:GetPostIndexResponse"/>
+    </wsdl:message>
+    <wsdl:portType name="ParsingServiceSoap">
+        <wsdl:operation name="ParseAddress">
+            <wsdl:input message="tns:ParseAddressSoapIn"/>
+            <wsdl:output message="tns:ParseAddressSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="Parse">
+            <wsdl:input message="tns:ParseSoapIn"/>
+            <wsdl:output message="tns:ParseSoapOut"/>
+        </wsdl:operation>
+        <wsdl:operation name="GetPostIndex">
+            <wsdl:input message="tns:GetPostIndexSoapIn"/>
+            <wsdl:output message="tns:GetPostIndexSoapOut"/>
+        </wsdl:operation>
+    </wsdl:portType>
+    <wsdl:binding name="ParsingServiceSoap" type="tns:ParsingServiceSoap">
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="ParseAddress">
+            <soap:operation soapAction="http://tempuri.org/ParseAddress" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="Parse">
+            <soap:operation soapAction="http://tempuri.org/Parse" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetPostIndex">
+            <soap:operation soapAction="http://tempuri.org/GetPostIndex" style="document"/>
+            <wsdl:input>
+                <soap:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:binding name="ParsingServiceSoap12" type="tns:ParsingServiceSoap">
+        <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+        <wsdl:operation name="ParseAddress">
+            <soap12:operation soapAction="http://tempuri.org/ParseAddress" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="Parse">
+            <soap12:operation soapAction="http://tempuri.org/Parse" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+        <wsdl:operation name="GetPostIndex">
+            <soap12:operation soapAction="http://tempuri.org/GetPostIndex" style="document"/>
+            <wsdl:input>
+                <soap12:body use="literal"/>
+            </wsdl:input>
+            <wsdl:output>
+                <soap12:body use="literal"/>
+            </wsdl:output>
+        </wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="ParsingService">
+        <wsdl:port name="ParsingServiceSoap" binding="tns:ParsingServiceSoap">
+            <soap:address location="http://bk-ofm-01/ParsingService/ParsingService.asmx"/>
+        </wsdl:port>
+        <wsdl:port name="ParsingServiceSoap12" binding="tns:ParsingServiceSoap12">
+            <soap12:address location="http://bk-ofm-01/ParsingService/ParsingService.asmx"/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

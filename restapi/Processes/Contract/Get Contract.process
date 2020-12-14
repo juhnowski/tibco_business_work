@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <pd:name>Processes/Contract/Get Contract.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="inputParams">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="ID" type="xsd:long"/>
+                    <xsd:element name="adLogin" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>48</pd:startX>
+    <pd:startY>166</pd:startY>
+    <pd:returnBindings>
+        <JSONoutput>
+            <xsl:value-of select="if (count($Catch/exceptiondata)>0)&#xA; then $Render-error-JSON/ns:ActivityOutputClass/jsonString  &#xA;else $Render-JSON/ns:ActivityOutputClass/jsonString"/>
+        </JSONoutput>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="JSONoutput" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>784</pd:endX>
+    <pd:endY>167</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1521575913877</pd:targetNamespace>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>584</pd:x>
+        <pd:y>167</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="id" type="xsd:long"/>
+                            <xsd:element name="clientId" type="xsd:long"/>
+                            <xsd:element name="clientName" type="xsd:string"/>
+                            <xsd:element name="contractNumber" type="xsd:string"/>
+                            <xsd:element name="contractClientName" type="xsd:string"/>
+                            <xsd:element name="salesManagerId" type="xsd:long"/>
+                            <xsd:element name="salesManagerName" type="xsd:string"/>
+                            <xsd:element name="contractTypeSFId" type="xsd:long"/>
+                            <xsd:element name="contractTypeSFName" type="xsd:string"/>
+                            <xsd:element name="contactId" type="xsd:long"/>
+                            <xsd:element name="contactName" type="xsd:string"/>
+                            <xsd:element name="signedDate" type="xsd:dateTime"/>
+                            <xsd:element name="operLicenseId" type="xsd:long"/>
+                            <xsd:element name="operLicenseName" type="xsd:string"/>
+                            <xsd:element name="joinLevelId" type="xsd:long"/>
+                            <xsd:element name="joinLevelName" type="xsd:string"/>
+                            <xsd:element name="collectionManagerId" type="xsd:long"/>
+                            <xsd:element name="collectionManagerName" type="xsd:string"/>
+                            <xsd:element name="collectionStatus" type="xsd:string"/>
+                            <xsd:element name="crossClientID" type="xsd:long"/>
+                            <xsd:element name="uSFId" type="xsd:long"/>
+                            <xsd:element name="uSFName" type="xsd:string"/>
+                            <xsd:element name="blockDate" type="xsd:dateTime"/>
+                            <xsd:element name="blockOpStatusId" type="xsd:long"/>
+                            <xsd:element name="blockOpStatusName" type="xsd:string"/>
+                            <xsd:element name="aBHId" type="xsd:long"/>
+                            <xsd:element name="aBHName" type="xsd:string"/>
+                            <xsd:element name="contractInvoiceId" type="xsd:long"/>
+                            <xsd:element name="contractInvoiceName" type="xsd:string"/>
+                            <xsd:element name="contractInvoiceClientName" type="xsd:string"/>
+                            <xsd:element name="sendDataToExtId" type="xsd:long"/>
+                            <xsd:element name="sendDataToExtame" type="xsd:string"/>
+                            <xsd:element name="vat" type="xsd:string"/>
+                            <xsd:element name="profitID" type="xsd:long"/>
+                            <xsd:element name="profitName" type="xsd:string"/>
+                            <xsd:element name="setFineId" type="xsd:long"/>
+                            <xsd:element name="setFineName" type="xsd:string"/>
+                            <xsd:element name="fineTypeId" type="xsd:long"/>
+                            <xsd:element name="fineTypeName" type="xsd:string"/>
+                            <xsd:element name="fine" type="xsd:string"/>
+                            <xsd:element name="penyRFRId" type="xsd:long"/>
+                            <xsd:element name="penyRFRName" type="xsd:string"/>
+                            <xsd:element name="invoicePayPeriod" type="xsd:string"/>
+                            <xsd:element name="breakDate" type="xsd:dateTime"/>
+                            <xsd:element name="breakCauseId" type="xsd:long"/>
+                            <xsd:element name="breakCauseName" type="xsd:string"/>
+                            <xsd:element name="businnesUnitId" type="xsd:long"/>
+                            <xsd:element name="businnesUnitName" type="xsd:string"/>
+                            <xsd:element name="supplierId" type="xsd:long"/>
+                            <xsd:element name="supplierName" type="xsd:string"/>
+                            <xsd:element name="branch" type="xsd:string"/>
+                            <xsd:element name="balance" type="xsd:string"/>
+                            <xsd:element name="billingCycleCode" type="xsd:string"/>
+                            <xsd:element name="billingCycleName" type="xsd:string"/>
+                            <xsd:element name="segmentId" type="xsd:long"/>
+                            <xsd:element name="segmentName" type="xsd:string"/>
+                            <xsd:element name="serviceLevelId" type="xsd:long"/>
+                            <xsd:element name="serviceLevelName" type="xsd:string"/>
+                            <xsd:element name="agreePrivateInfoId" type="xsd:long"/>
+                            <xsd:element name="agreePrivateInfoName" type="xsd:string"/>
+                            <xsd:element name="bank" type="xsd:string"/>
+                            <xsd:element name="account" type="xsd:string"/>
+                            <xsd:element name="bik" type="xsd:string"/>
+                            <xsd:element name="corrAccount" type="xsd:string"/>
+                            <xsd:element name="kpp" type="xsd:string"/>
+                            <xsd:element name="dealPassport" type="xsd:string"/>
+                            <xsd:element name="dealBank" type="xsd:string"/>
+                            <xsd:element name="saleOfficeId" type="xsd:long"/>
+                            <xsd:element name="saleOfficeName" type="xsd:string"/>
+                            <xsd:element name="salePointId" type="xsd:long"/>
+                            <xsd:element name="salePointName" type="xsd:string"/>
+                            <xsd:element name="underControl" type="xsd:int"/>
+                            <xsd:element name="fineWarrantNumber" type="xsd:string"/>
+                            <xsd:element name="editable" type="xsd:int"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <id>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Id"/>
+                    </id>
+                    <clientId>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ClientId"/>
+                    </clientId>
+                    <clientName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ClientName"/>
+                    </clientName>
+                    <contractNumber>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ContractNumber"/>
+                    </contractNumber>
+                    <contractClientName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ContractClientName"/>
+                    </contractClientName>
+                    <salesManagerId>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/SalesManagerId"/>
+                    </salesManagerId>
+                    <salesManagerName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/SalesManagerName"/>
+                    </salesManagerName>
+                    <contractTypeSFId>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ContractTypeSFId"/>
+                    </contractTypeSFId>
+                    <contractTypeSFName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ContractTypeSFName"/>
+                    </contractTypeSFName>
+                    <contactId>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ContactId"/>
+                    </contactId>
+                    <contactName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ContactName"/>
+                    </contactName>
+                    <signedDate>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/SignedDate"/>
+                    </signedDate>
+                    <operLicenseId>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/OperLicenseId"/>
+                    </operLicenseId>
+                    <operLicenseName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/OperLicenseName"/>
+                    </operLicenseName>
+                    <joinLevelId>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/JoinLevelId"/>
+                    </joinLevelId>
+                    <joinLevelName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/JoinLevelName"/>
+                    </joinLevelName>
+                    <collectionManagerId>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/CollectionManagerId"/>
+                    </collectionManagerId>
+                    <collectionManagerName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/CollectionManagerName"/>
+                    </collectionManagerName>
+                    <collectionStatus>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/CollectionStatus"/>
+                    </collectionStatus>
+                    <crossClientID>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/CrossClientID"/>
+                    </crossClientID>
+                    <uSFId>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/USFId"/>
+                    </uSFId>
+                    <uSFName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/USFName"/>
+                    </uSFName>
+                    <blockDate>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/BlockDate"/>
+                    </blockDate>
+                    <blockOpStatusId>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/BlockOpStatusId"/>
+                    </blockOpStatusId>
+                    <blockOpStatusName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/BlockOpStatusName"/>
+                    </blockOpStatusName>
+                    <aBHId>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ABHId"/>
+                    </aBHId>
+                    <aBHName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ABHName"/>
+                    </aBHName>
+                    <contractInvoiceId>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ContractInvoiceId"/>
+                    </contractInvoiceId>
+                    <contractInvoiceName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ContractInvoiceName"/>
+                    </contractInvoiceName>
+                    <contractInvoiceClientName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ContractInvoiceClientName"/>
+                    </contractInvoiceClientName>
+                    <sendDataToExtId>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/SendDataToExtId"/>
+                    </sendDataToExtId>
+                    <sendDataToExtame>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/SendDataToExtame"/>
+                    </sendDataToExtame>
+                    <vat>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/VAT"/>
+                    </vat>
+                    <profitID>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ProfitID"/>
+                    </profitID>
+                    <profitName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ProfitName"/>
+                    </profitName>
+                    <setFineId>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/SetFineId"/>
+                    </setFineId>
+                    <setFineName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/SetFineName"/>
+                    </setFineName>
+                    <fineTypeId>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/FineTypeId"/>
+                    </fineTypeId>
+                    <fineTypeName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/FineTypeName"/>
+                    </fineTypeName>
+                    <fine>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Fine"/>
+                    </fine>
+                    <penyRFRId>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/PenyRFRId"/>
+                    </penyRFRId>
+                    <penyRFRName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/PenyRFRName"/>
+                    </penyRFRName>
+                    <invoicePayPeriod>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/InvoicePayPeriod"/>
+                    </invoicePayPeriod>
+                    <breakDate>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/BreakDate"/>
+                    </breakDate>
+                    <breakCauseId>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/BreakCauseId"/>
+                    </breakCauseId>
+                    <breakCauseName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/BreakCauseName"/>
+                    </breakCauseName>
+                    <businnesUnitId>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/BusinnesUnitId"/>
+                    </businnesUnitId>
+                    <businnesUnitName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/BusinnesUnitName"/>
+                    </businnesUnitName>
+                    <supplierId>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/SupplierId"/>
+                    </supplierId>
+                    <supplierName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/SupplierName"/>
+                    </supplierName>
+                    <branch>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Branch"/>
+                    </branch>
+                    <balance>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Balance"/>
+                    </balance>
+                    <billingCycleCode>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/BillingCycleCode"/>
+                    </billingCycleCode>
+                    <billingCycleName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/BillingCycleName"/>
+                    </billingCycleName>
+                    <segmentId>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/SegmentId"/>
+                    </segmentId>
+                    <segmentName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/SegmentName"/>
+                    </segmentName>
+                    <serviceLevelId>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ServiceLevelId"/>
+                    </serviceLevelId>
+                    <serviceLevelName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ServiceLevelName"/>
+                    </serviceLevelName>
+                    <agreePrivateInfoId>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/AgreePrivateInfoId"/>
+                    </agreePrivateInfoId>
+                    <agreePrivateInfoName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/AgreePrivateInfoName"/>
+                    </agreePrivateInfoName>
+                    <bank>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Bank"/>
+                    </bank>
+                    <account>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Account"/>
+                    </account>
+                    <bik>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/BIK"/>
+                    </bik>
+                    <corrAccount>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/CorrAccount"/>
+                    </corrAccount>
+                    <kpp>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/KPP"/>
+                    </kpp>
+                    <dealPassport>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/DealPassport"/>
+                    </dealPassport>
+                    <dealBank>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/DealBank"/>
+                    </dealBank>
+                    <saleOfficeId>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/SaleOfficeId"/>
+                    </saleOfficeId>
+                    <saleOfficeName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/SaleOfficeName"/>
+                    </saleOfficeName>
+                    <salePointId>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/SalePointId"/>
+                    </salePointId>
+                    <salePointName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/SalePointName"/>
+                    </salePointName>
+                    <underControl>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/UnderControl"/>
+                    </underControl>
+                    <fineWarrantNumber>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/FineWarrantNumber"/>
+                    </fineWarrantNumber>
+                    <editable>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Editable"/>
+                    </editable>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Contract">
+        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+        <pd:x>200</pd:x>
+        <pd:y>168</pd:y>
+        <config>
+            <timeout>%%Timeout%%</timeout>
+            <maxRows>1</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <ProcedureName>Contract_GetRecord;1</ProcedureName>
+            <useSchema>false</useSchema>
+            <schema>%%Schema%%</schema>
+            <parameterTypes>
+                <parameter>
+                    <colName>@RETURN_VALUE</colName>
+                    <colType>5</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@ID</colName>
+                    <colType>1</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@adLogin</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@opResult</colName>
+                    <colType>2</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@opErrorText</colName>
+                    <colType>2</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+            </parameterTypes>
+        </config>
+        <pd:inputBindings>
+            <inputs>
+                <inputSet>
+                    <ID>
+                        <xsl:value-of select="$Start/inputParams/ID"/>
+                    </ID>
+                    <adLogin>
+                        <xsl:value-of select="$Start/inputParams/adLogin"/>
+                    </adLogin>
+                    <opResult>
+                        <xsl:value-of select="0"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </opErrorText>
+                </inputSet>
+            </inputs>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>368</pd:x>
+        <pd:y>166</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term>
+                <xsd:element name="Resultsets">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="UpdateCount" type="xsd:int"/>
+                            <xsd:element name="ResultSet1">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="Record1">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="Id" type="xsd:long"/>
+                                                    <xsd:element name="ClientId" type="xsd:long"/>
+                                                    <xsd:element name="ClientName" type="xsd:string"/>
+                                                    <xsd:element name="ContractNumber" type="xsd:string"/>
+                                                    <xsd:element name="ContractClientName" type="xsd:string"/>
+                                                    <xsd:element name="SalesManagerId" type="xsd:long"/>
+                                                    <xsd:element name="SalesManagerName" type="xsd:string"/>
+                                                    <xsd:element name="ContractTypeSFId" type="xsd:long"/>
+                                                    <xsd:element name="ContractTypeSFName" type="xsd:string"/>
+                                                    <xsd:element name="ContactId" type="xsd:long"/>
+                                                    <xsd:element name="ContactName" type="xsd:string"/>
+                                                    <xsd:element name="SignedDate" type="xsd:dateTime"/>
+                                                    <xsd:element name="OperLicenseId" type="xsd:long"/>
+                                                    <xsd:element name="OperLicenseName" type="xsd:string"/>
+                                                    <xsd:element name="JoinLevelId" type="xsd:long"/>
+                                                    <xsd:element name="JoinLevelName" type="xsd:string"/>
+                                                    <xsd:element name="CollectionManagerId" type="xsd:long"/>
+                                                    <xsd:element name="CollectionManagerName" type="xsd:string"/>
+                                                    <xsd:element name="CollectionStatus" type="xsd:string"/>
+                                                    <xsd:element name="CrossClientID" type="xsd:long"/>
+                                                    <xsd:element name="USFId" type="xsd:long"/>
+                                                    <xsd:element name="USFName" type="xsd:string"/>
+                                                    <xsd:element name="BlockDate" type="xsd:dateTime"/>
+                                                    <xsd:element name="BlockOpStatusId" type="xsd:long"/>
+                                                    <xsd:element name="BlockOpStatusName" type="xsd:string"/>
+                                                    <xsd:element name="ABHId" type="xsd:long"/>
+                                                    <xsd:element name="ABHName" type="xsd:string"/>
+                                                    <xsd:element name="ContractInvoiceId" type="xsd:long"/>
+                                                    <xsd:element name="ContractInvoiceName" type="xsd:string"/>
+                                                    <xsd:element name="ContractInvoiceClientName" type="xsd:string"/>
+                                                    <xsd:element name="SendDataToExtId" type="xsd:long"/>
+                                                    <xsd:element name="SendDataToExtame" type="xsd:string"/>
+                                                    <xsd:element name="VAT" type="xsd:string"/>
+                                                    <xsd:element name="ProfitID" type="xsd:long"/>
+                                                    <xsd:element name="ProfitName" type="xsd:string"/>
+                                                    <xsd:element name="SetFineId" type="xsd:long"/>
+                                                    <xsd:element name="SetFineName" type="xsd:string"/>
+                                                    <xsd:element name="FineTypeId" type="xsd:long"/>
+                                                    <xsd:element name="FineTypeName" type="xsd:string"/>
+                                                    <xsd:element name="Fine" type="xsd:string"/>
+                                                    <xsd:element name="PenyRFRId" type="xsd:long"/>
+                                                    <xsd:element name="PenyRFRName" type="xsd:string"/>
+                                                    <xsd:element name="InvoicePayPeriod" type="xsd:string"/>
+                                                    <xsd:element name="BreakDate" type="xsd:dateTime"/>
+                                                    <xsd:element name="BreakCauseId" type="xsd:long"/>
+                                                    <xsd:element name="BreakCauseName" type="xsd:string"/>
+                                                    <xsd:element name="BusinnesUnitId" type="xsd:long"/>
+                                                    <xsd:element name="BusinnesUnitName" type="xsd:string"/>
+                                                    <xsd:element name="SupplierId" type="xsd:long"/>
+                                                    <xsd:element name="SupplierName" type="xsd:string"/>
+                                                    <xsd:element name="Branch" type="xsd:string"/>
+                                                    <xsd:element name="Balance" type="xsd:string"/>
+                                                    <xsd:element name="BillingCycleCode" type="xsd:string"/>
+                                                    <xsd:element name="BillingCycleName" type="xsd:string"/>
+                                                    <xsd:element name="SegmentId" type="xsd:long"/>
+                                                    <xsd:element name="SegmentName" type="xsd:string"/>
+                                                    <xsd:element name="ServiceLevelId" type="xsd:long"/>
+                                                    <xsd:element name="ServiceLevelName" type="xsd:string"/>
+                                                    <xsd:element name="AgreePrivateInfoId" type="xsd:long"/>
+                                                    <xsd:element name="AgreePrivateInfoName" type="xsd:string"/>
+                                                    <xsd:element name="Bank" type="xsd:string"/>
+                                                    <xsd:element name="Account" type="xsd:string"/>
+                                                    <xsd:element name="BIK" type="xsd:string"/>
+                                                    <xsd:element name="CorrAccount" type="xsd:string"/>
+                                                    <xsd:element name="KPP" type="xsd:string"/>
+                                                    <xsd:element name="DealPassport" type="xsd:string"/>
+                                                    <xsd:element name="DealBank" type="xsd:string"/>
+                                                    <xsd:element name="SaleOfficeId" type="xsd:long"/>
+                                                    <xsd:element name="SaleOfficeName" type="xsd:string"/>
+                                                    <xsd:element name="SalePointId" type="xsd:long"/>
+                                                    <xsd:element name="SalePointName" type="xsd:string"/>
+                                                    <xsd:element name="UnderControl" type="xsd:int"/>
+                                                    <xsd:element name="FineWarrantNumber" type="xsd:string"/>
+                                                    <xsd:element name="Editable" type="xsd:int"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Get-Contract/resultSet/UnresolvedResultsets"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>367</pd:x>
+        <pd:y>68</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Render error JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>579</pd:x>
+        <pd:y>71</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="opResult" type="xsd:int"/>
+                            <xsd:element name="opErrorText" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <opResult>
+                        <xsl:value-of select="2"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="$Catch/exceptiondata/*"/>
+                    </opErrorText>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Get Contract</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Contract</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Render error JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render error JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

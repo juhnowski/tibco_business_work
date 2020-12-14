@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           id="ProductAttribute">
+
+<xs:include schemaLocation="Reference.xsd"/>
+<xs:include schemaLocation="IsEditable.xsd"/>
+
+           <xs:element name="Id" type="xs:integer">
+             <xs:annotation>
+               <xs:documentation>Идентификатор атрибута</xs:documentation>
+             </xs:annotation>
+           </xs:element>
+
+           <xs:element name="Name">
+             <xs:annotation>
+               <xs:documentation>Наименование атрибута</xs:documentation>
+             </xs:annotation>
+               <xs:simpleType>
+                   <xs:restriction base="xs:string">
+                       <xs:maxLength value="30"/>
+                   </xs:restriction>
+               </xs:simpleType>
+           </xs:element>
+
+           <xs:element name="DataType" type="xs:string">
+             <xs:annotation>
+               <xs:documentation>Тип данных атрибута</xs:documentation>
+             </xs:annotation>
+           </xs:element>
+
+           <xs:element name="Description">
+             <xs:annotation>
+               <xs:documentation>Описание атрибута</xs:documentation>
+             </xs:annotation>
+               <xs:simpleType>
+                   <xs:restriction base="xs:string">
+                       <xs:maxLength value="255"/>
+                   </xs:restriction>
+               </xs:simpleType>
+           </xs:element>
+
+           <xs:element name="DefaultValue">
+             <xs:annotation>
+               <xs:documentation>Значение по умолчанию</xs:documentation>
+             </xs:annotation>
+               <xs:simpleType>
+                   <xs:restriction base="xs:string">
+                       <xs:maxLength value="255"/>
+                   </xs:restriction>
+               </xs:simpleType>
+           </xs:element>
+
+           <xs:element name="TopValue">
+             <xs:annotation>
+               <xs:documentation>Пороговое значение сверху</xs:documentation>
+             </xs:annotation>
+               <xs:simpleType>
+                   <xs:restriction base="xs:string">
+                       <xs:maxLength value="255"/>
+                   </xs:restriction>
+               </xs:simpleType>
+           </xs:element>
+
+           <xs:element name="BottomValue">
+             <xs:annotation>
+               <xs:documentation>Пороговое значение снизу</xs:documentation>
+             </xs:annotation>
+               <xs:simpleType>
+                   <xs:restriction base="xs:string">
+                       <xs:maxLength value="255"/>
+                   </xs:restriction>
+               </xs:simpleType>
+           </xs:element>
+
+           <xs:element name="StoredIn">
+             <xs:annotation>
+               <xs:documentation>Наименование системы, которая управляет атрибутом</xs:documentation>
+             </xs:annotation>
+               <xs:simpleType>
+                   <xs:restriction base="xs:string">
+                       <xs:maxLength value="30"/>
+                   </xs:restriction>
+               </xs:simpleType>
+           </xs:element>
+
+           <xs:element name="Get">
+             <xs:annotation>
+               <xs:documentation>Адрес запроса, с помощью которого можно получить информацию об атрибуте</xs:documentation>
+             </xs:annotation>
+               <xs:simpleType>
+                   <xs:restriction base="xs:string">
+                       <xs:maxLength value="255"/>
+                   </xs:restriction>
+               </xs:simpleType>
+           </xs:element>
+
+           <xs:element name="Put">
+             <xs:annotation>
+               <xs:documentation>Адрес запроса, с помощью которого можно изменить атрибут</xs:documentation>
+             </xs:annotation>
+               <xs:simpleType>
+                   <xs:restriction base="xs:string">
+                       <xs:maxLength value="255"/>
+                   </xs:restriction>
+               </xs:simpleType>
+           </xs:element>
+
+           <xs:element name="ProductAttribute" type="ProductAttribute"/>
+             <xs:complexType name="ProductAttribute">
+               <xs:sequence>
+               <xs:element ref="Id" />
+               <xs:element ref="Name" />
+               <xs:element ref="DataType" />
+               <xs:element ref="Description" minOccurs="0"/>
+               <xs:element ref="DefaultValue" minOccurs="0"/>
+               <xs:element ref="TopValue" minOccurs="0"/>
+               <xs:element ref="BottomValue" minOccurs="0"/>
+               <xs:element ref="Reference" maxOccurs="unbounded" minOccurs="0"/>
+               <xs:element ref="IsEditable" />
+               <xs:element ref="StoredIn" minOccurs="0"/>
+               <xs:element ref="Get" minOccurs="0"/>
+               <xs:element ref="Put" minOccurs="0"/>
+             </xs:sequence>
+             </xs:complexType>
+</xs:schema>

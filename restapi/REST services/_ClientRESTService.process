@@ -1,0 +1,1088 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <pd:name>REST services/_ClientRESTService.process</pd:name>
+    <pd:startName>HTTP Receiver</pd:startName>
+    <pd:startX>0</pd:startX>
+    <pd:startY>0</pd:startY>
+    <pd:returnBindings>
+        <JSONoutput>
+            <xsl:value-of select="if (count($Catch/exceptiondata)>0) then $Catch/exceptiondata/* else &quot;&quot;"/>
+        </JSONoutput>
+    </pd:returnBindings>
+    <pd:starter name="HTTP Receiver">
+        <pd:type>com.tibco.plugin.http.HTTPEventSource</pd:type>
+        <pd:resourceType>httppalette.httpEventSource</pd:resourceType>
+        <pd:x>161</pd:x>
+        <pd:y>70</pd:y>
+        <config>
+            <outputMode>String</outputMode>
+            <defaultEncoding>UTF8</defaultEncoding>
+            <inputOutputVersion>5.3.0</inputOutputVersion>
+            <newMimeSupport>true</newMimeSupport>
+            <sharedChannel>/Connection/HTTP Connection.sharedhttp</sharedChannel>
+            <parsePostData>false</parsePostData>
+            <customField/>
+            <Headers>
+                <xsd:element name="root">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="Accept" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Charset" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Accept-Encoding" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Content-Length" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Connection" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Cookie" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </Headers>
+        </config>
+        <pd:inputBindings/>
+    </pd:starter>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="JSONoutput" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>738</pd:endX>
+    <pd:endY>68</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:partners/>
+    <pd:targetNamespace>http://xmlns.example.com/1521578356241</pd:targetNamespace>
+    <pd:activity name="REST Dispatch and Reply">
+        <pd:type>com.tibco.plugin.json.rest.server.activities.RestAdapterActivity</pd:type>
+        <pd:resourceType>rest.activities.RestAdapter</pd:resourceType>
+        <pd:x>400</pd:x>
+        <pd:y>76</pd:y>
+        <config>
+            <eventSource>HTTP Receiver</eventSource>
+            <RestService>
+                <InnerService>
+                    <ns0:application xmlns:ns0="http://wadl.dev.java.net/2009/02" name="Application">
+                        <ns0:resources name="ClientRestService" base="http://localhost:8080">
+                            <ns0:resource id="_CompaniesInfo" path="companies/info">
+                                <ns0:doc/>
+                                <ns0:method id="_GetCompanyInfoByINN" name="GET">
+                                    <ns0:doc/>
+                                    <Binding process="/Processes/Company/_GetCompanyInfoByINN.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" match="/*">
+                                                <INN>
+                                                    <xsl:value-of select="$Input-Binding/params/query/INN"/>
+                                                </INN>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" match="/*">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/JSONoutput">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/JSONoutput"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                    <Headers>
+                                                        <Content-Type>
+                                                            <xsl:value-of select="&quot;application/json&quot;"/>
+                                                        </Content-Type>
+                                                    </Headers>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                    <ns0:request name="Request">
+                                        <ns0:param name="INN" style="query" required="true"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response0" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
+                                </ns0:method>
+                            </ns0:resource>
+                            <ns0:resource id="_RegistrationClient" path="clients/registration">
+                                <ns0:doc/>
+                                <ns0:method id="_RegistrationClientByINN" name="POST">
+                                    <ns0:doc/>
+                                    <Binding process="/Processes/Client/_RegistrationClient.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                                <inputParams>
+                                                    <inputJSON>
+                                                        <xsl:value-of select="$Input-Binding/params/Body/Text/content"/>
+                                                    </inputJSON>
+                                                </inputParams>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/JSONoutput">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/JSONoutput"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                    <Headers>
+                                                        <Content-Type>
+                                                            <xsl:value-of select="&quot;application/json&quot;"/>
+                                                        </Content-Type>
+                                                    </Headers>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                    <ns0:request name="Request">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response0" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
+                                </ns0:method>
+                            </ns0:resource>
+                            <ns0:resource id="_RegistrationContract" path="contracts/registration">
+                                <ns0:doc/>
+                                <ns0:method id="_RegistrationContract_BAN_Scala" name="POST">
+                                    <ns0:doc/>
+                                    <Binding process="/Processes/Contract/_RegistrationContract.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                                <inputParams>
+                                                    <inputJSON>
+                                                        <xsl:value-of select="$Input-Binding/params/Body/Text/content"/>
+                                                    </inputJSON>
+                                                </inputParams>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/JSONoutput">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/JSONoutput"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                    <Headers>
+                                                        <Content-Type>
+                                                            <xsl:value-of select="&quot;application/json&quot;"/>
+                                                        </Content-Type>
+                                                    </Headers>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                    <ns0:request name="Request">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response0" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
+                                </ns0:method>
+                            </ns0:resource>
+                            <ns0:resource id="_Cases" path="cases">
+                                <ns0:doc/>
+                                <ns0:method id="_CreateCase" name="POST">
+                                    <ns0:doc/>
+                                    <Binding process="/Processes/Case/_CreateCase.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" match="/*">
+                                                <inputParams>
+                                                    <inputJSON>
+                                                        <xsl:value-of select="$Input-Binding/params/Body/Text/content"/>
+                                                    </inputJSON>
+                                                </inputParams>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/JSONoutput">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/JSONoutput"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                    <Headers>
+                                                        <Content-Type>
+                                                            <xsl:value-of select="&quot;application/json&quot;"/>
+                                                        </Content-Type>
+                                                    </Headers>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                    <ns0:request name="Request">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response0" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
+                                </ns0:method>
+                                <ns0:method id="_UpdateCase" name="PUT">
+                                    <ns0:doc/>
+                                    <Binding process="/Processes/Case/_UpdateCase.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" match="/*">
+                                                <inputParams>
+                                                    <inputJSON>
+                                                        <xsl:value-of select="$Input-Binding/params/Body/Text/content"/>
+                                                    </inputJSON>
+                                                </inputParams>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/JSONoutput">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/JSONoutput"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                    <Headers>
+                                                        <Content-Type>
+                                                            <xsl:value-of select="&quot;application/json&quot;"/>
+                                                        </Content-Type>
+                                                    </Headers>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                    <ns0:request name="Request">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response0" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
+                                </ns0:method>
+                            </ns0:resource>
+                            <ns0:resource id="_GetFreePhoneNumbers" path="products/phonenumbers/getfree">
+                                <ns0:doc/>
+                                <ns0:method id="_GetFreePhoneNumbers_NIS" name="POST">
+                                    <ns0:doc/>
+                                    <Binding process="/Processes/Product/_GetFreePhoneNumbers.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" match="/*">
+                                                <inputParams>
+                                                    <inputJSON>
+                                                        <xsl:value-of select="$Input-Binding/params/Body/Text/content"/>
+                                                    </inputJSON>
+                                                </inputParams>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/JSONoutput">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/JSONoutput"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                    <Headers>
+                                                        <Content-Type>
+                                                            <xsl:value-of select="&quot;application/json&quot;"/>
+                                                        </Content-Type>
+                                                    </Headers>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                    <ns0:request name="Request">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response0" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
+                                </ns0:method>
+                            </ns0:resource>
+                            <ns0:resource id="_ReservePhoneNumbers" path="products/phonenumbers/reserve">
+                                <ns0:doc/>
+                                <ns0:method id="_ReservePhoneNumbers_NIS" name="POST">
+                                    <ns0:doc/>
+                                    <Binding process="/Processes/Product/_ReservePhoneNumbers.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" match="/*">
+                                                <inputParams>
+                                                    <inputJSON>
+                                                        <xsl:value-of select="$Input-Binding/params/Body/Text/content"/>
+                                                    </inputJSON>
+                                                </inputParams>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/JSONoutput">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/JSONoutput"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                    <Headers>
+                                                        <Content-Type>
+                                                            <xsl:value-of select="&quot;application/json&quot;"/>
+                                                        </Content-Type>
+                                                    </Headers>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                    <ns0:request name="Request">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response0" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
+                                </ns0:method>
+                            </ns0:resource>
+                            <ns0:resource id="_ProductPricePlan" path="products/priceplan">
+                                <ns0:doc/>
+                                <ns0:method id="_GetProductPricePlan" name="POST">
+                                    <ns0:doc/>
+                                    <Binding process="/Processes/Product/_GetProductPricePlan.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                                <inputParams>
+                                                    <inputJSON>
+                                                        <xsl:value-of select="$Input-Binding/params/Body/Text/content"/>
+                                                    </inputJSON>
+                                                </inputParams>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProductPricePlanSchema.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ProductPricePlan.xsd">
+                                            <xsl:template xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProductPricePlanSchema.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ProductPricePlan.xsd">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/responseJSON">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/responseJSON"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                    <Headers>
+                                                        <Content-Type>
+                                                            <xsl:value-of select="&quot;application/json&quot;"/>
+                                                        </Content-Type>
+                                                    </Headers>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                    <ns0:request name="Request">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response0" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
+                                </ns0:method>
+                            </ns0:resource>
+                            <ns0:resource id="_AddressCoordinates" path="address/coordinates">
+                                <ns0:doc/>
+                                <ns0:method id="_GetAddressCoordinates" name="POST">
+                                    <ns0:doc/>
+                                    <ns0:request name="Request">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response0" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
+                                    <Binding process="/Processes/Address/_GetAddressCoordinates.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                                <inputParams>
+                                                    <inputJSON>
+                                                        <xsl:value-of select="$Input-Binding/params/Body/Text/content"/>
+                                                    </inputJSON>
+                                                </inputParams>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetAddressCoordinatesSchema.xsd" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Response.xsd" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/AddressParsedModel.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ActionInfo.xsd">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetAddressCoordinatesSchema.xsd" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Response.xsd" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/AddressParsedModel.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ActionInfo.xsd">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/responseJSON">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/responseJSON"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                    <Headers>
+                                                        <Content-Type>
+                                                            <xsl:value-of select="&quot;application/json&quot;"/>
+                                                        </Content-Type>
+                                                    </Headers>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                </ns0:method>
+                            </ns0:resource>
+                            <ns0:resource id="_AddressUnderCoordinates" path="address/underCoordinates">
+                                <ns0:doc/>
+                                <ns0:method id="_GetAddressUnderCoordinates" name="POST">
+                                    <ns0:doc/>
+                                    <Binding process="/Processes/Address/_GetParsedAddressUnderCoordinates.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                                <inputParams>
+                                                    <inputJSON>
+                                                        <xsl:value-of select="$Input-Binding/params/Body/Text/content"/>
+                                                    </inputJSON>
+                                                </inputParams>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetParsedAddressUnderCoordinatesSchema.xsd" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Response.xsd" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/AddressParsedModel.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ActionInfo.xsd">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetParsedAddressUnderCoordinatesSchema.xsd" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Response.xsd" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/AddressParsedModel.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ActionInfo.xsd">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/responseJSON">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/responseJSON"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                    <Headers>
+                                                        <Content-Type>
+                                                            <xsl:value-of select="&quot;application/json&quot;"/>
+                                                        </Content-Type>
+                                                    </Headers>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                    <ns0:request name="Request">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response0" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
+                                </ns0:method>
+                            </ns0:resource>
+                            <ns0:resource id="_ProcessInfo" path="process">
+                                <ns0:doc/>
+                                <ns0:method id="_GetProcessInfo" name="POST">
+                                    <ns0:doc/>
+                                    <Binding process="/Processes/Process/_GetProcessInfo.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                                <inputParams>
+                                                    <inputJSON>
+                                                        <xsl:value-of select="$Input-Binding/params/Body/Text/content"/>
+                                                    </inputJSON>
+                                                </inputParams>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx5="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProcessInfo.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ProcessInfo.xsd" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Process.xsd" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Response.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Contract.xsd" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProcessInfoSchema.xsd">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProcessInfo.xsd" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ProcessInfo.xsd" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Process.xsd" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Response.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Contract.xsd" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProcessInfoSchema.xsd" match="/*">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/responseJSON">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/responseJSON"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                    <Headers>
+                                                        <Content-Type>
+                                                            <xsl:value-of select="&quot;application/json&quot;"/>
+                                                        </Content-Type>
+                                                    </Headers>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                    <ns0:request name="Request">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response0" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
+                                </ns0:method>
+                            </ns0:resource>
+                            <ns0:resource id="_ProcessCurrentStep" path="process/currentStep">
+                                <ns0:doc/>
+                                <ns0:method id="_GetProcessCurrentStep" name="POST">
+                                    <ns0:doc/>
+                                    <Binding process="/Processes/Process/_GetProcessCurrentStep.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                                <inputParams>
+                                                    <inputJSON>
+                                                        <xsl:value-of select="$Input-Binding/params/Body/Text/content"/>
+                                                    </inputJSON>
+                                                </inputParams>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/StepInfo.xsd" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProcessCurrentStep.xsd" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Process.xsd" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Response.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ActionInfo.xsd" xmlns:pfx7="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Attribute.xsd" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProcessCurrentStepSchema.xsd">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx5="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/StepInfo.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProcessCurrentStep.xsd" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Process.xsd" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Response.xsd" xmlns:pfx7="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Attribute.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ActionInfo.xsd" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProcessCurrentStepSchema.xsd" match="/*">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/responseJSON">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/responseJSON"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                    <Headers>
+                                                        <Content-Type>
+                                                            <xsl:value-of select="&quot;application/json&quot;"/>
+                                                        </Content-Type>
+                                                    </Headers>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                    <ns0:request name="Request">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response0" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
+                                </ns0:method>
+                            </ns0:resource>
+                            <ns0:resource id="_TileMap" path="geo/tileMap">
+                                <ns0:doc/>
+                                <ns0:method id="_GetTileMap" name="POST">
+                                    <ns0:doc/>
+                                    <Binding process="/Processes/Geo/_GetTileMap.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" match="/*">
+                                                <inputParams>
+                                                    <inputJSON>
+                                                        <xsl:value-of select="$Input-Binding/params/Body/Text/content"/>
+                                                    </inputJSON>
+                                                </inputParams>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/JSONoutput">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/JSONoutput"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                    <Headers>
+                                                        <Content-Type>
+                                                            <xsl:value-of select="&quot;application/json&quot;"/>
+                                                        </Content-Type>
+                                                    </Headers>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                    <ns0:request name="Request">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response0" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
+                                </ns0:method>
+                            </ns0:resource>
+                            <ns0:resource id="_ServiceDesign" path="service/design">
+                                <ns0:doc/>
+                                <ns0:method id="_GetServiceDesign" name="POST">
+                                    <ns0:doc/>
+                                    <Binding process="/Processes/Geo/_ServiceDesign.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" match="/*">
+                                                <inputParams>
+                                                    <inputJSON>
+                                                        <xsl:value-of select="$Input-Binding/params/Body/Text/content"/>
+                                                    </inputJSON>
+                                                </inputParams>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/JSONoutput">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/JSONoutput"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                    <Headers>
+                                                        <Content-Type>
+                                                            <xsl:value-of select="&quot;application/json&quot;"/>
+                                                        </Content-Type>
+                                                    </Headers>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                    <ns0:request name="Request">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response0" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
+                                </ns0:method>
+                            </ns0:resource>
+                            <ns0:resource id="_AbilityQuicklyConnectProduct" path="product/quicklyConnect">
+                                <ns0:doc/>
+                                <ns0:method id="_GetAbilityQuicklyConnectProduct" name="POST">
+                                    <ns0:doc/>
+                                    <Binding process="/Processes/Product/_GetAbilityQuicklyConnectProduct.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" match="/*">
+                                                <inputParams>
+                                                    <inputJSON>
+                                                        <xsl:value-of select="$Input-Binding/params/Body/Text/content"/>
+                                                    </inputJSON>
+                                                </inputParams>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/JSONoutput">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/JSONoutput"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                    <Headers>
+                                                        <Content-Type>
+                                                            <xsl:value-of select="&quot;application/json&quot;"/>
+                                                        </Content-Type>
+                                                    </Headers>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                    <ns0:request name="Request">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response0" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
+                                </ns0:method>
+                            </ns0:resource>
+                            <ns0:resource id="_RecommendedProductList" path="product/recommended">
+                                <ns0:doc/>
+                                <ns0:method id="_GetRecommendedProductList" name="POST">
+                                    <ns0:doc/>
+                                    <Binding process="/Processes/Product/_GetRecommendedProductList.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" match="/*">
+                                                <inputParams>
+                                                    <inputJSON>
+                                                        <xsl:value-of select="$Input-Binding/params/Body/Text/content"/>
+                                                    </inputJSON>
+                                                </inputParams>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/JSONoutput">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/JSONoutput"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                    <Headers>
+                                                        <Content-Type>
+                                                            <xsl:value-of select="&quot;application/json&quot;"/>
+                                                        </Content-Type>
+                                                    </Headers>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                    <ns0:request name="Request">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response0" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
+                                </ns0:method>
+                            </ns0:resource>
+                            <ns0:resource id="_CreateProcess" path="process/create">
+                                <ns0:doc/>
+                                <ns0:method id="_DoCreateProcess" name="POST">
+                                    <ns0:doc/>
+                                    <Binding process="/Processes/Process/_CreateProcess.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" match="/*">
+                                                <inputParams>
+                                                    <inputJSON>
+                                                        <xsl:value-of select="$Input-Binding/params/Body/Text/content"/>
+                                                    </inputJSON>
+                                                </inputParams>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/JSONoutput">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/JSONoutput"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                    <Headers>
+                                                        <Content-Type>
+                                                            <xsl:value-of select="&quot;application/json&quot;"/>
+                                                        </Content-Type>
+                                                    </Headers>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                    <ns0:request name="Request">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response0" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
+                                </ns0:method>
+                            </ns0:resource>
+                            <ns0:resource id="_NextStepProcess" path="process/next">
+                                <ns0:doc/>
+                                <ns0:method id="_GetNextStepProcess" name="POST">
+                                    <ns0:doc/>
+                                    <Binding process="/Processes/Process/_NextStepProcess.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" match="/*">
+                                                <inputParams>
+                                                    <inputJSON>
+                                                        <xsl:value-of select="$Input-Binding/params/Body/Text/content"/>
+                                                    </inputJSON>
+                                                </inputParams>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/JSONoutput">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/JSONoutput"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                    <Headers>
+                                                        <Content-Type>
+                                                            <xsl:value-of select="&quot;application/json&quot;"/>
+                                                        </Content-Type>
+                                                    </Headers>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                    <ns0:request name="Request">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response0" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
+                                </ns0:method>
+                            </ns0:resource>
+                            <ns0:resource id="_ProductInfo" path="/products/info">
+                                <ns0:doc/>
+                                <ns0:method id="GetProductInfo" name="POST">
+                                    <ns0:doc/>
+                                    <Binding process="/Processes/Product/_GetProductInfo.process">
+                                        <RESTResponseHeader>
+                                            <xsd:element name="Headers">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="StatusLine" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Content-Type" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Location" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Set-Cookie" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="Pragma" type="xsd:string" minOccurs="0"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </RESTResponseHeader>
+                                        <Input-Binding xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+                                            <xsl:template xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" match="/*">
+                                                <inputParams>
+                                                    <inputJSON>
+                                                        <xsl:value-of select="$Input-Binding/params/Body/Text/content"/>
+                                                    </inputJSON>
+                                                </inputParams>
+                                            </xsl:template>
+                                        </Input-Binding>
+                                        <Output-Binding xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx="http://www.tibco.com/schemas/restapi/XSD Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ProductBasicInfo.xsd" xmlns:ns1="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetRecommendedProductsResultJSON.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProductInfoInputJSON.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/PhoneNumber.xsd" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProcessInfo.xsd" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetFreePhoneNumbersSchema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+                                            <xsl:template xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx="http://www.tibco.com/schemas/restapi/XSD Schemas/Schema.xsd" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ProductBasicInfo.xsd" xmlns:ns1="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetRecommendedProductsResultJSON.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProductInfoInputJSON.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/PhoneNumber.xsd" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProcessInfo.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetFreePhoneNumbersSchema.xsd" match="/*">
+                                                <RESTResponse>
+                                                    <xsl:if test="$End/JSONoutput">
+                                                        <asciiContent>
+                                                            <xsl:value-of select="$End/JSONoutput"/>
+                                                        </asciiContent>
+                                                    </xsl:if>
+                                                </RESTResponse>
+                                            </xsl:template>
+                                        </Output-Binding>
+                                    </Binding>
+                                    <ns0:request name="Request">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:request>
+                                    <ns0:response name="Response0" status="200">
+                                        <ns0:representation mediaType="application/json"/>
+                                    </ns0:response>
+                                </ns0:method>
+                            </ns0:resource>
+                        </ns0:resources>
+                    </ns0:application>
+                </InnerService>
+            </RestService>
+        </config>
+        <pd:inputBindings>
+            <ns0:ActivityInputClass xmlns:ns0="http://www.tibco.com/namespaces/tnt/plugins/json">
+                <tmp>
+                    <xsl:value-of select="$HTTP-Receiver/ProcessStarterOutput/Method"/>
+                </tmp>
+            </ns0:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>737</pd:x>
+        <pd:y>183</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>HTTP Receiver</pd:from>
+        <pd:to>REST Dispatch and Reply</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>REST Dispatch and Reply</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

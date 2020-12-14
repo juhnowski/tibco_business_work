@@ -1,0 +1,25 @@
+<?xml version = "1.0" encoding = "UTF-8"?>
+<inputParams>
+    <inputJSON>
+        {
+        "ActionInfo": {
+        "SystemId": "USSS",
+        "UserId": "b2badm",
+        "ActionDate": "2018-10-05T13:52:28.564Z",
+        "comment": "Some comment"
+        },
+        "ProductId": "ProductId",
+        "PhoneNumber": "PhoneNumber",
+        "RegionId": "RegionId",
+        "PNType": "PNType",
+        "PNStatus": "PNStatus",
+        "PNCategory": "PNCategory",
+        "PNCode": "PNCode",
+        "PNFrom": "PNFrom",
+        "PNTo": "PNTo",
+        "RuleId": "RuleId",
+        "Rule": "Rule",
+        "MaxRow": "MaxRow"
+        }
+    </inputJSON>
+</inputParams>

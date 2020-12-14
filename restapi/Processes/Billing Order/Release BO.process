@@ -1,0 +1,2681 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:ns2="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <pd:name>Processes/Billing Order/Release BO.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="inputParams">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="inputJSON" type="xsd:string"/>
+                    <xsd:element name="adLogin" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>57</pd:startX>
+    <pd:startY>215</pd:startY>
+    <pd:returnBindings>
+        <JSONoutput>
+            <xsl:value-of select="$Render-JSON/ns:ActivityOutputClass/jsonString"/>
+        </JSONoutput>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="JSONoutput" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>996</pd:endX>
+    <pd:endY>214</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1521575913877</pd:targetNamespace>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>787</pd:x>
+        <pd:y>215</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="recordId" type="xsd:long"/>
+                            <xsd:element name="opErrorText" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <recordId>
+                        <xsl:value-of select="round($Release-Billing-Order/resultSet/outputSet/RETURN_VALUE)"/>
+                    </recordId>
+                    <opErrorText>
+                        <xsl:value-of select="if($Release-Billing-Order/resultSet/outputSet/RETURN_VALUE >= 0) then $Release-Billing-Order/resultSet/outputSet/ERRTXT else $Get-exception-text/resultSet/outputSet/ErrorTxt"/>
+                    </opErrorText>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>146</pd:x>
+        <pd:y>215</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor>
+                <xsd:element name="input">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="boType" type="xsd:int"/>
+                            <xsd:element name="scalaId" type="xsd:long"/>
+                            <xsd:element name="contract" minOccurs="0">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="contractClientName" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="salesManagerId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="signedDate" type="xsd:dateTime" minOccurs="0"/>
+                                        <xsd:element name="operLicenseId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="joinLevelId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="crossClientID" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="uSFId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="aBHId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="contractInvoiceId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="sendDataToExtId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="profitID" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="setFineId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="fineTypeId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="fine" type="xsd:float" minOccurs="0"/>
+                                        <xsd:element name="penyRFRId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="invoicePayPeriod" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="breakDate" type="xsd:dateTime" minOccurs="0"/>
+                                        <xsd:element name="breakCauseId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="businnesUnitId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="supplierId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="serviceLevelId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="agreePrivateInfoId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="bank" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="account" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="bik" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="corrAccount" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="kpp" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="saleOfficeId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="salePointId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="fineWarrantNumber" type="xsd:string" minOccurs="0"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="scala" minOccurs="0">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="nDSTariffId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="billingCurrencyId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="tariffsCurrencyId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="agentCollectorId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="govContractId" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="oppCoopLVLTPId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="closeDate" type="xsd:dateTime" minOccurs="0"/>
+                                        <xsd:element name="breakCauseId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="billingAddressId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="billingContactId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="invoicePrintId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="invoiceSendToId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="voiceTrafDetailsId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="emailForDetails" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="invoiceDeliveryId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="emailInvoiceDelivery" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="showDIDALexpandedId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="uBGId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="billLanguageId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="specifyConsumerId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="ringUpPhone" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="ringUpEMail" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="digitalSignature" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="digitalSignatureDate" type="xsd:dateTime" minOccurs="0"/>
+                                        <xsd:element name="digitalSignatureId" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="scalaNumberVKId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="trafficTypeId" type="xsd:int" minOccurs="0"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="client" minOccurs="0">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="legalAddressId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="contactAddressId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="carrierTypeId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="clientSMID" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="inn" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="officialStatus" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="okvedCodeID" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="orgFormID" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="segmentID" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="clientName" type="xsd:string" minOccurs="0"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="alwaysNull" type="xsd:double" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityOutputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/inputParams/inputJSON"/>
+                </jsonString>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Release Billing Order">
+        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+        <pd:x>532</pd:x>
+        <pd:y>225</pd:y>
+        <config>
+            <timeout>%%Timeout%%</timeout>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/Oracle BO Connection.sharedjdbc</jdbcSharedConfig>
+            <ProcedureName>CREATE_BO_0</ProcedureName>
+            <useSchema>false</useSchema>
+            <schema>%%BO_Schema%%</schema>
+            <oraObjects/>
+            <oraTables/>
+            <parameterTypes>
+                <parameter>
+                    <colName>RETURN_VALUE</colName>
+                    <colType>5</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_SCALAN</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUSTNAME</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_ADR</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_BADR</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CADR</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_REPR</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_REPR_FAX</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_REPR_PH</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_SUPPL</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_SPCOD</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_C_INV</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_C_TRF</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_C_NEW</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CLNTP</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CLN_SEG</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CLN_SUBCT</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CRGRP</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CRUSR</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUSTMAIL</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUSTSTT</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_SRVMNCOD</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CNTR_SDT</colName>
+                    <colType>1</colType>
+                    <dataType>93</dataType>
+                    <typeName>DATE</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CNTR_EDT</colName>
+                    <colType>1</colType>
+                    <dataType>93</dataType>
+                    <typeName>DATE</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CNTR_TCAUSE</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUST_INN</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_PENI</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>FLOAT</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_PENIAFTER</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_PAYPERIOD</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_EXC_PRCNT</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>FLOAT</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUSTPRSN</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_S_EL_DTL</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CONTRACTNO</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_PROVIDER</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_SSDATE</colName>
+                    <colType>1</colType>
+                    <dataType>93</dataType>
+                    <typeName>DATE</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_INV_LANG</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_BU_COD</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CNTRTP</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_SLPNT</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CNSMR</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_BADR_RUS</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_BADR_INDX</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUST_KPP</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CASE</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CSTLCT</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_OFCLCT</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUST_GEO</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_OKVED_DIVISION</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_OKVED_CODE</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUST_FORM</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_S_INV_MAIL</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_INV_MAIL</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUST_IRS</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUST_IRS_PHONE</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_S_TRFVAT</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CONTRACT_JOIN_LEVEL</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_REGISTR_CNTR</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_INV_FROM</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_INV_MAIL_DTL</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_OPR_LCNCTP</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_PAY_DT_STRT</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_AGNT_CLCTR</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_OPR_COOP_LVLTP</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_AGENT_BL_HST</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CC_ID</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUST_BIC</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUST_BANK</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUST_CRSP</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUST_ACNT</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_USF</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_AUTO_PH</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_AUTO_FAX</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_AUTO_EMAIL</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_SCALAN_VK</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_TRAFFIC_TP</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_SEGMENT_ID</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_AGENT_CONTRACTNO</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_DIDACL_EXPANDED</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CUST_ID</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_S_UNL_TRF</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_IS_INDIVIDUAL_KPP</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_SEND_DATA_TO_EXTERNAL_DB</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_S_SF_SALE</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_CONSUMER_REQUIRED</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_S_EDO</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_EDO_DATE</colName>
+                    <colType>1</colType>
+                    <dataType>93</dataType>
+                    <typeName>DATE</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_EDO_ID</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_EDO_NAME1</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_EDO_NAME2</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_EDO_NAME3</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_EDO_NAME4</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_PROFIT_TP</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_S_PENI</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_PENI_TP</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_NOTE_NMBR</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_GOV_CONTRACT_ID</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+                <parameter>
+                    <colName>I_REFIN_RATE</colName>
+                    <colType>1</colType>
+                    <dataType>2</dataType>
+                    <typeName>NUMBER</typeName>
+                </parameter>
+                <parameter>
+                    <colName>ERRTXT</colName>
+                    <colType>2</colType>
+                    <dataType>12</dataType>
+                    <typeName>VARCHAR2</typeName>
+                </parameter>
+            </parameterTypes>
+        </config>
+        <pd:inputBindings>
+            <inputs>
+                <inputSet>
+                    <I_SCALAN>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_SCALAN)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_SCALAN"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_SCALAN>
+                    <I_CUSTNAME>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_CUSTNAME)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_CUSTNAME"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CUSTNAME>
+                    <I_ADR>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_ADR)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_ADR"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_ADR>
+                    <I_BADR>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_BADR)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_BADR"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_BADR>
+                    <I_CADR>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_CADR)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_CADR"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CADR>
+                    <I_REPR>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_REPR)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_REPR"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_REPR>
+                    <I_REPR_FAX>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_REPR_FAX)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_REPR_FAX"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_REPR_FAX>
+                    <I_REPR_PH>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_REPR_PH)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_REPR_PH"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_REPR_PH>
+                    <I_SUPPL>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_SUPPL)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_SUPPL"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_SUPPL>
+                    <I_SPCOD>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_SPCOD)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_SPCOD else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_SPCOD)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_SPCOD else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_SPCOD>
+                    <I_C_INV>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_C_INV)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_C_INV else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_C_INV)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_C_INV else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_C_INV>
+                    <I_C_TRF>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_C_TRF)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_C_TRF else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_C_TRF)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_C_TRF else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_C_TRF>
+                    <I_C_NEW>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_C_NEW)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_C_NEW else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_C_NEW)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_C_NEW else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_C_NEW>
+                    <I_CLNTP>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CLNTP)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CLNTP else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CLNTP)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CLNTP else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CLNTP>
+                    <I_CLN_SEG>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CLN_SEG)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CLN_SEG else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CLN_SEG)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CLN_SEG else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CLN_SEG>
+                    <I_CLN_SUBCT>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CLN_SUBCT)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CLN_SUBCT else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CLN_SUBCT)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CLN_SUBCT else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CLN_SUBCT>
+                    <I_CRGRP>
+                        <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CRGRP)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CRGRP else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                    </I_CRGRP>
+                    <I_CRUSR>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CRUSR)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CRUSR else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CRUSR)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CRUSR else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CRUSR>
+                    <I_CUSTMAIL>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_CUSTMAIL)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_CUSTMAIL"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CUSTMAIL>
+                    <I_CUSTSTT>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CUSTSTT)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CUSTSTT else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CUSTSTT)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CUSTSTT else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CUSTSTT>
+                    <I_SRVMNCOD>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_SRVMNCOD)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_SRVMNCOD else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_SRVMNCOD)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_SRVMNCOD else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_SRVMNCOD>
+                    <I_CNTR_SDT>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CNTR_SDT)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CNTR_SDT else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CNTR_SDT)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CNTR_SDT else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CNTR_SDT>
+                    <I_CNTR_EDT>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CNTR_EDT)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CNTR_EDT else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CNTR_EDT)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CNTR_EDT else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CNTR_EDT>
+                    <I_CNTR_TCAUSE>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CNTR_TCAUSE)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CNTR_TCAUSE else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CNTR_TCAUSE)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CNTR_TCAUSE else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CNTR_TCAUSE>
+                    <I_CUST_INN>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_CUST_INN)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_CUST_INN"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CUST_INN>
+                    <I_PENI>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_PENI)>0) then tib:substring-before-last($Parse-XML/Resultsets/ResultSet1/Record1/i_PENI, 'E') else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_PENI)>0) then tib:substring-before-last($Parse-XML/Resultsets/ResultSet1/Record1/i_PENI, 'E') else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_PENI>
+                    <I_PENIAFTER>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_PENIAFTER)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_PENIAFTER else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_PENIAFTER)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_PENIAFTER else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_PENIAFTER>
+                    <I_PAYPERIOD>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_PAYPERIOD)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_PAYPERIOD else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_PAYPERIOD)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_PAYPERIOD else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_PAYPERIOD>
+                    <I_EXC_PRCNT>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_EXC_PRCNT)>0) then tib:substring-before-last($Parse-XML/Resultsets/ResultSet1/Record1/i_EXC_PRCNT, 'E') else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_EXC_PRCNT)>0) then tib:substring-before-last($Parse-XML/Resultsets/ResultSet1/Record1/i_EXC_PRCNT, 'E') else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_EXC_PRCNT>
+                    <I_CUSTPRSN>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CUSTPRSN)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CUSTPRSN else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CUSTPRSN)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CUSTPRSN else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CUSTPRSN>
+                    <I_S_EL_DTL>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_S_EL_DTL)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_S_EL_DTL else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_S_EL_DTL)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_S_EL_DTL else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_S_EL_DTL>
+                    <I_CONTRACTNO>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_CONTRACTNO)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_CONTRACTNO"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CONTRACTNO>
+                    <I_PROVIDER>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_PROVIDER)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_PROVIDER else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_PROVIDER)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_PROVIDER else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_PROVIDER>
+                    <I_SSDATE>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_SSDATE)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_SSDATE else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_SSDATE)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_SSDATE else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_SSDATE>
+                    <I_INV_LANG>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_INV_LANG)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_INV_LANG else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_INV_LANG)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_INV_LANG else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_INV_LANG>
+                    <I_BU_COD>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_BU_COD)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_BU_COD else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_BU_COD)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_BU_COD else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_BU_COD>
+                    <I_CNTRTP>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_CNTRTP)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_CNTRTP"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CNTRTP>
+                    <I_SLPNT>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_SLPNT)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_SLPNT"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_SLPNT>
+                    <I_CNSMR>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CNSMR)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CNSMR else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CNSMR)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CNSMR else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CNSMR>
+                    <I_BADR_RUS>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_BADR_RUS)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_BADR_RUS else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_BADR_RUS)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_BADR_RUS else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_BADR_RUS>
+                    <I_BADR_INDX>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_BADR_INDX)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_BADR_INDX"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_BADR_INDX>
+                    <I_CUST_KPP>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_CUST_KPP)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_CUST_KPP"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CUST_KPP>
+                    <I_CASE>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CASE)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CASE else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CASE)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CASE else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CASE>
+                    <I_CSTLCT>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CSTLCT)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CSTLCT else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CSTLCT)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CSTLCT else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CSTLCT>
+                    <I_OFCLCT>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_OFCLCT)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_OFCLCT else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_OFCLCT)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_OFCLCT else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_OFCLCT>
+                    <I_CUST_GEO>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_cust_geo)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_cust_geo else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_cust_geo)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_cust_geo else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CUST_GEO>
+                    <I_OKVED_DIVISION>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_okved_division)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_okved_division"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_OKVED_DIVISION>
+                    <I_OKVED_CODE>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_okved_code)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_okved_code"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_OKVED_CODE>
+                    <I_CUST_FORM>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_cust_form)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_cust_form else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_cust_form)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_cust_form else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CUST_FORM>
+                    <I_S_INV_MAIL>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_S_INV_MAIL)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_S_INV_MAIL else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_S_INV_MAIL)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_S_INV_MAIL else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_S_INV_MAIL>
+                    <I_INV_MAIL>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_INV_MAIL)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_INV_MAIL"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_INV_MAIL>
+                    <I_CUST_IRS>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CUST_IRS)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CUST_IRS else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CUST_IRS)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CUST_IRS else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CUST_IRS>
+                    <I_CUST_IRS_PHONE>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_CUST_IRS_PHONE)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_CUST_IRS_PHONE"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CUST_IRS_PHONE>
+                    <I_S_TRFVAT>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_S_TRFVAT)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_S_TRFVAT else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_S_TRFVAT)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_S_TRFVAT else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_S_TRFVAT>
+                    <I_CONTRACT_JOIN_LEVEL>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CONTRACT_JOIN_LEVEL)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CONTRACT_JOIN_LEVEL else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CONTRACT_JOIN_LEVEL)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CONTRACT_JOIN_LEVEL else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CONTRACT_JOIN_LEVEL>
+                    <I_REGISTR_CNTR>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_REGISTR_CNTR)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_REGISTR_CNTR"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_REGISTR_CNTR>
+                    <I_INV_FROM>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_INV_FROM)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_INV_FROM"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_INV_FROM>
+                    <I_INV_MAIL_DTL>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_INV_MAIL_DTL)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_INV_MAIL_DTL"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_INV_MAIL_DTL>
+                    <I_OPR_LCNCTP>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_OPR_LCNCTP)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_OPR_LCNCTP else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_OPR_LCNCTP)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_OPR_LCNCTP else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_OPR_LCNCTP>
+                    <I_PAY_DT_STRT>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/I_PAY_DT_STRT)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/I_PAY_DT_STRT else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/I_PAY_DT_STRT)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/I_PAY_DT_STRT else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_PAY_DT_STRT>
+                    <I_AGNT_CLCTR>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_AGNT_CLCTR)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_AGNT_CLCTR"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_AGNT_CLCTR>
+                    <I_OPR_COOP_LVLTP>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_OPR_COOP_LVLTP)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_OPR_COOP_LVLTP else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_OPR_COOP_LVLTP)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_OPR_COOP_LVLTP else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_OPR_COOP_LVLTP>
+                    <I_AGENT_BL_HST>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_AGENT_BL_HST)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_AGENT_BL_HST else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_AGENT_BL_HST)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_AGENT_BL_HST else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_AGENT_BL_HST>
+                    <I_CC_ID>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CC_ID)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CC_ID else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_CC_ID)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_CC_ID else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CC_ID>
+                    <I_CUST_BIC>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_CUST_BIC)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_CUST_BIC"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CUST_BIC>
+                    <I_CUST_BANK>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_CUST_BANK)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_CUST_BANK"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CUST_BANK>
+                    <I_CUST_CRSP>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_CUST_CRSP)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_CUST_CRSP"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CUST_CRSP>
+                    <I_CUST_ACNT>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_CUST_ACNT)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_CUST_ACNT"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CUST_ACNT>
+                    <I_USF>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_USF)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_USF else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_USF)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_USF else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_USF>
+                    <I_AUTO_PH>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_AUTO_PH)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_AUTO_PH"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_AUTO_PH>
+                    <I_AUTO_FAX>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_AUTO_FAX)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_AUTO_FAX"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_AUTO_FAX>
+                    <I_AUTO_EMAIL>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_AUTO_EMAIL)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_AUTO_EMAIL"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_AUTO_EMAIL>
+                    <I_SCALAN_VK>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_scalan_vk)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_scalan_vk"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_SCALAN_VK>
+                    <I_TRAFFIC_TP>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_traffic_tp)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_traffic_tp else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_traffic_tp)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_traffic_tp else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_TRAFFIC_TP>
+                    <I_SEGMENT_ID>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_segment_id)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_segment_id else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_segment_id)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_segment_id else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_SEGMENT_ID>
+                    <I_AGENT_CONTRACTNO>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_agent_contractno)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_agent_contractno"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_AGENT_CONTRACTNO>
+                    <I_DIDACL_EXPANDED>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/I_DIDACL_EXPANDED)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/I_DIDACL_EXPANDED else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/I_DIDACL_EXPANDED)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/I_DIDACL_EXPANDED else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_DIDACL_EXPANDED>
+                    <I_CUST_ID>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/I_CUST_ID)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/I_CUST_ID else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/I_CUST_ID)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/I_CUST_ID else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CUST_ID>
+                    <I_S_UNL_TRF>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/I_S_UNL_TRF)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/I_S_UNL_TRF else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/I_S_UNL_TRF)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/I_S_UNL_TRF else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_S_UNL_TRF>
+                    <I_IS_INDIVIDUAL_KPP>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_is_individual_kpp)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_is_individual_kpp else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_is_individual_kpp)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_is_individual_kpp else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_IS_INDIVIDUAL_KPP>
+                    <I_SEND_DATA_TO_EXTERNAL_DB>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_send_data_to_external_db)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_send_data_to_external_db else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_send_data_to_external_db)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_send_data_to_external_db else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_SEND_DATA_TO_EXTERNAL_DB>
+                    <I_S_SF_SALE>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_s_sf_sale)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_s_sf_sale else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_s_sf_sale)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_s_sf_sale else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_S_SF_SALE>
+                    <I_CONSUMER_REQUIRED>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_consumer_required)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_consumer_required else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_consumer_required)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_consumer_required else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_CONSUMER_REQUIRED>
+                    <I_S_EDO>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_s_edo)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_s_edo else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_s_edo)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_s_edo else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_S_EDO>
+                    <I_EDO_DATE>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_edo_date)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_edo_date else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_edo_date)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_edo_date else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_EDO_DATE>
+                    <I_EDO_ID>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_edo_id)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_edo_id"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_EDO_ID>
+                    <I_EDO_NAME1>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_edo_name1)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_edo_name1"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_EDO_NAME1>
+                    <I_EDO_NAME2>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_edo_name2)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_edo_name2"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_EDO_NAME2>
+                    <I_EDO_NAME3>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_edo_name3)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_edo_name3"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_EDO_NAME3>
+                    <I_EDO_NAME4>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_edo_name4)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_edo_name4"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_EDO_NAME4>
+                    <I_PROFIT_TP>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_profit_tp)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_profit_tp else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_profit_tp)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_profit_tp else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_PROFIT_TP>
+                    <I_S_PENI>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_s_peni)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_s_peni else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_s_peni)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_s_peni else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_S_PENI>
+                    <I_PENI_TP>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_peni_tp)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_peni_tp else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_peni_tp)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_peni_tp else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_PENI_TP>
+                    <I_NOTE_NMBR>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_note_nmbr)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_note_nmbr"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_NOTE_NMBR>
+                    <I_GOV_CONTRACT_ID>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/i_gov_contract_id)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/i_gov_contract_id"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_GOV_CONTRACT_ID>
+                    <I_REFIN_RATE>
+                        <xsl:choose>
+                            <xsl:when test="exists(if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_refin_rate)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_refin_rate else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull)">
+                                <xsl:value-of select="if(string-length($Parse-XML/Resultsets/ResultSet1/Record1/i_refin_rate)>0) then $Parse-XML/Resultsets/ResultSet1/Record1/i_refin_rate else $Parse-JSON/ns:ActivityOutputClass/input/alwaysNull"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </I_REFIN_RATE>
+                    <ERRTXT>
+                        <xsl:choose>
+                            <xsl:when test="exists($Parse-XML/Resultsets/ResultSet1/Record1/errtxt)">
+                                <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/errtxt"/>
+                            </xsl:when>
+                            <xsl:otherwise>
+                                <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                            </xsl:otherwise>
+                        </xsl:choose>
+                    </ERRTXT>
+                </inputSet>
+            </inputs>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get exception text">
+        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+        <pd:x>664</pd:x>
+        <pd:y>338</pd:y>
+        <config>
+            <timeout>10</timeout>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <schema>%%Schema%%</schema>
+            <ProcedureName>Scala_GetReqErrTxt</ProcedureName>
+            <parameterTypes>
+                <parameter>
+                    <colName>@RETURN_VALUE</colName>
+                    <colType>5</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@ErrorCode</colName>
+                    <colType>1</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@ErrorTxt</colName>
+                    <colType>2</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@opResult</colName>
+                    <colType>2</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@opErrorText</colName>
+                    <colType>2</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+            </parameterTypes>
+        </config>
+        <pd:inputBindings>
+            <inputs>
+                <inputSet>
+                    <ErrorCode>
+                        <xsl:value-of select="-($Release-Billing-Order/resultSet/outputSet/RETURN_VALUE)"/>
+                    </ErrorCode>
+                    <ErrorTxt>
+                        <xsl:value-of select="''"/>
+                    </ErrorTxt>
+                    <opResult>
+                        <xsl:value-of select="0"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="''"/>
+                    </opErrorText>
+                </inputSet>
+            </inputs>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="BO Mapping">
+        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+        <pd:x>285</pd:x>
+        <pd:y>216</pd:y>
+        <config>
+            <timeout>%%Timeout%%</timeout>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>true</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <ProcedureName>BillingOrder_Mapping;1</ProcedureName>
+            <useSchema>false</useSchema>
+            <schema>%%Schema%%</schema>
+            <parameterTypes>
+                <parameter>
+                    <colName>@RETURN_VALUE</colName>
+                    <colType>5</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@adLogin</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@boType</colName>
+                    <colType>1</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@scalaId</colName>
+                    <colType>1</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@params</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@opResult</colName>
+                    <colType>2</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@opErrorText</colName>
+                    <colType>2</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+            </parameterTypes>
+        </config>
+        <pd:inputBindings>
+            <inputs>
+                <inputSet>
+                    <adLogin>
+                        <xsl:value-of select="$Start/inputParams/adLogin"/>
+                    </adLogin>
+                    <boType>
+                        <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/boType"/>
+                    </boType>
+                    <scalaId>
+                        <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaId"/>
+                    </scalaId>
+                    <params>
+                        <xsl:value-of select="$Render-XML/xmlString"/>
+                    </params>
+                    <opResult>
+                        <xsl:value-of select="0"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </opErrorText>
+                </inputSet>
+            </inputs>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>423</pd:x>
+        <pd:y>218</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term>
+                <xsd:element name="Resultsets">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="UpdateCount" type="xsd:int"/>
+                            <xsd:element name="ResultSet1">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="Record1">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="opResult" type="xsd:int"/>
+                                                    <xsd:element name="opErrorText" type="xsd:string"/>
+                                                    <xsd:element name="i_SCALAN" type="xsd:string"/>
+                                                    <xsd:element name="i_CUSTNAME" type="xsd:string"/>
+                                                    <xsd:element name="i_ADR" type="xsd:string"/>
+                                                    <xsd:element name="i_REGISTR_CNTR" type="xsd:string"/>
+                                                    <xsd:element name="i_BADR" type="xsd:string"/>
+                                                    <xsd:element name="i_CADR" type="xsd:string"/>
+                                                    <xsd:element name="i_REPR" type="xsd:string"/>
+                                                    <xsd:element name="i_REPR_FAX" type="xsd:string"/>
+                                                    <xsd:element name="i_REPR_PH" type="xsd:string"/>
+                                                    <xsd:element name="i_CUSTMAIL" type="xsd:string"/>
+                                                    <xsd:element name="i_SUPPL" type="xsd:string"/>
+                                                    <xsd:element name="i_SPCOD" type="xsd:double"/>
+                                                    <xsd:element name="i_C_INV" type="xsd:double"/>
+                                                    <xsd:element name="i_C_TRF" type="xsd:double"/>
+                                                    <xsd:element name="i_C_NEW" type="xsd:double"/>
+                                                    <xsd:element name="i_CLN_SEG" type="xsd:double"/>
+                                                    <xsd:element name="i_CLNTP" type="xsd:double"/>
+                                                    <xsd:element name="i_CLN_SUBCT" type="xsd:double"/>
+                                                    <xsd:element name="i_CRGRP" type="xsd:double"/>
+                                                    <xsd:element name="i_CRUSR" type="xsd:double"/>
+                                                    <xsd:element name="i_CUSTSTT" type="xsd:double"/>
+                                                    <xsd:element name="i_SRVMNCOD" type="xsd:double"/>
+                                                    <xsd:element name="i_CNTR_SDT" type="xsd:dateTime"/>
+                                                    <xsd:element name="i_CNTR_EDT" type="xsd:dateTime"/>
+                                                    <xsd:element name="i_CNTR_TCAUSE" type="xsd:double"/>
+                                                    <xsd:element name="i_CUST_INN" type="xsd:string"/>
+                                                    <xsd:element name="i_PENI" type="xsd:float"/>
+                                                    <xsd:element name="i_PENIAFTER" type="xsd:double"/>
+                                                    <xsd:element name="i_PAYPERIOD" type="xsd:double"/>
+                                                    <xsd:element name="i_EXC_PRCNT" type="xsd:float"/>
+                                                    <xsd:element name="i_CUSTPRSN" type="xsd:double"/>
+                                                    <xsd:element name="i_S_EL_DTL" type="xsd:double"/>
+                                                    <xsd:element name="i_CONTRACTNO" type="xsd:string"/>
+                                                    <xsd:element name="i_PROVIDER" type="xsd:double"/>
+                                                    <xsd:element name="i_SSDATE" type="xsd:dateTime"/>
+                                                    <xsd:element name="i_INV_LANG" type="xsd:double"/>
+                                                    <xsd:element name="i_BU_COD" type="xsd:double"/>
+                                                    <xsd:element name="i_CNTRTP" type="xsd:string"/>
+                                                    <xsd:element name="i_SLPNT" type="xsd:string"/>
+                                                    <xsd:element name="i_CNSMR" type="xsd:double"/>
+                                                    <xsd:element name="i_BADR_RUS" type="xsd:double"/>
+                                                    <xsd:element name="i_BADR_INDX" type="xsd:string"/>
+                                                    <xsd:element name="i_CUST_KPP" type="xsd:string"/>
+                                                    <xsd:element name="i_CASE" type="xsd:double"/>
+                                                    <xsd:element name="i_CSTLCT" type="xsd:double"/>
+                                                    <xsd:element name="i_OFCLCT" type="xsd:double"/>
+                                                    <xsd:element name="i_cust_geo" type="xsd:double"/>
+                                                    <xsd:element name="i_okved_division" type="xsd:string"/>
+                                                    <xsd:element name="i_okved_code" type="xsd:string"/>
+                                                    <xsd:element name="i_cust_form" type="xsd:double"/>
+                                                    <xsd:element name="i_S_INV_MAIL" type="xsd:double"/>
+                                                    <xsd:element name="i_INV_MAIL" type="xsd:string"/>
+                                                    <xsd:element name="i_CUST_IRS" type="xsd:double"/>
+                                                    <xsd:element name="i_CUST_IRS_PHONE" type="xsd:string"/>
+                                                    <xsd:element name="i_S_TRFVAT" type="xsd:double"/>
+                                                    <xsd:element name="i_CONTRACT_JOIN_LEVEL" type="xsd:double"/>
+                                                    <xsd:element name="i_INV_FROM" type="xsd:string"/>
+                                                    <xsd:element name="i_INV_MAIL_DTL" type="xsd:string"/>
+                                                    <xsd:element name="i_OPR_LCNCTP" type="xsd:double"/>
+                                                    <xsd:element name="I_PAY_DT_STRT" type="xsd:double"/>
+                                                    <xsd:element name="i_AGNT_CLCTR" type="xsd:string"/>
+                                                    <xsd:element name="i_OPR_COOP_LVLTP" type="xsd:double"/>
+                                                    <xsd:element name="i_AGENT_BL_HST" type="xsd:double"/>
+                                                    <xsd:element name="i_CC_ID" type="xsd:double"/>
+                                                    <xsd:element name="i_CUST_BIC" type="xsd:string"/>
+                                                    <xsd:element name="i_CUST_BANK" type="xsd:string"/>
+                                                    <xsd:element name="i_CUST_CRSP" type="xsd:string"/>
+                                                    <xsd:element name="i_CUST_ACNT" type="xsd:string"/>
+                                                    <xsd:element name="i_USF" type="xsd:double"/>
+                                                    <xsd:element name="i_AUTO_PH" type="xsd:string"/>
+                                                    <xsd:element name="i_AUTO_FAX" type="xsd:string"/>
+                                                    <xsd:element name="i_AUTO_EMAIL" type="xsd:string"/>
+                                                    <xsd:element name="i_scalan_vk" type="xsd:string"/>
+                                                    <xsd:element name="i_traffic_tp" type="xsd:double"/>
+                                                    <xsd:element name="i_segment_id" type="xsd:double"/>
+                                                    <xsd:element name="i_agent_contractno" type="xsd:string"/>
+                                                    <xsd:element name="I_DIDACL_EXPANDED" type="xsd:double"/>
+                                                    <xsd:element name="I_CUST_ID" type="xsd:double"/>
+                                                    <xsd:element name="I_S_UNL_TRF" type="xsd:double"/>
+                                                    <xsd:element name="i_is_individual_kpp" type="xsd:double"/>
+                                                    <xsd:element name="i_send_data_to_external_db" type="xsd:double"/>
+                                                    <xsd:element name="i_s_sf_sale" type="xsd:double"/>
+                                                    <xsd:element name="i_consumer_required" type="xsd:double"/>
+                                                    <xsd:element name="i_s_edo" type="xsd:double"/>
+                                                    <xsd:element name="i_edo_date" type="xsd:dateTime"/>
+                                                    <xsd:element name="i_edo_id" type="xsd:string"/>
+                                                    <xsd:element name="i_edo_name1" type="xsd:string"/>
+                                                    <xsd:element name="i_edo_name2" type="xsd:string"/>
+                                                    <xsd:element name="i_edo_name3" type="xsd:string"/>
+                                                    <xsd:element name="i_edo_name4" type="xsd:string"/>
+                                                    <xsd:element name="i_profit_tp" type="xsd:double"/>
+                                                    <xsd:element name="i_s_peni" type="xsd:double"/>
+                                                    <xsd:element name="i_peni_tp" type="xsd:double"/>
+                                                    <xsd:element name="i_note_nmbr" type="xsd:string"/>
+                                                    <xsd:element name="i_gov_contract_id" type="xsd:string"/>
+                                                    <xsd:element name="i_refin_rate" type="xsd:double"/>
+                                                    <xsd:element name="errtxt" type="xsd:string"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$BO-Mapping/resultSet/UnresolvedResultsets"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render XML">
+        <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+        <pd:x>148</pd:x>
+        <pd:y>307</pd:y>
+        <config>
+            <renderAsText>text</renderAsText>
+            <validateInput>false</validateInput>
+            <textEncoding>windows-1251</textEncoding>
+            <term>
+                <xsd:element name="data">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="contract" minOccurs="0">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="ContractClientName" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="SalesManagerId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="SignedDate" type="xsd:dateTime" minOccurs="0"/>
+                                        <xsd:element name="OperLicenseId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="JoinLevelId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="CrossClientID" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="USFId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="ABHId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="ContractInvoiceId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="SendDataToExtId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="ProfitID" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="SetFineId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="FineTypeId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="Fine" type="xsd:float" minOccurs="0"/>
+                                        <xsd:element name="PenyRFRId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="InvoicePayPeriod" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="BreakDate" type="xsd:dateTime" minOccurs="0"/>
+                                        <xsd:element name="BreakCauseId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="BusinnesUnitId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="SupplierId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="ServiceLevelId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="AgreePrivateInfoId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="Bank" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="Account" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="BIK" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="CorrAccount" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="KPP" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="SaleOfficeId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="SalePointId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="FineWarrantNumber" type="xsd:string" minOccurs="0"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="scala" minOccurs="0">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="Id" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="NDSTariffId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="BillingCurrencyId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="TariffsCurrencyId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="AgentCollectorId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="GovContractId" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="OppCoopLVLTPId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="CloseDate" type="xsd:dateTime" minOccurs="0"/>
+                                        <xsd:element name="BreakCauseId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="BillingAddressId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="BillingContactId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="InvoicePrintId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="InvoiceSendToId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="VoiceTrafDetailsId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="EmailForDetails" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="InvoiceDeliveryId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="EmailInvoiceDelivery" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="ShowDIDALexpandedId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="UBGId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="BillLanguageId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="SpecifyConsumerId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="RingUpPhone" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="RingUpEMail" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="DigitalSignature" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="DigitalSignatureDate" type="xsd:dateTime" minOccurs="0"/>
+                                        <xsd:element name="DigitalSignatureId" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="ScalaNumberVKId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="TrafficTypeId" type="xsd:int" minOccurs="0"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="client" minOccurs="0">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="LegalAddressId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="ContactAddressId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="CarrierTypeId" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="ClientSMID" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="inn" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="OfficialStatus" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="OKVEDCodeID" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="OrgFormID" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="SegmentID" type="xsd:long" minOccurs="0"/>
+                                        <xsd:element name="ClientName" type="xsd:string" minOccurs="0"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <data>
+                <contract>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/contractClientName">
+                        <ContractClientName>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/contractClientName"/>
+                        </ContractClientName>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/salesManagerId">
+                        <SalesManagerId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/salesManagerId"/>
+                        </SalesManagerId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/signedDate">
+                        <SignedDate>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/signedDate"/>
+                        </SignedDate>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/operLicenseId">
+                        <OperLicenseId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/operLicenseId"/>
+                        </OperLicenseId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/joinLevelId">
+                        <JoinLevelId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/joinLevelId"/>
+                        </JoinLevelId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/crossClientID">
+                        <CrossClientID>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/crossClientID"/>
+                        </CrossClientID>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/uSFId">
+                        <USFId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/uSFId"/>
+                        </USFId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/aBHId">
+                        <ABHId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/aBHId"/>
+                        </ABHId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/contractInvoiceId">
+                        <ContractInvoiceId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/contractInvoiceId"/>
+                        </ContractInvoiceId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/sendDataToExtId">
+                        <SendDataToExtId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/sendDataToExtId"/>
+                        </SendDataToExtId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/profitID">
+                        <ProfitID>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/profitID"/>
+                        </ProfitID>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/setFineId">
+                        <SetFineId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/setFineId"/>
+                        </SetFineId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/fineTypeId">
+                        <FineTypeId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/fineTypeId"/>
+                        </FineTypeId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/fine">
+                        <Fine>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/fine"/>
+                        </Fine>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/penyRFRId">
+                        <PenyRFRId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/penyRFRId"/>
+                        </PenyRFRId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/invoicePayPeriod">
+                        <InvoicePayPeriod>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/invoicePayPeriod"/>
+                        </InvoicePayPeriod>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/breakDate">
+                        <BreakDate>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/breakDate"/>
+                        </BreakDate>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/breakCauseId">
+                        <BreakCauseId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/breakCauseId"/>
+                        </BreakCauseId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/businnesUnitId">
+                        <BusinnesUnitId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/businnesUnitId"/>
+                        </BusinnesUnitId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/supplierId">
+                        <SupplierId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/supplierId"/>
+                        </SupplierId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/serviceLevelId">
+                        <ServiceLevelId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/serviceLevelId"/>
+                        </ServiceLevelId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/agreePrivateInfoId">
+                        <AgreePrivateInfoId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/agreePrivateInfoId"/>
+                        </AgreePrivateInfoId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/bank">
+                        <Bank>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/bank"/>
+                        </Bank>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/account">
+                        <Account>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/account"/>
+                        </Account>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/bik">
+                        <BIK>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/bik"/>
+                        </BIK>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/corrAccount">
+                        <CorrAccount>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/corrAccount"/>
+                        </CorrAccount>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/kpp">
+                        <KPP>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/kpp"/>
+                        </KPP>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/saleOfficeId">
+                        <SaleOfficeId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/saleOfficeId"/>
+                        </SaleOfficeId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/salePointId">
+                        <SalePointId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/salePointId"/>
+                        </SalePointId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/contract/fineWarrantNumber">
+                        <FineWarrantNumber>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contract/fineWarrantNumber"/>
+                        </FineWarrantNumber>
+                    </xsl:if>
+                </contract>
+                <scala>
+                    <Id>
+                        <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaId"/>
+                    </Id>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/nDSTariffId">
+                        <NDSTariffId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/nDSTariffId"/>
+                        </NDSTariffId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/billingCurrencyId">
+                        <BillingCurrencyId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/billingCurrencyId"/>
+                        </BillingCurrencyId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/tariffsCurrencyId">
+                        <TariffsCurrencyId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/tariffsCurrencyId"/>
+                        </TariffsCurrencyId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/agentCollectorId">
+                        <AgentCollectorId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/agentCollectorId"/>
+                        </AgentCollectorId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/govContractId">
+                        <GovContractId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/govContractId"/>
+                        </GovContractId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/oppCoopLVLTPId">
+                        <OppCoopLVLTPId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/oppCoopLVLTPId"/>
+                        </OppCoopLVLTPId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/closeDate">
+                        <CloseDate>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/closeDate"/>
+                        </CloseDate>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/breakCauseId">
+                        <BreakCauseId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/breakCauseId"/>
+                        </BreakCauseId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/billingAddressId">
+                        <BillingAddressId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/billingAddressId"/>
+                        </BillingAddressId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/billingContactId">
+                        <BillingContactId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/billingContactId"/>
+                        </BillingContactId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/invoicePrintId">
+                        <InvoicePrintId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/invoicePrintId"/>
+                        </InvoicePrintId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/invoiceSendToId">
+                        <InvoiceSendToId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/invoiceSendToId"/>
+                        </InvoiceSendToId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/voiceTrafDetailsId">
+                        <VoiceTrafDetailsId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/voiceTrafDetailsId"/>
+                        </VoiceTrafDetailsId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/emailForDetails">
+                        <EmailForDetails>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/emailForDetails"/>
+                        </EmailForDetails>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/invoiceDeliveryId">
+                        <InvoiceDeliveryId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/invoiceDeliveryId"/>
+                        </InvoiceDeliveryId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/emailInvoiceDelivery">
+                        <EmailInvoiceDelivery>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/emailInvoiceDelivery"/>
+                        </EmailInvoiceDelivery>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/showDIDALexpandedId">
+                        <ShowDIDALexpandedId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/showDIDALexpandedId"/>
+                        </ShowDIDALexpandedId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/uBGId">
+                        <UBGId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/uBGId"/>
+                        </UBGId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/billLanguageId">
+                        <BillLanguageId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/billLanguageId"/>
+                        </BillLanguageId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/specifyConsumerId">
+                        <SpecifyConsumerId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/specifyConsumerId"/>
+                        </SpecifyConsumerId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/ringUpPhone">
+                        <RingUpPhone>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/ringUpPhone"/>
+                        </RingUpPhone>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/ringUpEMail">
+                        <RingUpEMail>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/ringUpEMail"/>
+                        </RingUpEMail>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/digitalSignature">
+                        <DigitalSignature>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/digitalSignature"/>
+                        </DigitalSignature>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/digitalSignatureDate">
+                        <DigitalSignatureDate>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/digitalSignatureDate"/>
+                        </DigitalSignatureDate>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/digitalSignatureId">
+                        <DigitalSignatureId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/digitalSignatureId"/>
+                        </DigitalSignatureId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/scalaNumberVKId">
+                        <ScalaNumberVKId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/scalaNumberVKId"/>
+                        </ScalaNumberVKId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scala/trafficTypeId">
+                        <TrafficTypeId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scala/trafficTypeId"/>
+                        </TrafficTypeId>
+                    </xsl:if>
+                </scala>
+                <client>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/client/legalAddressId">
+                        <LegalAddressId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/client/legalAddressId"/>
+                        </LegalAddressId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/client/contactAddressId">
+                        <ContactAddressId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/client/contactAddressId"/>
+                        </ContactAddressId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/client/carrierTypeId">
+                        <CarrierTypeId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/client/carrierTypeId"/>
+                        </CarrierTypeId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/client/clientSMID">
+                        <ClientSMID>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/client/clientSMID"/>
+                        </ClientSMID>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/client/inn">
+                        <inn>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/client/inn"/>
+                        </inn>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/client/officialStatus">
+                        <OfficialStatus>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/client/officialStatus"/>
+                        </OfficialStatus>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/client/okvedCodeID">
+                        <OKVEDCodeID>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/client/okvedCodeID"/>
+                        </OKVEDCodeID>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/client/orgFormID">
+                        <OrgFormID>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/client/orgFormID"/>
+                        </OrgFormID>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/client/segmentID">
+                        <SegmentID>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/client/segmentID"/>
+                        </SegmentID>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/client/clientName">
+                        <ClientName>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/client/clientName"/>
+                        </ClientName>
+                    </xsl:if>
+                </client>
+            </data>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Check Params">
+        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+        <pd:x>284</pd:x>
+        <pd:y>308</pd:y>
+        <config>
+            <timeout>%%Timeout%%</timeout>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>true</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <ProcedureName>BillingOrder_CheckReqParams;1</ProcedureName>
+            <useSchema>false</useSchema>
+            <schema>%%Schema%%</schema>
+            <parameterTypes>
+                <parameter>
+                    <colName>@RETURN_VALUE</colName>
+                    <colType>5</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@adLogin</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@params</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@errorMsg</colName>
+                    <colType>2</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@opResult</colName>
+                    <colType>2</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@opErrorText</colName>
+                    <colType>2</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+            </parameterTypes>
+        </config>
+        <pd:inputBindings>
+            <inputs>
+                <inputSet>
+                    <adLogin>
+                        <xsl:value-of select="$Start/inputParams/adLogin"/>
+                    </adLogin>
+                    <params>
+                        <xsl:value-of select="$Render-XML/xmlString"/>
+                    </params>
+                    <errorMsg>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </errorMsg>
+                    <opResult>
+                        <xsl:value-of select="0"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </opErrorText>
+                </inputSet>
+            </inputs>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>424</pd:x>
+        <pd:y>307</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput>
+                <message>
+                    <xsl:value-of select="concat($Check-Params/resultSet/outputSet/errorMsg, &quot;  &quot;, $Check-Params/resultSet/outputSet/opErrorText)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="1"/>
+                </messageCode>
+            </ns2:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate-Error-1">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>287</pd:x>
+        <pd:y>72</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInput/>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>Render XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Release Billing Order</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Release-Billing-Order/resultSet/outputSet/RETURN_VALUE &gt;= 0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Release Billing Order</pd:from>
+        <pd:to>Get exception text</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get exception text</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>BO Mapping</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>Release Billing Order</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render XML</pd:from>
+        <pd:to>Check Params</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check Params</pd:from>
+        <pd:to>BO Mapping</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Check Params</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Check-Params/resultSet/outputSet/opResult !=0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>BO Mapping</pd:from>
+        <pd:to>Generate-Error-1</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$BO-Mapping/resultSet/outputSet/opResult !=0</pd:xpath>
+    </pd:transition>
+</pd:ProcessDefinition>

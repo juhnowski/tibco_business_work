@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" id="NextStepProcess">
+	<xs:include schemaLocation="ActionInfo.xsd"/>
+	<xs:include schemaLocation="Attribute.xsd"/>
+	<xs:include schemaLocation="Response.xsd"/>
+	<xs:include schemaLocation="StepInfo.xsd"/>
+	<xs:element name="input">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ActionInfo"/>
+				<xs:element name="ProcessId" >
+				<xs:annotation>
+						<xs:documentation>Идентификатор процесса</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="255"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="StepAttributes" minOccurs="0" maxOccurs="unbounded" type="Attribute"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+
+	<xs:element name="result">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="Response" type="Response"/>
+				<xs:element name="StepName">
+					<xs:annotation>
+						<xs:documentation>Наименование текущего шага процесса</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="255"/>
+						</xs:restriction>
+					</xs:simpleType>				
+				</xs:element>
+				<xs:element name="Attributes" type="Attribute" maxOccurs="unbounded" />
+				<xs:element name="PassedStepsInfo" type="StepInfo" maxOccurs="unbounded" />
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           id="Contact">
+    <xs:include schemaLocation="DocumentInfo.xsd"/>
+    <xs:element name="Contact" type="Contact"/>
+
+    <xs:complexType name="Contact">
+        <xs:annotation>
+            <xs:documentation>Информация о контактном лице</xs:documentation>
+        </xs:annotation>
+        <xs:all>
+            <xs:element name="firstName">
+                <xs:annotation>
+                    <xs:documentation>Имя клиента</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="30"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="lastName">
+                <xs:annotation>
+                    <xs:documentation>Фамилия клиента</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="30"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="middleName" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Отчество клиента</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="30"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="birthdate" type="xs:date" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Дата рождения клиента</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="position" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Позиция</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="50"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="department" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Отдел</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="40"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="phone" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Контактный телефон. Одно из значений phone или email должно быть заполнено
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="150"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="ext" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Дополнительный номер</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="10"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="email" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Email. Одно из значений phone или email должно быть заполнено
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="250"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="documentInfo" type="DocumentInfo" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Данные по документу, удостоверяющему личность основного контакта
+                    </xs:documentation>
+                </xs:annotation>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+</xs:schema>

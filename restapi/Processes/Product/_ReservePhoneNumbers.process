@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/CreateCaseRequest.xsd" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ReservePhoneNumbersSchema.xsd" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ReservePhoneNumbersResponse.xsd" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/PhoneNumber.xsd" xmlns:pfx8="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/RegistrationContractResponse.xsd" xmlns:pfx7="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Contract.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/CreateCaseResponse.xsd">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Contract.xsd" schemaLocation="/XSD Schemas/Contract.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/RegistrationContractResponse.xsd" schemaLocation="/XSD Schemas/RegistrationContractResponse.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/CreateCaseRequest.xsd" schemaLocation="/XSD Schemas/CreateCaseRequest.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/CreateCaseResponse.xsd" schemaLocation="/XSD Schemas/CreateCaseResponse.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/PhoneNumber.xsd" schemaLocation="/XSD Schemas/PhoneNumber.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ReservePhoneNumbersResponse.xsd" schemaLocation="/XSD Schemas/ReservePhoneNumbersResponse.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ReservePhoneNumbersSchema.xsd" schemaLocation="/XSD Schemas/ReservePhoneNumbersSchema.xsd"/>
+    <pd:name>Processes/Product/_ReservePhoneNumbers.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="inputParams">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="inputJSON" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>147</pd:startX>
+    <pd:startY>51</pd:startY>
+    <pd:returnBindings>
+        <JSONoutput>
+            <xsl:value-of select="if($Render-response-JSON/ns:ActivityOutputClass/jsonString !='')&#xA;then $Render-response-JSON/ns:ActivityOutputClass/jsonString &#xA;else $Render-error-JSON/ns:ActivityOutputClass/jsonString"/>
+        </JSONoutput>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="JSONoutput" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>866</pd:endX>
+    <pd:endY>106</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1539008439075</pd:targetNamespace>
+    <pd:activity name="Parse numbers JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>552</pd:x>
+        <pd:y>52</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor ref="pfx2:PhoneNumber"/>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInputClass xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/json">
+                <jsonString>
+                    <xsl:value-of select="$_ReservePhoneNumbersNISMock/JSONoutput"/>
+                </jsonString>
+            </ns1:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render response JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>715</pd:x>
+        <pd:y>61</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor ref="pfx4:resultJSON"/>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInputClass xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/json">
+                <resultJSON>
+                    <ReserveId>
+                        <xsl:value-of select="$Parse-numbers-JSON/ns:ActivityOutputClass/PhoneNumber/Number"/>
+                    </ReserveId>
+                    <ReserveEndDate>
+                        <xsl:value-of select="current-dateTime()"/>
+                    </ReserveEndDate>
+                </resultJSON>
+            </ns1:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render error JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>736</pd:x>
+        <pd:y>179</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="inputParams">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="opResult" type="xsd:int"/>
+                            <xs:element name="opErrorText" type="xsd:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInputClass xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/json">
+                <inputParams>
+                    <opResult>
+                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="2"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Catch/exceptiondata/*"/>
+                    </opErrorText>
+                </inputParams>
+            </ns1:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>551</pd:x>
+        <pd:y>179</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="_ReservePhoneNumbersNISMock">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>338</pd:x>
+        <pd:y>50</pd:y>
+        <config>
+            <processName>/Processes/NIS/_ReservePhoneNumbersNISMock.process</processName>
+        </config>
+        <pd:inputBindings>
+            <inputParams>
+                <inputJSON>
+                    <xsl:value-of select="$Start/inputParams/inputJSON"/>
+                </inputJSON>
+            </inputParams>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>_ReservePhoneNumbersNISMock</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse numbers JSON</pd:from>
+        <pd:to>Render response JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render response JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render error JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Render error JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>_ReservePhoneNumbersNISMock</pd:from>
+        <pd:to>Parse numbers JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

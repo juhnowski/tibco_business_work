@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pfx5="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/StepInfo.xsd" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProcessCurrentStep.xsd" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Process.xsd" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Response.xsd" xmlns:pfx7="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Attribute.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ActionInfo.xsd" xmlns:pfx6="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProcessCurrentStepSchema.xsd">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/ActionInfo.xsd" schemaLocation="/XSD Schemas/ActionInfo.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Response.xsd" schemaLocation="/XSD Schemas/Response.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Process.xsd" schemaLocation="/XSD Schemas/Process.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProcessCurrentStep.xsd" schemaLocation="/XSD Schemas/GetProcessCurrentStep.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/StepInfo.xsd" schemaLocation="/XSD Schemas/StepInfo.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetProcessCurrentStepSchema.xsd" schemaLocation="/XSD Schemas/GetProcessCurrentStepSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Attribute.xsd" schemaLocation="/XSD Schemas/Attribute.xsd"/>
+    <pd:name>Processes/Process/_GetProcessCurrentStep.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="inputParams">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="inputJSON" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>96</pd:startX>
+    <pd:startY>74</pd:startY>
+    <pd:returnBindings>
+        <responseJSON>
+            <xsl:value-of select="if (count($Catch/exceptiondata)>0) then $Render-error-JSON/ns:ActivityOutputClass/jsonString  else $Render-JSON/ns:ActivityOutputClass/jsonString"/>
+        </responseJSON>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="responseJSON" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>676</pd:endX>
+    <pd:endY>74</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <ProcessManagementMock>
+            <xsd:element name="response">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="ProductId" type="xsd:string"/>
+                        <xsd:element name="ProductName" type="xsd:string"/>
+                        <xsd:element name="StepName" type="xsd:string"/>
+                        <xsd:element name="Attributes" type="pfx7:Attribute" maxOccurs="unbounded"/>
+                        <xsd:element name="PassedStepInfo" type="pfx5:StepInfo" maxOccurs="unbounded"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </ProcessManagementMock>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1539124742813</pd:targetNamespace>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>239</pd:x>
+        <pd:y>74</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ValidateOutputEnable>true</ValidateOutputEnable>
+            <ActivityOutputEditor ref="pfx6:request"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/inputParams/inputJSON"/>
+                </jsonString>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>533</pd:x>
+        <pd:y>74</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor ref="pfx6:response"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <response>
+                    <Response>
+                        <opResult>
+                            <xsl:value-of select="0"/>
+                        </opResult>
+                        <ObjectId>
+                            <xsl:value-of select="&quot;Test ObjectId&quot;"/>
+                        </ObjectId>
+                        <opErrorText>
+                            <xsl:value-of select="&quot;test&quot;"/>
+                        </opErrorText>
+                    </Response>
+                    <ProductId>
+                        <xsl:value-of select="$ProcessManagementMock/response/ProductId"/>
+                    </ProductId>
+                    <ProductName>
+                        <xsl:value-of select="$ProcessManagementMock/response/ProductName"/>
+                    </ProductName>
+                    <StepName>
+                        <xsl:value-of select="$ProcessManagementMock/response/StepName"/>
+                    </StepName>
+                    <xsl:for-each select="$ProcessManagementMock/response/PassedStepInfo/Attributes">
+                        <Attributes>
+                            <Name>
+                                <xsl:value-of select="Name"/>
+                            </Name>
+                            <Value>
+                                <xsl:value-of select="Value"/>
+                            </Value>
+                        </Attributes>
+                    </xsl:for-each>
+                    <xsl:for-each select="$ProcessManagementMock/response/PassedStepInfo">
+                        <PassedStepInfo>
+                            <StepId>
+                                <xsl:value-of select="StepId"/>
+                            </StepId>
+                            <PreviousStepId>
+                                <xsl:value-of select="PreviousStepId"/>
+                            </PreviousStepId>
+                            <xsl:for-each select="Attributes">
+                                <Attributes>
+                                    <Name>
+                                        <xsl:value-of select="Name"/>
+                                    </Name>
+                                    <Value>
+                                        <xsl:value-of select="Value"/>
+                                    </Value>
+                                </Attributes>
+                            </xsl:for-each>
+                        </PassedStepInfo>
+                    </xsl:for-each>
+                </response>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Process Management Stub">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>387</pd:x>
+        <pd:y>81</pd:y>
+        <config>
+            <variableName>ProcessManagementMock</variableName>
+        </config>
+        <pd:inputBindings>
+            <response>
+                <ProductId>
+                    <xsl:value-of select="&quot;Test productId&quot;"/>
+                </ProductId>
+                <ProductName>
+                    <xsl:value-of select="&quot;Test product name&quot;"/>
+                </ProductName>
+                <StepName>
+                    <xsl:value-of select="&quot;Test step name&quot;"/>
+                </StepName>
+                <Attributes>
+                    <Name>
+                        <xsl:value-of select="&quot;Test attribute1 name&quot;"/>
+                    </Name>
+                    <Value>
+                        <xsl:value-of select="&quot;Test attribute1 value&quot;"/>
+                    </Value>
+                </Attributes>
+                <PassedStepInfo>
+                    <StepId>
+                        <xsl:value-of select="333"/>
+                    </StepId>
+                    <PreviousStepId>
+                        <xsl:value-of select="444"/>
+                    </PreviousStepId>
+                    <Attributes>
+                        <Name>
+                            <xsl:value-of select="&quot;Test attribute1 name&quot;"/>
+                        </Name>
+                        <Value>
+                            <xsl:value-of select="&quot;Test attribute1 value&quot;"/>
+                        </Value>
+                    </Attributes>
+                    <Attributes>
+                        <Name>
+                            <xsl:value-of select="&quot;Test attribute2 name&quot;"/>
+                        </Name>
+                        <Value>
+                            <xsl:value-of select="&quot;Test attribute2 value&quot;"/>
+                        </Value>
+                    </Attributes>
+                </PassedStepInfo>
+                <PassedStepInfo>
+                    <StepId>
+                        <xsl:value-of select="444"/>
+                    </StepId>
+                    <PreviousStepId>
+                        <xsl:value-of select="555"/>
+                    </PreviousStepId>
+                    <Attributes>
+                        <Name>
+                            <xsl:value-of select="&quot;Test attribute3 name&quot;"/>
+                        </Name>
+                        <Value>
+                            <xsl:value-of select="&quot;Test attribute3 value&quot;"/>
+                        </Value>
+                    </Attributes>
+                </PassedStepInfo>
+            </response>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>536</pd:x>
+        <pd:y>194</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Render error JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>679</pd:x>
+        <pd:y>194</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="opResult" type="xsd:int"/>
+                            <xsd:element name="opErrorText" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <opResult>
+                        <xsl:value-of select="2"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="$Catch/exceptiondata/*"/>
+                    </opErrorText>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>Process Management Stub</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Process Management Stub</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Render error JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render error JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

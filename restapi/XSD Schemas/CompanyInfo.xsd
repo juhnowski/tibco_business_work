@@ -1,0 +1,153 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           id="CompanyInfo">
+    <xs:include schemaLocation="CommonTypes.xsd"/>
+    <xs:complexType name="CompanyInfo">
+        <xs:annotation>
+            <xs:documentation>Информация о компании</xs:documentation>
+        </xs:annotation>
+        <xs:all>
+            <xs:element name="companyName" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Название компании</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="shortName" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Краткое название компании</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="category" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Категория клиента (Значения согласно справочнику: DS KA, PS KA, NOT_DEFINED)
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="characterization" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Тип характеристики клиента. Значения согласно справочнику:
+                        COMMON (Обычный),
+                        GOVERNMENT_CUSTOMER (Госзаказчик),
+                        CUSTOMER_223_F3 (Заказчик 223-Ф3)
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="organisationForm" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Организационная форма компании (согласно справочнику x_account_form)
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="okved" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>ОКВЭД</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="ogrn" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>ОГРН</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="okpo" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>ОКПО</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="kpp" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>КПП</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="headQuoter" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Штаб-квартира</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="tradeMark" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Торговая марка</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="website" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Веб-сайт</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="resident" type="Resident" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Y – резидент N-нерезидент</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="Citizenship">
+                <xs:annotation>
+                    <xs:documentation>Гражданство</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="20"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+</xs:schema>

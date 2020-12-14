@@ -1,0 +1,533 @@
+[
+  { 
+    "scala": {
+      "blocks": [
+        {
+          "name": "keyInfo",
+          "order": 1,
+          "fields": [
+            {
+              "name": "nDSTariffId", 
+              "order": 1,
+              "required": true,
+			  "type": "int"
+            },    
+            {
+              "name": "billingCurrencyId", 
+              "order": 2,
+              "required": true,
+			  "type": "int"
+            },
+            {
+              "name": "tariffsCurrencyId", 
+              "order": 3,
+              "required": true,
+			  "type": "int"
+            },
+            {
+              "name": "agentCollectorId", 
+              "order": 4,
+              "required": false,
+			  "type": "int"
+            },
+            {
+              "name": "pMNCode", 
+              "order": 5,
+              "regexp": "^.{,5}$",
+              "required": false,
+			  "type": "string"
+            },
+            {
+              "name": "clirInvFTPId", 
+              "order": 6,
+              "requiredOnlyWithFieldValues": [ 
+                {            
+                  "entity": "contract", 
+                  "field": "contractTypeSFId",
+                  "values": ["19"]        
+                } 
+              ],
+			  "type": "int" 
+            },
+            {
+              "name": "govContractId", 
+              "order": 7,
+              "regexp": "^.{,255}$",
+              "required": false,
+			  "type": "string"
+            },
+            {
+              "name": "oppCoopLVLTPId", 
+              "order": 8,            
+              "requiredOnlyWithFieldValues": [ 
+                {            
+                  "entity": "contract", 
+                  "field": "contractTypeSFId",
+                  "values": ["5"]            
+                } 
+              ],
+			  "type": "int" 
+            },
+            {
+              "name": "closeDate", 
+              "order": 9,
+              "required": false,
+			  "type": "date"
+            },
+            {
+              "name": "breakCauseId", 
+              "order": 10,
+              "required": false,
+			  "type": "int"
+            }          
+          ]
+        },
+        {
+          "name": "requisites",
+          "order": 2,
+          "fields": [
+            {
+              "name": "billingAddressId", 
+              "order": 1,
+              "required": true,
+			  "type": "int"
+            },
+            {
+              "name": "billingContactId", 
+              "order": 2,
+              "required": true,
+			  "type": "int"
+            },
+            {
+              "name": "invoicePrintId", 
+              "order": 3,
+              "required": true,
+			  "type": "int"
+            },
+            {
+              "name": "invoiceSendToId", 
+              "order": 4,
+              "required": true,
+			  "type": "int"
+            },
+            {
+              "name": "voiceTrafDetailsId", 
+              "order": 5,
+              "required": false,
+			  "type": "int"
+            },
+            {
+              "name": "emailForDetails", 
+              "order": 6,
+              "regexp": "^(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\]){,250}$",
+              "requiredOnlyWithFieldValues": [ 
+                {            
+                  "entity": "scala", 
+                  "field": "voiceTrafDetailsId",
+                  "values": ["1","2","3","6","8","9","11","12","13"]            
+                } 
+              ],
+			  "type": "string" 
+            },
+            {
+              "name": "invoiceDeliveryId", 
+              "order": 7,
+              "required": true,
+			  "type": "int"
+            },
+            {
+              "name": "emailInvoiceDelivery", 
+              "order": 8,
+              "regexp": "^(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\]){,250}$",
+              "requiredOnlyWithFieldValues": [ 
+                {            
+                  "entity": "scala", 
+                  "field": "invoiceDeliveryId",
+                  "values": ["1","2"]            
+                } 
+              ],
+			  "type": "string"
+            },
+            {
+              "name": "showDIDALexpandedId", 
+              "order": 9,
+              "required": false,
+			  "type": "int"
+            },
+            {
+              "name": "uBGId", 
+              "order": 10,
+              "required": false,
+			  "type": "int"
+            },
+            {
+              "name": "intDomID", 
+              "order": 11,
+              "required": false,
+			  "type": "string"
+            },
+            {
+              "name": "billLanguageId", 
+              "order": 12,
+              "required": true,
+			  "type": "int"
+            },
+            {
+              "name": "costBillingSystemId", 
+              "order": 13,
+              "required": false,
+			  "type": "int"
+            },
+            {
+              "name": "revenueBillingSystemId", 
+              "order": 14,
+              "required": false,
+			  "type": "int"
+            },
+            {
+              "name": "specifyConsumerId", 
+              "order": 15,
+              "required": false,
+			  "type": "int"
+            },
+            {
+              "name": "sMSProjectNotif", 
+              "order": 16,
+              "required": false,
+			  "type": "int"
+            },
+            {
+              "name": "ringUpPhone", 
+              "order": 17,
+              "regexp": "^7\\d{10}$",
+              "required": true,
+			  "type": "string"
+            },
+            {
+              "name": "ringUpEMail", 
+              "order": 18,
+              "regexp": "^(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\]){,100}$",
+              "required": true,
+			  "type": "string"
+            },
+            {
+              "name": "digitalSignature", 
+              "order": 19,
+              "required": false,
+			  "type": "int"
+            },
+            {
+              "name": "digitalSignatureDate", 
+              "order": 20,
+              "required": false,
+			  "type": "date"
+            },
+            {
+              "name": "digitalSignatureId", 
+              "order": 21,
+              "regexp": "^.{,50}$",
+              "required": false,
+			  "type": "string"
+            },
+            {
+              "name": "scalaNumberVKId", 
+              "order": 22,
+              "required": false,
+			  "type": "int"
+            },
+            {
+              "name": "trafficTypeId", 
+              "order": 23,
+              "required": false,
+			  "type": "int"
+            }
+          ]
+        }    
+      ]     
+    } 
+  },
+  { 
+    "contract": {
+      "blocks": [
+        {
+          "name": "keyInfo",
+          "order": 1,
+          "fields": [
+            {
+              "name": "contractClientName", 
+              "order": 1,
+              "regexp": "^.{,255}$",
+              "required": false
+            },    
+            {
+              "name": "contractTypeSFId", 
+              "order": 2,
+              "required": true
+            },
+            {
+              "name": "breakDate", 
+              "order": 3,
+              "required": false
+            },
+            {
+              "name": "breakCauseId", 
+              "order": 4,
+              "required": false
+            }            
+          ]
+        },
+        {
+          "name": "contacts",
+          "order": 2,
+          "fields": [
+            {
+              "name": "contactId", 
+              "order": 1,
+              "required": true
+            }            
+          ]
+        },    
+        {
+          "name": "requisites",
+          "order": 3,
+          "fields": [
+            {
+              "name": "signedDate", 
+              "order": 1,
+              "required": true
+            },
+            {
+              "name": "operLicenseId", 
+              "order": 2,
+              "requiredOnlyWithFieldValues": [ 
+                {            
+                  "entity": "contract", 
+                  "field": "contractTypeSFId",
+                  "values": ["5"]            
+                } 
+              ] 
+            },
+            {
+              "name": "joinLevelId", 
+              "order": 3,
+              "requiredOnlyWithFieldValues": [ 
+                {            
+                  "entity": "contract", 
+                  "field": "contractTypeSFId",
+                  "values": ["5"]            
+                } 
+              ]
+            },
+            {
+              "name": "crossClientID", 
+              "order": 4,
+              "regexp": "^\\d$",
+              "required": false
+            },
+            {
+              "name": "abhId", 
+              "order": 5,
+              "required": false
+            },
+            {
+              "name": "contractInvoiceId", 
+              "order": 6,
+              "required": false
+            },
+            {
+              "name": "profitID", 
+              "order": 7,
+              "requiredOnlyWithFieldValues": [ 
+                {            
+                  "entity": "contract", 
+                  "field": "contractTypeSFId",
+                  "values": ["4","5","16"]            
+                } 
+              ]
+            },
+            {
+              "name": "invoicePayPeriod", 
+              "order": 8,
+              "regexp": "^\\d$",
+              "required": false
+            },
+            {
+              "name": "billingCycleCode", 
+              "order": 9,
+              "required": false
+            },
+            {
+              "name": "agreePrivateInfoId", 
+              "order": 10,
+              "required": false
+            },
+            {
+              "name": "bank", 
+              "order": 11,
+              "regexp": "^.{,255}$",
+              "required": false
+            },
+            {
+              "name": "account", 
+              "order": 12,
+              "regexp": "^.{,20}$",
+              "required": false
+            },
+            {
+              "name": "bik", 
+              "order": 13,
+              "regexp": "^.{,10}$",
+              "required": false
+            },
+            {
+              "name": "corrAccount",
+              "order": 14,
+              "regexp": "^.{,20}$",
+              "required": false
+            },
+            {
+              "name": "dealPassport", 
+              "order": 15,
+              "regexp": "^.{,255}$",
+              "requiredOnlyWithFieldValues": [ 
+                {            
+                  "entity": "client", 
+                  "field": "officialStatus",
+                  "values": ["1"]            
+                } 
+              ]
+            },
+            {
+              "name": "dealBank", 
+              "order": 16,
+              "regexp": "^.{,255}$",
+              "requiredOnlyWithFieldValues": [ 
+                {            
+                  "entity": "client", 
+                  "field": "officialStatus",
+                  "values": ["1"]            
+                } 
+              ]
+            }            
+          ]
+        }    
+      ]     
+    } 
+  },
+  { 
+    "client": {
+      "blocks": [
+        {
+          "name": "keyInfo",
+          "order": 1,
+          "fields": [
+            {
+              "name": "clientType", 
+              "order": 1,              
+              "required": true
+            },    
+            {
+              "name": "clientName", 
+              "order": 2,
+              "regexp": "^.{,90}$",
+              "required": true
+            },
+            {
+              "name": "contactFirstName", 
+              "order": 3,
+              "regexp": "^.{,80}$",
+              "required": true
+            },
+            {
+              "name": "contactLastName", 
+              "order": 4,
+              "regexp": "^.{,80}$",
+              "required": true
+            },
+            {
+              "name": "contactMiddleName", 
+              "order": 5,
+              "regexp": "^.{,80}$",
+              "required": true
+            },
+            {
+              "name": "contactPhone", 
+              "order": 6,
+              "regexp": "^\\d{11}$",
+              "required": true
+            },    
+            {
+              "name": "clientCharacter", 
+              "order": 7,              
+              "required": false
+            },
+            {
+              "name": "clientInformSource", 
+              "order": 8,    
+              "regexp": "^.{,255}$",
+              "required": false
+            },
+            {
+              "name": "clientTrademark", 
+              "order": 9,    
+              "regexp": "^.{,255}$",
+              "required": false
+            },
+            {
+              "name": "clientOrgForm", 
+              "order": 10,              
+              "required": false
+            },
+            {
+              "name": "clientShortName", 
+              "order": 11,    
+              "regexp": "^.{,255}$",
+              "required": false
+            },
+            {
+              "name": "inn", 
+              "order": 12,    
+              "regexp": "^\\d{10,12}$",    
+              "required": false
+            },
+            {
+              "name": "www", 
+              "order": 13,    
+              "regexp": "^.{,150}$",    
+              "required": false
+            },    
+            {
+              "name": "okvedID", 
+              "order": 14,              
+              "required": false
+            },
+            {
+              "name": "ogrn", 
+              "order": 15,    
+              "regexp": "^\\d{15}$",
+              "required": false
+            },
+            {
+              "name": "okpo", 
+              "order": 16,    
+              "regexp": "^\\d{8}$",
+              "required": false
+            },
+            {
+              "name": "kpp", 
+              "order": 17,
+              "regexp": "^\\d{9}$",
+              "required": false
+            },
+            {
+              "name": "contactEmail", 
+              "order": 18,    
+              "regexp": "^(?:[a-z0-9!#$%&'*+\/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+\/=?^_`{|}~-]+)*|\"(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21\\x23-\\x5b\\x5d-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])*\")@(?:(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?|\\[(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?|[a-z0-9-]*[a-z0-9]:(?:[\\x01-\\x08\\x0b\\x0c\\x0e-\\x1f\\x21-\\x5a\\x53-\\x7f]|\\\\[\\x01-\\x09\\x0b\\x0c\\x0e-\\x7f])+)\\]){,250}$",
+              "required": false
+            }
+          ]
+        }            
+      ]     
+    } 
+  }
+]

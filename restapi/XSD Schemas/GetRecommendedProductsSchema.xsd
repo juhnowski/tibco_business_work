@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns="http://www.tibco.com/schemas/restapi/XSD Schemas/Schema.xsd" targetNamespace="http://www.tibco.com/schemas/restapi/XSD Schemas/Schema.xsd" elementFormDefault="qualified" attributeFormDefault="unqualified" id="GetRecommendedProductsSchema">
+	<xs:include schemaLocation="ActionInfo.xsd"/>
+	<xs:include schemaLocation="Response.xsd"/>
+	<xs:include schemaLocation="ProductBasicInfo.xsd"/>
+	<xs:simpleType name="ConditionType">
+		<xs:annotation>
+			<xs:documentation>Тип условия. Возможные значения:
+               1) рекомендуемые для заказа,
+               2) доступные для заказа.
+               3) пустое значение
+               Если не задано, возвращаются все продукты, доступные для заказа для соответствующей витрины и соответствующего региона
+            </xs:documentation>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="1"/>
+			<xs:enumeration value="2"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:element name="input">
+		<xs:complexType>
+			<xs:annotation>
+				<xs:documentation>Входные параметры для 2.2.1 2.2.1	Получение списка рекомендуемых/доступных для заказа офферов/продуктов</xs:documentation>
+			</xs:annotation>
+			<xs:sequence>
+				<xs:element ref="ActionInfo">
+					<xs:annotation>
+						<xs:documentation>Информация о выполняемом действии</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="ConditionType" type="ConditionType" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Временное решение (до готовности системы EPC):
+                  Метод вызывается с пустыми параметрами ConditionType
+                </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="CTN">
+					<xs:annotation>
+						<xs:documentation>Игнорируется до готовности интеграции с системой EPC</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="15"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="Scala">
+					<xs:annotation>
+						<xs:documentation>Scala. Если тип условия - доступные для заказа, должен быть заполнен один из параметров CTN или Scala</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="255"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="ProductId">
+					<xs:annotation>
+						<xs:documentation>Идентификатор продукта, для которого требуется получить рекомендуемые для заказа продукты. Обязательно для заполнения если тип условия - рекомендуемые для заказа</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="30"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RegionId">
+					<xs:annotation>
+						<xs:documentation>Идентификатор региона, в котором осуществляется продажа</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="255"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="DealerId" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Идентификатор дилера, через которого осуществляется продажа</xs:documentation>
+					</xs:annotation>
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="255"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="RequestDate" type="xs:date" minOccurs="0">
+					<xs:annotation>
+						<xs:documentation>Дата, на которую нужно получить информацию</xs:documentation>
+					</xs:annotation>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="Response" type="Response">
+		<xs:annotation>
+			<xs:documentation>Результат выполнения</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	
+	
+	<xs:element name="result">
+		<xs:annotation>
+			<xs:documentation>Результирующие параметры</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="Response"/>
+				<xs:element ref="ProductBasicInfo" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

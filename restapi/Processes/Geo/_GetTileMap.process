@@ -1,0 +1,402 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx5="http://www.tibco.com/ns/no_namespace_schema_location/restapi/XSD Schemas/GetTileMapSchema.xsd" xmlns:pfx4="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetTileMapSchema.xsd" xmlns:tib="http://www.tibco.com/bw/xslt/custom-functions" xmlns:pfx3="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetTileMapResultJSON.xsd" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetTileMapInputJSON.xsd" xmlns:pfx="http://www.tibco.com/schemas/restapi/XSD Schemas/Schema.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetTileMapInputJSON.xsd" schemaLocation="/XSD Schemas/GetTileMapInputJSON.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetTileMapResultJSON.xsd" schemaLocation="/XSD Schemas/GetTileMapResultJSON.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/restapi/XSD Schemas/GetTileMapSchema.xsd" schemaLocation="/restapi/XSD Schemas/GetTileMapSchema.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/GetTileMapSchema.xsd" schemaLocation="/XSD Schemas/GetTileMapSchema.xsd"/>
+    <pd:name>Processes/Geo/_GetTileMap.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="inputParams">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="inputJSON" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>248</pd:startX>
+    <pd:startY>102</pd:startY>
+    <pd:returnBindings>
+        <JSONoutput>
+            <xsl:value-of select="if (count($Catch/exceptiondata)>0) then $Render-error-JSON/ns:ActivityOutputClass/jsonString  else $Render-JSON/ns:ActivityOutputClass/jsonString"/>
+        </JSONoutput>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="JSONoutput" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>993</pd:endX>
+    <pd:endY>91</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1521575913877</pd:targetNamespace>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>629</pd:x>
+        <pd:y>220</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Render error JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>836</pd:x>
+        <pd:y>218</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="opResult" type="xsd:int"/>
+                            <xsd:element name="opErrorText" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <opResult>
+                        <xsl:value-of select="2"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="$Catch/exceptiondata/*"/>
+                    </opErrorText>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>775</pd:x>
+        <pd:y>75</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ValidateIntputEnable>true</ValidateIntputEnable>
+            <ActivityInputEditor ref="pfx4:result"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <result>
+                    <Response>
+                        <ObjectId>
+                            <xsl:value-of select="'Object ID = 12345'"/>
+                        </ObjectId>
+                        <opResult>
+                            <xsl:value-of select="$LatLonToXY/javaCodeActivityOutput/opResult"/>
+                        </opResult>
+                        <xsl:if test="$LatLonToXY/javaCodeActivityOutput/opErrorText">
+                            <opErrorText>
+                                <xsl:value-of select="$LatLonToXY/javaCodeActivityOutput/opErrorText"/>
+                            </opErrorText>
+                        </xsl:if>
+                    </Response>
+                    <tile>
+                        <xsl:value-of select="$LatLonToXY/javaCodeActivityOutput/tile"/>
+                    </tile>
+                </result>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>426</pd:x>
+        <pd:y>101</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ValidateOutputEnable>true</ValidateOutputEnable>
+            <ActivityOutputEditor ref="pfx4:input"/>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/inputParams/inputJSON"/>
+                </jsonString>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="LatLonToXY">
+        <pd:type>com.tibco.plugin.java.JavaActivity</pd:type>
+        <pd:resourceType>ae.javapalette.javaActivity</pd:resourceType>
+        <pd:x>614</pd:x>
+        <pd:y>97</pd:y>
+        <config>
+            <fileName>X_GetTileMapLatLonToXY</fileName>
+            <packageName>Processes.Geo.X_GetTileMap</packageName>
+            <fullsource>package Processes.Geo.X_GetTileMap;
+import java.util.*;
+import java.io.*;
+import java.net.URL;
+import java.util.Date;
+import java.util.Scanner;
+import static java.lang.Math.*;
+public class X_GetTileMapLatLonToXY{
+
+    public static final String YANDEX_TEST = "http://##########################/tiles/yandex/%d/%d/%d/%d?time=%d";
+    public static final String OSM_TEST = "http://###########################/tiles/osm/%d/%d/%d/%s?time=%d";
+    public static final String OSM = "osm";
+    public static final String YANDEX = "yandex";
+
+/****** START SET/GET METHOD, DO NOT MODIFY *****/
+	protected String tileSource = "";
+	protected int z = 0;
+	protected double lat = 0.0d;
+	protected double lon = 0.0d;
+	protected String tile = "";
+	protected String opResult = "";
+	protected String opErrorText = "";
+	public String gettileSource() {
+		return tileSource;
+	}
+	public void settileSource(String val) {
+		tileSource = val;
+	}
+	public int getz() {
+		return z;
+	}
+	public void setz(int val) {
+		z = val;
+	}
+	public double getlat() {
+		return lat;
+	}
+	public void setlat(double val) {
+		lat = val;
+	}
+	public double getlon() {
+		return lon;
+	}
+	public void setlon(double val) {
+		lon = val;
+	}
+	public String gettile() {
+		return tile;
+	}
+	public void settile(String val) {
+		tile = val;
+	}
+	public String getopResult() {
+		return opResult;
+	}
+	public void setopResult(String val) {
+		opResult = val;
+	}
+	public String getopErrorText() {
+		return opErrorText;
+	}
+	public void setopErrorText(String val) {
+		opErrorText = val;
+	}
+/****** END SET/GET METHOD, DO NOT MODIFY *****/
+	public X_GetTileMapLatLonToXY() {
+	}
+	public void invoke() throws Exception {
+/* Available Variables: DO NOT MODIFY
+	In  : String tileSource
+	In  : int z
+	In  : double lat
+	In  : double lon
+	Out : String tile
+	Out : String opResult
+	Out : String opErrorText
+* Available Variables: DO NOT MODIFY *****/
+
+try {
+
+            if (tileSource.toLowerCase().equals(YANDEX)) {
+                tile = new Scanner(new URL(getURL_Yandex(lat,lon,z)).openStream(), "UTF-8").useDelimiter("\\A").next();
+                opResult = "0";
+            } else {
+                if (tileSource.toLowerCase().equals(OSM)) {
+                    tile = new Scanner(new URL(getURL_OSM(lat,lon,z)).openStream(), "UTF-8").useDelimiter("\\A").next();
+                    opResult = "0";
+                } else {
+                    opResult = "1";
+                    opErrorText = "Wrong TileSource";
+                }
+            }
+
+
+        } catch (Exception e) {
+            opResult="1";
+            opErrorText=e.getMessage();
+            e.printStackTrace();
+        }
+
+}
+
+String getURL_Yandex(double lat, double lon, int z){
+        Date date = new Date();
+        String url = String.format(YANDEX_TEST,
+                z,//z
+                long2tileX_Yandex(lon,z),//x
+                lat2tileY_Yandex(lat,z),//y
+                1,//1..4
+                date.getTime()
+                );
+        return url;
+    }
+
+    String getURL_OSM(double lat, double lon, int z){
+        Date date = new Date();
+        String url = String.format(OSM_TEST,
+                z,//z
+                long2tileX_Yandex(lon,z),//x
+                lat2tileY_Yandex(lat,z),//y
+                "b",//1..4
+                date.getTime()
+        );
+
+        return url;
+    }
+
+    long lat2tileY_Yandex(double lat, int z)//lat=широта в градусах, z=масштаб
+    {
+        lat = lat * PI / 180.0; //радианы = градусы * ПИ / 180
+        double a = 6378137;
+        double k = 0.0818191908426;
+        double z1 = tan(PI / 4 + lat / 2) / pow(tan(PI / 4 + asin(k * sin(lat)) / 2) , k);
+        long pix_Y = round((20037508.342789 - a * log(z1)) * 53.5865938 / pow(2, 23 - z));
+        return (pix_Y / 256);
+    }
+
+    long long2tileX_Yandex(double lon, int z)//lon=долгота в градусах, z=масштаб
+    {
+        lon = lon * PI / 180.0; //радианы = градусы * ПИ / 180
+        double a = 6378137;
+        double k = 0.0818191908426;
+        long pix_X = round((20037508.342789 + a * lon) * 53.5865938 / pow(2.0 , 23 - z));
+        return (pix_X / 256);
+    }
+
+    long lat2tileY_Osm(double lat, int z){
+        long pix_Y = round((1-log(tan(lat*PI/180)+1/cos(lat*PI/180))/PI)*pow(2,z-1));
+        return pix_Y;
+    }
+
+    long long2tileX_Osm(double lon, int z){
+        long pix_X = round((lon+180)*pow(2,z)/360);
+        return pix_X;
+    }
+}
+</fullsource>
+            <inputData>
+                <row>
+                    <fieldName>tileSource</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>z</fieldName>
+                    <fieldType>int</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>lat</fieldName>
+                    <fieldType>double</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>lon</fieldName>
+                    <fieldType>double</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </inputData>
+            <outputData>
+                <row>
+                    <fieldName>tile</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>opResult</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+                <row>
+                    <fieldName>opErrorText</fieldName>
+                    <fieldType>string</fieldType>
+                    <fieldRequired>optional</fieldRequired>
+                </row>
+            </outputData>
+            <byteCode>
+                <class>
+                    <name>X_GetTileMapLatLonToXY</name>
+                    <byteCode>yv66vgAAADMA0QkARgB8CQBGAH0JAEYAfgkARgB/CQBGAIAJAEYAgQkARgCCCgAiAIMIAIQKAIUAhggAhwoAhQCIBwCJBwCKCgBGAIsKAA4AjAoADgCNCACOCgANAI8IAJAKAA0AkQoADQCSCACTCACUCgBGAJUIAJYIAJcHAJgKABwAmQoAHACaBwCbCgAfAIMIAJwHAJ0KAJ4AnwoARgCgCgChAKIKAEYAowoAHwCkCgCFAKUIAKYIAKcGQAkh+1RELRgGQGaAAAAAAAAGQVhUpkAAAAAGP7TyGjzaqY4GP+kh+1RELRgGQAAAAAAAAAAKAKgAqQoAqACqCgCoAKsKAKgArAZBcxv4RXwQUgoAqACtBkBKyxWBcYSoCgCoAK4FAAAAAAAAAQAKAKgArwZAdoAAAAAAAAcAsAEAC1lBTkRFWF9URVNUAQASTGphdmEvbGFuZy9TdHJpbmc7AQANQ29uc3RhbnRWYWx1ZQEACE9TTV9URVNUAQADT1NNAQAGWUFOREVYAQAKdGlsZVNvdXJjZQEAAXoBAAFJAQADbGF0AQABRAEAA2xvbgEABHRpbGUBAAhvcFJlc3VsdAEAC29wRXJyb3JUZXh0AQANZ2V0dGlsZVNvdXJjZQEAFCgpTGphdmEvbGFuZy9TdHJpbmc7AQAEQ29kZQEAD0xpbmVOdW1iZXJUYWJsZQEADXNldHRpbGVTb3VyY2UBABUoTGphdmEvbGFuZy9TdHJpbmc7KVYBAARnZXR6AQADKClJAQAEc2V0egEABChJKVYBAAZnZXRsYXQBAAMoKUQBAAZzZXRsYXQBAAQoRClWAQAGZ2V0bG9uAQAGc2V0bG9uAQAHZ2V0dGlsZQEAB3NldHRpbGUBAAtnZXRvcFJlc3VsdAEAC3NldG9wUmVzdWx0AQAOZ2V0b3BFcnJvclRleHQBAA5zZXRvcEVycm9yVGV4dAEABjxpbml0PgEAAygpVgEABmludm9rZQEADVN0YWNrTWFwVGFibGUHAJgBAApFeGNlcHRpb25zAQANZ2V0VVJMX1lhbmRleAEAFyhEREkpTGphdmEvbGFuZy9TdHJpbmc7AQAKZ2V0VVJMX09TTQEAEGxhdDJ0aWxlWV9ZYW5kZXgBAAUoREkpSgEAEWxvbmcydGlsZVhfWWFuZGV4AQANbGF0MnRpbGVZX09zbQEADmxvbmcydGlsZVhfT3NtAQAKU291cmNlRmlsZQEAG1hfR2V0VGlsZU1hcExhdExvblRvWFkuamF2YQwATQBIDABOAE8MAFAAUQwAUgBRDABTAEgMAFQASAwAVQBIDABsAG0BAAAHALEMALIAVwEABnlhbmRleAwAswC0AQARamF2YS91dGlsL1NjYW5uZXIBAAxqYXZhL25ldC9VUkwMAHIAcwwAbABbDAC1ALYBAAVVVEYtOAwAbAC3AQACXEEMALgAuQwAugBXAQABMAEAA29zbQwAdABzAQABMQEAEFdyb25nIFRpbGVTb3VyY2UBABNqYXZhL2xhbmcvRXhjZXB0aW9uDAC7AFcMALwAbQEADmphdmEvdXRpbC9EYXRlAQBMaHR0cDovL2dpc2FwcDAxLmJlbGwtbWFpbi5iZWxsaW50ZWdyYXRvci5ydS90aWxlcy95YW5kZXgvJWQvJWQvJWQvJWQ/dGltZT0lZAEAEGphdmEvbGFuZy9PYmplY3QHAL0MAL4AvwwAdwB2BwDADAC+AMEMAHUAdgwAwgDDDADEAMUBAElodHRwOi8vZ2lzYXBwMDEuYmVsbC1tYWluLmJlbGxpbnRlZ3JhdG9yLnJ1L3RpbGVzL29zbS8lZC8lZC8lZC8lcz90aW1lPSVkAQABYgcAxgwAxwDIDADJAMgMAMoAyAwAywDMDADNAMgMAM4AzwwA0ADIAQAxUHJvY2Vzc2VzL0dlby9YX0dldFRpbGVNYXAvWF9HZXRUaWxlTWFwTGF0TG9uVG9YWQEAEGphdmEvbGFuZy9TdHJpbmcBAAt0b0xvd2VyQ2FzZQEABmVxdWFscwEAFShMamF2YS9sYW5nL09iamVjdDspWgEACm9wZW5TdHJlYW0BABcoKUxqYXZhL2lvL0lucHV0U3RyZWFtOwEAKihMamF2YS9pby9JbnB1dFN0cmVhbTtMamF2YS9sYW5nL1N0cmluZzspVgEADHVzZURlbGltaXRlcgEAJyhMamF2YS9sYW5nL1N0cmluZzspTGphdmEvdXRpbC9TY2FubmVyOwEABG5leHQBAApnZXRNZXNzYWdlAQAPcHJpbnRTdGFja1RyYWNlAQARamF2YS9sYW5nL0ludGVnZXIBAAd2YWx1ZU9mAQAWKEkpTGphdmEvbGFuZy9JbnRlZ2VyOwEADmphdmEv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</byteCode>
+                </class>
+            </byteCode>
+        </config>
+        <pd:inputBindings>
+            <javaCodeActivityInput>
+                <tileSource>
+                    <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/TileSource"/>
+                </tileSource>
+                <z>
+                    <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/z"/>
+                </z>
+                <lat>
+                    <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/lat"/>
+                </lat>
+                <lon>
+                    <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/long"/>
+                </lon>
+            </javaCodeActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Render error JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render error JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>LatLonToXY</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>LatLonToXY</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

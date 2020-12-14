@@ -1,0 +1,1650 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <pd:name>Processes/Scala/Update Scala.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="inputParams">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="adLogin" type="xsd:string"/>
+                    <xsd:element name="inputJSON" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>80</pd:startX>
+    <pd:startY>131</pd:startY>
+    <pd:returnBindings>
+        <JSONoutput>
+            <xsl:value-of select="if (count($Catch/exceptiondata)>0) then $Render-error-JSON/ns:ActivityOutputClass/jsonString  else $Render-JSON/ns:ActivityOutputClass/jsonString"/>
+        </JSONoutput>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="JSONoutput" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>1096</pd:endX>
+    <pd:endY>64</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1521575913877</pd:targetNamespace>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>1096</pd:x>
+        <pd:y>241</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="recordId" type="xsd:long"/>
+                            <xsd:element name="opResult" type="xsd:int"/>
+                            <xsd:element name="opErrorText" type="xsd:string"/>
+                            <xsd:element name="info" type="xsd:string" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <recordId>
+                        <xsl:value-of select="$Scala-Update/resultSet/outputSet/recordId"/>
+                    </recordId>
+                    <opResult>
+                        <xsl:value-of select="$Scala-Update/resultSet/outputSet/opResult"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="$Scala-Update/resultSet/outputSet/opErrorText"/>
+                    </opErrorText>
+                    <info>
+                        <xsl:value-of select="$Render-Info-JSON/ns:ActivityOutputClass/jsonString"/>
+                    </info>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+        <pd:x>83</pd:x>
+        <pd:y>239</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <ActivityOutputEditor>
+                <xsd:element name="input">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="contractID" type="xsd:long"/>
+                            <xsd:element name="scalaNumber" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="scalaParams" minOccurs="0">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="nDSTariffId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="billingCurrencyId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="tariffsCurrencyId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="agentCollectorId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="pMNCode" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="clirInvFTPId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="govContractId" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="oppCoopLVLTPId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="closeDate" type="xsd:dateTime" minOccurs="0"/>
+                                        <xsd:element name="breakCauseId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="billingAddressId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="billingContactId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="invoicePrintId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="invoiceSendToId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="voiceTrafDetailsId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="emailForDetails" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="invoiceDeliveryId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="emailInvoiceDelivery" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="showDIDALexpandedId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="uBGId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="intDomID" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="billLanguageId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="costBillingSystemId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="revenueBillingSystemId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="specifyConsumerId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="sMSProjectNotif" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="ringUpPhone" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="ringUpEMail" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="digitalSignature" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="digitalSignatureDate" type="xsd:dateTime" minOccurs="0"/>
+                                        <xsd:element name="digitalSignatureId" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="scalaNumberVKId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="trafficTypeId" type="xsd:int" minOccurs="0"/>
+                                        <xsd:element name="clientFirstName" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="clientLastName" type="xsd:string" minOccurs="0"/>
+                                        <xsd:element name="clientMiddleName" type="xsd:string" minOccurs="0"/>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                            <xsd:element name="recordId" type="xsd:long"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityOutputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <jsonString>
+                    <xsl:value-of select="$Start/inputParams/inputJSON"/>
+                </jsonString>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>909</pd:x>
+        <pd:y>62</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Render error JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>999</pd:x>
+        <pd:y>62</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="opResult" type="xsd:int"/>
+                            <xsd:element name="opErrorText" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <opResult>
+                        <xsl:value-of select="2"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="$Catch/exceptiondata/*"/>
+                    </opErrorText>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:group name="Group">
+        <pd:type>com.tibco.pe.core.TransactionGroup</pd:type>
+        <pd:resourceType>ae.process.group</pd:resourceType>
+        <pd:x>328</pd:x>
+        <pd:y>7</pd:y>
+        <pd:width>553</pd:width>
+        <pd:height>452</pd:height>
+        <pd:collapsedWidth>57</pd:collapsedWidth>
+        <pd:collapsedHeight>70</pd:collapsedHeight>
+        <pd:groupVariables/>
+        <pd:joinToggle>inherit</pd:joinToggle>
+        <config>
+            <pd:groupType>transactionGroup</pd:groupType>
+            <pd:serializable>false</pd:serializable>
+            <pd:transactionType>JDBCTransaction</pd:transactionType>
+            <pd:includeCheckpoint>false</pd:includeCheckpoint>
+        </config>
+        <pd:inputBindings/>
+        <pd:expanded>true</pd:expanded>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Get Contract</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>$Parse-XML/Resultsets/ResultSet1/Record1/UnderControl = 1</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>start</pd:from>
+            <pd:to>Render XML</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Parse BO JSON</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>otherwise</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Scala Update</pd:from>
+            <pd:to>end</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Release BO</pd:from>
+            <pd:to>Parse BO JSON</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Render XML</pd:from>
+            <pd:to>Scala Update</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Parse BO JSON</pd:from>
+            <pd:to>Render XML</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>xpath</pd:conditionType>
+            <pd:xpath>string-length($Parse-BO-JSON/ns:ActivityOutputClass/inputParams/recordId) &gt; 0</pd:xpath>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Render BO JSON</pd:from>
+            <pd:to>Release BO</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Get Contract</pd:from>
+            <pd:to>Parse Contract XML</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Parse Contract XML</pd:from>
+            <pd:to>Get Client</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Get Client</pd:from>
+            <pd:to>Parse Client XML</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:transition>
+            <pd:from>Parse Client XML</pd:from>
+            <pd:to>Render BO JSON</pd:to>
+            <pd:lineType>Default</pd:lineType>
+            <pd:lineColor>-16777216</pd:lineColor>
+            <pd:conditionType>always</pd:conditionType>
+        </pd:transition>
+        <pd:activity name="Scala Update">
+            <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+            <pd:x>797</pd:x>
+            <pd:y>244</pd:y>
+            <config>
+                <timeout>%%Timeout%%</timeout>
+                <maxRows>100</maxRows>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+                <ProcedureName>Scala_CreateUpdateDelete;1</ProcedureName>
+                <useSchema>false</useSchema>
+                <schema>%%Schema%%</schema>
+                <parameterTypes>
+                    <parameter>
+                        <colName>@RETURN_VALUE</colName>
+                        <colType>5</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@opType</colName>
+                        <colType>1</colType>
+                        <dataType>-6</dataType>
+                        <typeName>tinyint</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@adLogin</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@contractID</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@scalaNumber</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@scalaParams</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@recordId</colName>
+                        <colType>2</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@opResult</colName>
+                        <colType>2</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@opErrorText</colName>
+                        <colType>2</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                </parameterTypes>
+            </config>
+            <pd:inputBindings>
+                <inputs>
+                    <inputSet>
+                        <opType>
+                            <xsl:value-of select="2"/>
+                        </opType>
+                        <adLogin>
+                            <xsl:value-of select="$Start/inputParams/adLogin"/>
+                        </adLogin>
+                        <contractID>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contractID"/>
+                        </contractID>
+                        <scalaNumber>
+                            <xsl:choose>
+                                <xsl:when test="exists($Parse-JSON/ns:ActivityOutputClass/input/scalaNumber)">
+                                    <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaNumber"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </scalaNumber>
+                        <scalaParams>
+                            <xsl:choose>
+                                <xsl:when test="exists($Render-XML/xmlString)">
+                                    <xsl:value-of select="$Render-XML/xmlString"/>
+                                </xsl:when>
+                                <xsl:otherwise>
+                                    <xsl:attribute name="xsi:nil">true</xsl:attribute>
+                                </xsl:otherwise>
+                            </xsl:choose>
+                        </scalaParams>
+                        <recordId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/recordId"/>
+                        </recordId>
+                        <opResult>
+                            <xsl:value-of select="0"/>
+                        </opResult>
+                        <opErrorText>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </opErrorText>
+                    </inputSet>
+                </inputs>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Release BO">
+            <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+            <pd:resourceType>ae.process.subprocess</pd:resourceType>
+            <pd:x>618</pd:x>
+            <pd:y>72</pd:y>
+            <config>
+                <processName>/Processes/Billing Order/Release BO.process</processName>
+            </config>
+            <pd:inputBindings>
+                <inputParams>
+                    <inputJSON>
+                        <xsl:value-of select="$Render-BO-JSON/ns:ActivityOutputClass/jsonString"/>
+                    </inputJSON>
+                    <adLogin>
+                        <xsl:value-of select="$Start/inputParams/adLogin"/>
+                    </adLogin>
+                </inputParams>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Parse BO JSON">
+            <pd:type>com.tibco.plugin.json.activities.JSONParserActivity</pd:type>
+            <pd:resourceType>ae.activities.JSONParserActivity</pd:resourceType>
+            <pd:x>710</pd:x>
+            <pd:y>72</pd:y>
+            <config>
+                <SchemaType>xsdType</SchemaType>
+                <BadgerfishCheck>false</BadgerfishCheck>
+                <ActivityOutputEditor>
+                    <xsd:element name="inputParams">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="recordId" type="xsd:int"/>
+                                <xsd:element name="opErrorText" type="xsd:string"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </ActivityOutputEditor>
+            </config>
+            <pd:inputBindings>
+                <ns:ActivityInputClass>
+                    <jsonString>
+                        <xsl:value-of select="$Release-BO/JSONoutput"/>
+                    </jsonString>
+                </ns:ActivityInputClass>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Render XML">
+            <pd:type>com.tibco.plugin.xml.XMLRendererActivity</pd:type>
+            <pd:resourceType>ae.activities.XMLRendererActivity</pd:resourceType>
+            <pd:x>714</pd:x>
+            <pd:y>241</pd:y>
+            <config>
+                <renderAsText>text</renderAsText>
+                <validateInput>false</validateInput>
+                <textEncoding>windows-1251</textEncoding>
+                <term>
+                    <xsd:element name="scala" minOccurs="0">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="NDSTariffId" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="BillingCurrencyId" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="TariffsCurrencyId" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="AgentCollectorId" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="PMNCode" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="ClirInvFTPId" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="GovContractId" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="OppCoopLVLTPId" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="CloseDate" type="xsd:dateTime" minOccurs="0"/>
+                                <xsd:element name="BreakCauseId" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="BillingAddressId" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="BillingContactId" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="InvoicePrintId" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="InvoiceSendToId" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="VoiceTrafDetailsId" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="EmailForDetails" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="InvoiceDeliveryId" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="EmailInvoiceDelivery" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="ShowDIDALexpandedId" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="UBGId" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="IntDomID" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="BillLanguageId" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="CostBillingSystemId" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="RevenueBillingSystemId" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="SpecifyConsumerId" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="SMSProjectNotif" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="RingUpPhone" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="RingUpEMail" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="DigitalSignature" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="DigitalSignatureDate" type="xsd:dateTime" minOccurs="0"/>
+                                <xsd:element name="DigitalSignatureId" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="ScalaNumberVKId" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="TrafficTypeId" type="xsd:int" minOccurs="0"/>
+                                <xsd:element name="nbo" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="ClientFirstName" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="ClientLastName" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="ClientMiddleName" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="scalan" type="xsd:string" minOccurs="0"/>
+                                <xsd:element name="error" type="xsd:string" minOccurs="0"/>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </term>
+            </config>
+            <pd:inputBindings>
+                <scala>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/nDSTariffId">
+                        <NDSTariffId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/nDSTariffId"/>
+                        </NDSTariffId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/billingCurrencyId">
+                        <BillingCurrencyId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/billingCurrencyId"/>
+                        </BillingCurrencyId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/tariffsCurrencyId">
+                        <TariffsCurrencyId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/tariffsCurrencyId"/>
+                        </TariffsCurrencyId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/agentCollectorId">
+                        <AgentCollectorId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/agentCollectorId"/>
+                        </AgentCollectorId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/pMNCode">
+                        <PMNCode>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/pMNCode"/>
+                        </PMNCode>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/clirInvFTPId">
+                        <ClirInvFTPId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/clirInvFTPId"/>
+                        </ClirInvFTPId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/govContractId">
+                        <GovContractId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/govContractId"/>
+                        </GovContractId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/oppCoopLVLTPId">
+                        <OppCoopLVLTPId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/oppCoopLVLTPId"/>
+                        </OppCoopLVLTPId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/closeDate">
+                        <CloseDate>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/closeDate"/>
+                        </CloseDate>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/breakCauseId">
+                        <BreakCauseId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/breakCauseId"/>
+                        </BreakCauseId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/billingAddressId">
+                        <BillingAddressId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/billingAddressId"/>
+                        </BillingAddressId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/billingContactId">
+                        <BillingContactId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/billingContactId"/>
+                        </BillingContactId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/invoicePrintId">
+                        <InvoicePrintId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/invoicePrintId"/>
+                        </InvoicePrintId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/invoiceSendToId">
+                        <InvoiceSendToId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/invoiceSendToId"/>
+                        </InvoiceSendToId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/voiceTrafDetailsId">
+                        <VoiceTrafDetailsId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/voiceTrafDetailsId"/>
+                        </VoiceTrafDetailsId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/emailForDetails">
+                        <EmailForDetails>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/emailForDetails"/>
+                        </EmailForDetails>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/invoiceDeliveryId">
+                        <InvoiceDeliveryId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/invoiceDeliveryId"/>
+                        </InvoiceDeliveryId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/emailInvoiceDelivery">
+                        <EmailInvoiceDelivery>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/emailInvoiceDelivery"/>
+                        </EmailInvoiceDelivery>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/showDIDALexpandedId">
+                        <ShowDIDALexpandedId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/showDIDALexpandedId"/>
+                        </ShowDIDALexpandedId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/uBGId">
+                        <UBGId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/uBGId"/>
+                        </UBGId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/intDomID">
+                        <IntDomID>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/intDomID"/>
+                        </IntDomID>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/billLanguageId">
+                        <BillLanguageId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/billLanguageId"/>
+                        </BillLanguageId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/costBillingSystemId">
+                        <CostBillingSystemId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/costBillingSystemId"/>
+                        </CostBillingSystemId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/revenueBillingSystemId">
+                        <RevenueBillingSystemId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/revenueBillingSystemId"/>
+                        </RevenueBillingSystemId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/specifyConsumerId">
+                        <SpecifyConsumerId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/specifyConsumerId"/>
+                        </SpecifyConsumerId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/sMSProjectNotif">
+                        <SMSProjectNotif>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/sMSProjectNotif"/>
+                        </SMSProjectNotif>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/ringUpPhone">
+                        <RingUpPhone>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/ringUpPhone"/>
+                        </RingUpPhone>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/ringUpEMail">
+                        <RingUpEMail>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/ringUpEMail"/>
+                        </RingUpEMail>
+                    </xsl:if>
+                    <DigitalSignature>
+                        <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/digitalSignature"/>
+                    </DigitalSignature>
+                    <DigitalSignatureDate>
+                        <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/digitalSignatureDate"/>
+                    </DigitalSignatureDate>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/digitalSignatureId">
+                        <DigitalSignatureId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/digitalSignatureId"/>
+                        </DigitalSignatureId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/scalaNumberVKId">
+                        <ScalaNumberVKId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/scalaNumberVKId"/>
+                        </ScalaNumberVKId>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/trafficTypeId">
+                        <TrafficTypeId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/trafficTypeId"/>
+                        </TrafficTypeId>
+                    </xsl:if>
+                    <nbo>
+                        <xsl:value-of select="$Parse-BO-JSON/ns:ActivityOutputClass/inputParams/recordId"/>
+                    </nbo>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/clientFirstName">
+                        <ClientFirstName>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/clientFirstName"/>
+                        </ClientFirstName>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/clientLastName">
+                        <ClientLastName>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/clientLastName"/>
+                        </ClientLastName>
+                    </xsl:if>
+                    <xsl:if test="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/clientMiddleName">
+                        <ClientMiddleName>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/clientMiddleName"/>
+                        </ClientMiddleName>
+                    </xsl:if>
+                    <scalan>
+                        <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaNumber"/>
+                    </scalan>
+                    <error>
+                        <xsl:value-of select="$Parse-BO-JSON/ns:ActivityOutputClass/inputParams/opErrorText"/>
+                    </error>
+                </scala>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Render BO JSON">
+            <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+            <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+            <pd:x>614</pd:x>
+            <pd:y>161</pd:y>
+            <config>
+                <SchemaType>xsdType</SchemaType>
+                <BadgerfishCheck>false</BadgerfishCheck>
+                <removeRootElementForInput>true</removeRootElementForInput>
+                <ActivityInputEditor>
+                    <xsd:element name="input">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="boType" type="xsd:int"/>
+                                <xsd:element name="scalaId" type="xsd:long"/>
+                                <xsd:element name="contract">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="contractClientName" type="xsd:string"/>
+                                            <xsd:element name="salesManagerId" type="xsd:long"/>
+                                            <xsd:element name="signedDate" type="xsd:dateTime"/>
+                                            <xsd:element name="operLicenseId" type="xsd:long"/>
+                                            <xsd:element name="joinLevelId" type="xsd:long"/>
+                                            <xsd:element name="crossClientID" type="xsd:long"/>
+                                            <xsd:element name="uSFId" type="xsd:long"/>
+                                            <xsd:element name="aBHId" type="xsd:long"/>
+                                            <xsd:element name="contractInvoiceId" type="xsd:long"/>
+                                            <xsd:element name="sendDataToExtId" type="xsd:long"/>
+                                            <xsd:element name="profitID" type="xsd:long"/>
+                                            <xsd:element name="setFineId" type="xsd:long"/>
+                                            <xsd:element name="fineTypeId" type="xsd:long"/>
+                                            <xsd:element name="fine" type="xsd:float"/>
+                                            <xsd:element name="penyRFRId" type="xsd:long"/>
+                                            <xsd:element name="invoicePayPeriod" type="xsd:string"/>
+                                            <xsd:element name="breakDate" type="xsd:dateTime"/>
+                                            <xsd:element name="breakCauseId" type="xsd:long"/>
+                                            <xsd:element name="businnesUnitId" type="xsd:long"/>
+                                            <xsd:element name="supplierId" type="xsd:long"/>
+                                            <xsd:element name="serviceLevelId" type="xsd:long"/>
+                                            <xsd:element name="agreePrivateInfoId" type="xsd:long"/>
+                                            <xsd:element name="bank" type="xsd:string"/>
+                                            <xsd:element name="account" type="xsd:string"/>
+                                            <xsd:element name="bik" type="xsd:string"/>
+                                            <xsd:element name="corrAccount" type="xsd:string"/>
+                                            <xsd:element name="kpp" type="xsd:string"/>
+                                            <xsd:element name="saleOfficeId" type="xsd:long"/>
+                                            <xsd:element name="salePointId" type="xsd:long"/>
+                                            <xsd:element name="fineWarrantNumber" type="xsd:string"/>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="scala">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="nDSTariffId" type="xsd:int"/>
+                                            <xsd:element name="billingCurrencyId" type="xsd:int"/>
+                                            <xsd:element name="tariffsCurrencyId" type="xsd:int"/>
+                                            <xsd:element name="agentCollectorId" type="xsd:int"/>
+                                            <xsd:element name="govContractId" type="xsd:string"/>
+                                            <xsd:element name="oppCoopLVLTPId" type="xsd:int"/>
+                                            <xsd:element name="closeDate" type="xsd:dateTime"/>
+                                            <xsd:element name="breakCauseId" type="xsd:int"/>
+                                            <xsd:element name="billingAddressId" type="xsd:int"/>
+                                            <xsd:element name="billingContactId" type="xsd:int"/>
+                                            <xsd:element name="invoicePrintId" type="xsd:int"/>
+                                            <xsd:element name="invoiceSendToId" type="xsd:int"/>
+                                            <xsd:element name="voiceTrafDetailsId" type="xsd:int"/>
+                                            <xsd:element name="emailForDetails" type="xsd:string"/>
+                                            <xsd:element name="invoiceDeliveryId" type="xsd:int"/>
+                                            <xsd:element name="emailInvoiceDelivery" type="xsd:string"/>
+                                            <xsd:element name="showDIDALexpandedId" type="xsd:int"/>
+                                            <xsd:element name="uBGId" type="xsd:int"/>
+                                            <xsd:element name="billLanguageId" type="xsd:int"/>
+                                            <xsd:element name="specifyConsumerId" type="xsd:int"/>
+                                            <xsd:element name="ringUpPhone" type="xsd:string"/>
+                                            <xsd:element name="ringUpEMail" type="xsd:string"/>
+                                            <xsd:element name="digitalSignature" type="xsd:int"/>
+                                            <xsd:element name="digitalSignatureDate" type="xsd:dateTime"/>
+                                            <xsd:element name="digitalSignatureId" type="xsd:string"/>
+                                            <xsd:element name="scalaNumberVKId" type="xsd:int"/>
+                                            <xsd:element name="trafficTypeId" type="xsd:int"/>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="client">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="legalAddressId" type="xsd:long"/>
+                                            <xsd:element name="contactAddressId" type="xsd:long"/>
+                                            <xsd:element name="carrierTypeId" type="xsd:long"/>
+                                            <xsd:element name="clientSMID" type="xsd:long"/>
+                                            <xsd:element name="inn" type="xsd:string"/>
+                                            <xsd:element name="officialStatus" type="xsd:string"/>
+                                            <xsd:element name="okvedCodeID" type="xsd:long"/>
+                                            <xsd:element name="orgFormID" type="xsd:long"/>
+                                            <xsd:element name="segmentID" type="xsd:long"/>
+                                            <xsd:element name="clientName" type="xsd:string"/>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </ActivityInputEditor>
+            </config>
+            <pd:inputBindings>
+                <ns:ActivityInputClass>
+                    <input>
+                        <boType>
+                            <xsl:value-of select="1"/>
+                        </boType>
+                        <scalaId>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/recordId"/>
+                        </scalaId>
+                        <contract>
+                            <contractClientName>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/ContractClientName"/>
+                            </contractClientName>
+                            <salesManagerId>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/SalesManagerId"/>
+                            </salesManagerId>
+                            <signedDate>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/SignedDate"/>
+                            </signedDate>
+                            <operLicenseId>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/OperLicenseId"/>
+                            </operLicenseId>
+                            <joinLevelId>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/JoinLevelId"/>
+                            </joinLevelId>
+                            <crossClientID>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/CrossClientID"/>
+                            </crossClientID>
+                            <uSFId>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/USFId"/>
+                            </uSFId>
+                            <aBHId>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/ABHId"/>
+                            </aBHId>
+                            <contractInvoiceId>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/ContractInvoiceId"/>
+                            </contractInvoiceId>
+                            <sendDataToExtId>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/SendDataToExtId"/>
+                            </sendDataToExtId>
+                            <profitID>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/ProfitID"/>
+                            </profitID>
+                            <setFineId>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/SetFineId"/>
+                            </setFineId>
+                            <fineTypeId>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/FineTypeId"/>
+                            </fineTypeId>
+                            <fine>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/Fine"/>
+                            </fine>
+                            <penyRFRId>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/PenyRFRId"/>
+                            </penyRFRId>
+                            <invoicePayPeriod>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/InvoicePayPeriod"/>
+                            </invoicePayPeriod>
+                            <breakDate>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/BreakDate"/>
+                            </breakDate>
+                            <breakCauseId>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/BreakCauseId"/>
+                            </breakCauseId>
+                            <businnesUnitId>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/BusinnesUnitId"/>
+                            </businnesUnitId>
+                            <supplierId>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/SupplierId"/>
+                            </supplierId>
+                            <serviceLevelId>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/ServiceLevelId"/>
+                            </serviceLevelId>
+                            <agreePrivateInfoId>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/AgreePrivateInfoId"/>
+                            </agreePrivateInfoId>
+                            <bank>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/Bank"/>
+                            </bank>
+                            <account>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/Account"/>
+                            </account>
+                            <bik>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/BIK"/>
+                            </bik>
+                            <corrAccount>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/CorrAccount"/>
+                            </corrAccount>
+                            <kpp>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/KPP"/>
+                            </kpp>
+                            <saleOfficeId>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/SaleOfficeId"/>
+                            </saleOfficeId>
+                            <salePointId>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/SalePointId"/>
+                            </salePointId>
+                            <fineWarrantNumber>
+                                <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/FineWarrantNumber"/>
+                            </fineWarrantNumber>
+                        </contract>
+                        <scala>
+                            <nDSTariffId>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/nDSTariffId"/>
+                            </nDSTariffId>
+                            <billingCurrencyId>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/billingCurrencyId"/>
+                            </billingCurrencyId>
+                            <tariffsCurrencyId>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/tariffsCurrencyId"/>
+                            </tariffsCurrencyId>
+                            <agentCollectorId>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/agentCollectorId"/>
+                            </agentCollectorId>
+                            <govContractId>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/govContractId"/>
+                            </govContractId>
+                            <oppCoopLVLTPId>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/oppCoopLVLTPId"/>
+                            </oppCoopLVLTPId>
+                            <closeDate>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/closeDate"/>
+                            </closeDate>
+                            <breakCauseId>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/breakCauseId"/>
+                            </breakCauseId>
+                            <billingAddressId>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/billingAddressId"/>
+                            </billingAddressId>
+                            <billingContactId>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/billingContactId"/>
+                            </billingContactId>
+                            <invoicePrintId>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/invoicePrintId"/>
+                            </invoicePrintId>
+                            <invoiceSendToId>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/invoiceSendToId"/>
+                            </invoiceSendToId>
+                            <voiceTrafDetailsId>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/voiceTrafDetailsId"/>
+                            </voiceTrafDetailsId>
+                            <emailForDetails>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/emailForDetails"/>
+                            </emailForDetails>
+                            <invoiceDeliveryId>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/invoiceDeliveryId"/>
+                            </invoiceDeliveryId>
+                            <emailInvoiceDelivery>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/emailInvoiceDelivery"/>
+                            </emailInvoiceDelivery>
+                            <showDIDALexpandedId>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/showDIDALexpandedId"/>
+                            </showDIDALexpandedId>
+                            <uBGId>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/uBGId"/>
+                            </uBGId>
+                            <billLanguageId>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/billLanguageId"/>
+                            </billLanguageId>
+                            <specifyConsumerId>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/specifyConsumerId"/>
+                            </specifyConsumerId>
+                            <ringUpPhone>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/ringUpPhone"/>
+                            </ringUpPhone>
+                            <ringUpEMail>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/ringUpEMail"/>
+                            </ringUpEMail>
+                            <digitalSignature>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/digitalSignature"/>
+                            </digitalSignature>
+                            <digitalSignatureDate>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/digitalSignatureDate"/>
+                            </digitalSignatureDate>
+                            <digitalSignatureId>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/digitalSignatureId"/>
+                            </digitalSignatureId>
+                            <scalaNumberVKId>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/scalaNumberVKId"/>
+                            </scalaNumberVKId>
+                            <trafficTypeId>
+                                <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaParams/trafficTypeId"/>
+                            </trafficTypeId>
+                        </scala>
+                        <client>
+                            <legalAddressId>
+                                <xsl:value-of select="$Parse-Client-XML/Resultsets/ResultSet1/Record1/LegalAddressId"/>
+                            </legalAddressId>
+                            <contactAddressId>
+                                <xsl:value-of select="$Parse-Client-XML/Resultsets/ResultSet1/Record1/ContactAddressId"/>
+                            </contactAddressId>
+                            <carrierTypeId>
+                                <xsl:value-of select="$Parse-Client-XML/Resultsets/ResultSet1/Record1/CarrierTypeId"/>
+                            </carrierTypeId>
+                            <clientSMID>
+                                <xsl:value-of select="$Parse-Client-XML/Resultsets/ResultSet1/Record1/ClientSMID"/>
+                            </clientSMID>
+                            <inn>
+                                <xsl:value-of select="$Parse-Client-XML/Resultsets/ResultSet1/Record1/inn"/>
+                            </inn>
+                            <officialStatus>
+                                <xsl:value-of select="$Parse-Client-XML/Resultsets/ResultSet1/Record1/OfficialStatus"/>
+                            </officialStatus>
+                            <okvedCodeID>
+                                <xsl:value-of select="$Parse-Client-XML/Resultsets/ResultSet1/Record1/OKVEDCodeID"/>
+                            </okvedCodeID>
+                            <orgFormID>
+                                <xsl:value-of select="$Parse-Client-XML/Resultsets/ResultSet1/Record1/OrgFormID"/>
+                            </orgFormID>
+                            <segmentID>
+                                <xsl:value-of select="$Parse-Client-XML/Resultsets/ResultSet1/Record1/SegmentID"/>
+                            </segmentID>
+                            <clientName>
+                                <xsl:value-of select="$Parse-Client-XML/Resultsets/ResultSet1/Record1/ClientName"/>
+                            </clientName>
+                        </client>
+                    </input>
+                </ns:ActivityInputClass>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Get Contract">
+            <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+            <pd:x>397</pd:x>
+            <pd:y>164</pd:y>
+            <config>
+                <timeout>%%Timeout%%</timeout>
+                <maxRows>1</maxRows>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+                <ProcedureName>Contract_GetRecord;1</ProcedureName>
+                <useSchema>false</useSchema>
+                <schema>%%Schema%%</schema>
+                <parameterTypes>
+                    <parameter>
+                        <colName>@RETURN_VALUE</colName>
+                        <colType>5</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@ID</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@adLogin</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@opResult</colName>
+                        <colType>2</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@opErrorText</colName>
+                        <colType>2</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                </parameterTypes>
+            </config>
+            <pd:inputBindings>
+                <inputs>
+                    <inputSet>
+                        <ID>
+                            <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/contractID"/>
+                        </ID>
+                        <adLogin>
+                            <xsl:value-of select="$Start/inputParams/adLogin"/>
+                        </adLogin>
+                        <opResult>
+                            <xsl:value-of select="0"/>
+                        </opResult>
+                        <opErrorText>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </opErrorText>
+                    </inputSet>
+                </inputs>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Parse Contract XML">
+            <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+            <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+            <pd:x>397</pd:x>
+            <pd:y>74</pd:y>
+            <config>
+                <inputStyle>text</inputStyle>
+                <xsdVersion>default</xsdVersion>
+                <validateOutput>false</validateOutput>
+                <term>
+                    <xsd:element name="Resultsets">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="UpdateCount" type="xsd:int"/>
+                                <xsd:element name="ResultSet1">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="Record1">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="Id" type="xsd:long"/>
+                                                        <xsd:element name="ClientId" type="xsd:long"/>
+                                                        <xsd:element name="ClientName" type="xsd:string"/>
+                                                        <xsd:element name="ContractNumber" type="xsd:string"/>
+                                                        <xsd:element name="ContractClientName" type="xsd:string"/>
+                                                        <xsd:element name="SalesManagerId" type="xsd:long"/>
+                                                        <xsd:element name="SalesManagerName" type="xsd:string"/>
+                                                        <xsd:element name="ContractTypeSFId" type="xsd:long"/>
+                                                        <xsd:element name="ContractTypeSFName" type="xsd:string"/>
+                                                        <xsd:element name="ContactId" type="xsd:long"/>
+                                                        <xsd:element name="ContactName" type="xsd:string"/>
+                                                        <xsd:element name="SignedDate" type="xsd:dateTime"/>
+                                                        <xsd:element name="OperLicenseId" type="xsd:long"/>
+                                                        <xsd:element name="OperLicenseName" type="xsd:string"/>
+                                                        <xsd:element name="JoinLevelId" type="xsd:long"/>
+                                                        <xsd:element name="JoinLevelName" type="xsd:string"/>
+                                                        <xsd:element name="CollectionManagerId" type="xsd:long"/>
+                                                        <xsd:element name="CollectionManagerName" type="xsd:string"/>
+                                                        <xsd:element name="CollectionStatus" type="xsd:string"/>
+                                                        <xsd:element name="CrossClientID" type="xsd:long"/>
+                                                        <xsd:element name="USFId" type="xsd:long"/>
+                                                        <xsd:element name="USFName" type="xsd:string"/>
+                                                        <xsd:element name="BlockDate" type="xsd:dateTime"/>
+                                                        <xsd:element name="BlockOpStatusId" type="xsd:long"/>
+                                                        <xsd:element name="BlockOpStatusName" type="xsd:string"/>
+                                                        <xsd:element name="ABHId" type="xsd:long"/>
+                                                        <xsd:element name="ABHName" type="xsd:string"/>
+                                                        <xsd:element name="ContractInvoiceId" type="xsd:long"/>
+                                                        <xsd:element name="ContractInvoiceName" type="xsd:string"/>
+                                                        <xsd:element name="ContractInvoiceClientName" type="xsd:string"/>
+                                                        <xsd:element name="SendDataToExtId" type="xsd:long"/>
+                                                        <xsd:element name="SendDataToExtame" type="xsd:string"/>
+                                                        <xsd:element name="VAT" type="xsd:string"/>
+                                                        <xsd:element name="ProfitID" type="xsd:long"/>
+                                                        <xsd:element name="ProfitName" type="xsd:string"/>
+                                                        <xsd:element name="SetFineId" type="xsd:long"/>
+                                                        <xsd:element name="SetFineName" type="xsd:string"/>
+                                                        <xsd:element name="FineTypeId" type="xsd:long"/>
+                                                        <xsd:element name="FineTypeName" type="xsd:string"/>
+                                                        <xsd:element name="Fine" type="xsd:string"/>
+                                                        <xsd:element name="PenyRFRId" type="xsd:long"/>
+                                                        <xsd:element name="PenyRFRName" type="xsd:string"/>
+                                                        <xsd:element name="InvoicePayPeriod" type="xsd:string"/>
+                                                        <xsd:element name="BreakDate" type="xsd:dateTime"/>
+                                                        <xsd:element name="BreakCauseId" type="xsd:long"/>
+                                                        <xsd:element name="BreakCauseName" type="xsd:string"/>
+                                                        <xsd:element name="BusinnesUnitId" type="xsd:long"/>
+                                                        <xsd:element name="BusinnesUnitName" type="xsd:string"/>
+                                                        <xsd:element name="SupplierId" type="xsd:long"/>
+                                                        <xsd:element name="SupplierName" type="xsd:string"/>
+                                                        <xsd:element name="Branch" type="xsd:string"/>
+                                                        <xsd:element name="Balance" type="xsd:string"/>
+                                                        <xsd:element name="BillingCycleCode" type="xsd:string"/>
+                                                        <xsd:element name="BillingCycleName" type="xsd:string"/>
+                                                        <xsd:element name="SegmentId" type="xsd:long"/>
+                                                        <xsd:element name="SegmentName" type="xsd:string"/>
+                                                        <xsd:element name="ServiceLevelId" type="xsd:long"/>
+                                                        <xsd:element name="ServiceLevelName" type="xsd:string"/>
+                                                        <xsd:element name="AgreePrivateInfoId" type="xsd:long"/>
+                                                        <xsd:element name="AgreePrivateInfoName" type="xsd:string"/>
+                                                        <xsd:element name="Bank" type="xsd:string"/>
+                                                        <xsd:element name="Account" type="xsd:string"/>
+                                                        <xsd:element name="BIK" type="xsd:string"/>
+                                                        <xsd:element name="CorrAccount" type="xsd:string"/>
+                                                        <xsd:element name="KPP" type="xsd:string"/>
+                                                        <xsd:element name="DealPassport" type="xsd:string"/>
+                                                        <xsd:element name="DealBank" type="xsd:string"/>
+                                                        <xsd:element name="SaleOfficeId" type="xsd:long"/>
+                                                        <xsd:element name="SaleOfficeName" type="xsd:string"/>
+                                                        <xsd:element name="SalePointId" type="xsd:long"/>
+                                                        <xsd:element name="SalePointName" type="xsd:string"/>
+                                                        <xsd:element name="UnderControl" type="xsd:int"/>
+                                                        <xsd:element name="FineWarrantNumber" type="xsd:string"/>
+                                                        <xsd:element name="Editable" type="xsd:int"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </term>
+            </config>
+            <pd:inputBindings>
+                <xmlString>
+                    <xsl:value-of select="$Get-Contract/resultSet/UnresolvedResultsets"/>
+                </xmlString>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Get Client">
+            <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+            <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+            <pd:x>500</pd:x>
+            <pd:y>74</pd:y>
+            <config>
+                <timeout>%%Timeout%%</timeout>
+                <maxRows>100</maxRows>
+                <emptyStrAsNil>false</emptyStrAsNil>
+                <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+                <ProcedureName>Client_GetRecord;1</ProcedureName>
+                <useSchema>false</useSchema>
+                <schema>%%Schema%%</schema>
+                <parameterTypes>
+                    <parameter>
+                        <colName>@RETURN_VALUE</colName>
+                        <colType>5</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@ID</colName>
+                        <colType>1</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@adLogin</colName>
+                        <colType>1</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@opResult</colName>
+                        <colType>2</colType>
+                        <dataType>4</dataType>
+                        <typeName>int</typeName>
+                    </parameter>
+                    <parameter>
+                        <colName>@opErrorText</colName>
+                        <colType>2</colType>
+                        <dataType>12</dataType>
+                        <typeName>varchar</typeName>
+                    </parameter>
+                </parameterTypes>
+            </config>
+            <pd:inputBindings>
+                <inputs>
+                    <inputSet>
+                        <ID>
+                            <xsl:value-of select="$Parse-Contract-XML/Resultsets/ResultSet1/Record1/ClientId"/>
+                        </ID>
+                        <adLogin>
+                            <xsl:value-of select="$Start/inputParams/adLogin"/>
+                        </adLogin>
+                        <opResult>
+                            <xsl:value-of select="0"/>
+                        </opResult>
+                        <opErrorText>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </opErrorText>
+                    </inputSet>
+                </inputs>
+            </pd:inputBindings>
+        </pd:activity>
+        <pd:activity name="Parse Client XML">
+            <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+            <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+            <pd:x>505</pd:x>
+            <pd:y>162</pd:y>
+            <config>
+                <inputStyle>text</inputStyle>
+                <xsdVersion>default</xsdVersion>
+                <validateOutput>false</validateOutput>
+                <term>
+                    <xsd:element name="Resultsets">
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="UpdateCount" type="xsd:int"/>
+                                <xsd:element name="ResultSet1">
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="Record1">
+                                                <xsd:complexType>
+                                                    <xsd:sequence>
+                                                        <xsd:element name="ClientID" type="xsd:long"/>
+                                                        <xsd:element name="ClientType" type="xsd:int"/>
+                                                        <xsd:element name="ClientTypeName" type="xsd:string"/>
+                                                        <xsd:element name="ClientName" type="xsd:string"/>
+                                                        <xsd:element name="SegmentID" type="xsd:long"/>
+                                                        <xsd:element name="SegmentName" type="xsd:string"/>
+                                                        <xsd:element name="OfficialStatus" type="xsd:int"/>
+                                                        <xsd:element name="OfficialStatusName" type="xsd:string"/>
+                                                        <xsd:element name="ClientCharacterCode" type="xsd:string"/>
+                                                        <xsd:element name="ClientCharacterName" type="xsd:string"/>
+                                                        <xsd:element name="MainBranchCode" type="xsd:string"/>
+                                                        <xsd:element name="MainBranchName" type="xsd:string"/>
+                                                        <xsd:element name="BranchCode" type="xsd:string"/>
+                                                        <xsd:element name="BranchName" type="xsd:string"/>
+                                                        <xsd:element name="InfSourceCode" type="xsd:string"/>
+                                                        <xsd:element name="InfSourceName" type="xsd:string"/>
+                                                        <xsd:element name="OrgFormID" type="xsd:long"/>
+                                                        <xsd:element name="OrgFormName" type="xsd:string"/>
+                                                        <xsd:element name="ClientSMID" type="xsd:long"/>
+                                                        <xsd:element name="ClientSM" type="xsd:string"/>
+                                                        <xsd:element name="PersonalManager" type="xsd:string"/>
+                                                        <xsd:element name="Trademark" type="xsd:string"/>
+                                                        <xsd:element name="ClientShortName" type="xsd:string"/>
+                                                        <xsd:element name="inn" type="xsd:string"/>
+                                                        <xsd:element name="LegalAddressId" type="xsd:int"/>
+                                                        <xsd:element name="LegalAddressName" type="xsd:string"/>
+                                                        <xsd:element name="ContactAddressId" type="xsd:int"/>
+                                                        <xsd:element name="ContactAddressName" type="xsd:string"/>
+                                                        <xsd:element name="www" type="xsd:string"/>
+                                                        <xsd:element name="ClientDateReg" type="xsd:dateTime"/>
+                                                        <xsd:element name="OKVEDCodeID" type="xsd:long"/>
+                                                        <xsd:element name="OKVEDCode" type="xsd:string"/>
+                                                        <xsd:element name="OKVEDCodeName" type="xsd:string"/>
+                                                        <xsd:element name="kpp" type="xsd:string"/>
+                                                        <xsd:element name="ogrn" type="xsd:string"/>
+                                                        <xsd:element name="okpo" type="xsd:string"/>
+                                                        <xsd:element name="CreateDate" type="xsd:dateTime"/>
+                                                        <xsd:element name="CreateUser" type="xsd:string"/>
+                                                        <xsd:element name="CreaterID" type="xsd:long"/>
+                                                        <xsd:element name="ContactID" type="xsd:int"/>
+                                                        <xsd:element name="ContactName" type="xsd:string"/>
+                                                        <xsd:element name="ContactFirstName" type="xsd:string"/>
+                                                        <xsd:element name="ContactLastName" type="xsd:string"/>
+                                                        <xsd:element name="ContactMiddleName" type="xsd:string"/>
+                                                        <xsd:element name="ContactPhone" type="xsd:string"/>
+                                                        <xsd:element name="ContactPhone2" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="ContactEmail" type="xsd:string"/>
+                                                        <xsd:element name="companyGroupID" type="xsd:long"/>
+                                                        <xsd:element name="companyGroupName" type="xsd:string"/>
+                                                        <xsd:element name="SPARKLiquidationDate" type="xsd:date"/>
+                                                        <xsd:element name="SPARKCauseLiquidation" type="xsd:string"/>
+                                                        <xsd:element name="OperatorConnect" type="xsd:int"/>
+                                                        <xsd:element name="CarrierTypeId" type="xsd:int"/>
+                                                        <xsd:element name="CarrierTypeName" type="xsd:string"/>
+                                                        <xsd:element name="ClientEditable" type="xsd:int"/>
+                                                        <xsd:element name="ContractCount" type="xsd:int"/>
+                                                        <xsd:element name="ClientManager" type="xsd:string"/>
+                                                        <xsd:element name="UnderControl" type="xsd:int"/>
+                                                        <xsd:element name="SPARKIsActive" type="xsd:int"/>
+                                                        <xsd:element name="SPARKStatusDate" type="xsd:date"/>
+                                                        <xsd:element name="SPARKStatus" type="xsd:string"/>
+                                                        <xsd:element name="ClientFirstName" type="xsd:string" minOccurs="0"/>
+                                                        <xsd:element name="ClientLastName" type="xsd:string"/>
+                                                        <xsd:element name="ClientMiddleName" type="xsd:string"/>
+                                                        <xsd:element name="legalAddressReadyForEdo" type="xsd:int"/>
+                                                    </xsd:sequence>
+                                                </xsd:complexType>
+                                            </xsd:element>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </term>
+            </config>
+            <pd:inputBindings>
+                <xmlString>
+                    <xsl:value-of select="$Get-Client/resultSet/UnresolvedResultsets"/>
+                </xmlString>
+            </pd:inputBindings>
+        </pd:activity>
+    </pd:group>
+    <pd:activity name="Get Scala">
+        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+        <pd:x>170</pd:x>
+        <pd:y>238</pd:y>
+        <config>
+            <timeout>%%Timeout%%</timeout>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <ProcedureName>Scala_GetRecord;1</ProcedureName>
+            <useSchema>false</useSchema>
+            <schema>%%Schema%%</schema>
+            <parameterTypes>
+                <parameter>
+                    <colName>@RETURN_VALUE</colName>
+                    <colType>5</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@ID</colName>
+                    <colType>1</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@adLogin</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@opResult</colName>
+                    <colType>2</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@opErrorText</colName>
+                    <colType>2</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+            </parameterTypes>
+        </config>
+        <pd:inputBindings>
+            <inputs>
+                <inputSet>
+                    <ID>
+                        <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/recordId"/>
+                    </ID>
+                    <adLogin>
+                        <xsl:value-of select="$Start/inputParams/adLogin"/>
+                    </adLogin>
+                    <opResult>
+                        <xsl:value-of select="0"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </opErrorText>
+                </inputSet>
+            </inputs>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>262</pd:x>
+        <pd:y>238</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term>
+                <xsd:element name="Resultsets">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="UpdateCount" type="xsd:int"/>
+                            <xsd:element name="ResultSet1">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="Record1">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="opResult" type="xsd:int"/>
+                                                    <xsd:element name="opErrorText" type="xsd:string"/>
+                                                    <xsd:element name="Id" type="xsd:long"/>
+                                                    <xsd:element name="ScalaNumber" type="xsd:string"/>
+                                                    <xsd:element name="ContractId" type="xsd:long"/>
+                                                    <xsd:element name="ContractNumber" type="xsd:string"/>
+                                                    <xsd:element name="ClientId" type="xsd:long"/>
+                                                    <xsd:element name="ClientName" type="xsd:string"/>
+                                                    <xsd:element name="ClientFirstName" type="xsd:string"/>
+                                                    <xsd:element name="ClientLastName" type="xsd:string"/>
+                                                    <xsd:element name="ClientMiddleName" type="xsd:string"/>
+                                                    <xsd:element name="SpeedCollectAccount" type="xsd:string"/>
+                                                    <xsd:element name="BillingAddressId" type="xsd:long"/>
+                                                    <xsd:element name="BillingAddressName" type="xsd:string"/>
+                                                    <xsd:element name="BillingContactId" type="xsd:long"/>
+                                                    <xsd:element name="BillingContactName" type="xsd:string"/>
+                                                    <xsd:element name="InvoicePrintId" type="xsd:long"/>
+                                                    <xsd:element name="InvoicePrintName" type="xsd:string"/>
+                                                    <xsd:element name="InvoiceSendToId" type="xsd:long"/>
+                                                    <xsd:element name="InvoiceSendToName" type="xsd:string"/>
+                                                    <xsd:element name="VoiceTrafDetailsId" type="xsd:int"/>
+                                                    <xsd:element name="VoiceTrafDetailsName" type="xsd:string"/>
+                                                    <xsd:element name="EmailForDetails" type="xsd:string"/>
+                                                    <xsd:element name="NDSTariffId" type="xsd:int"/>
+                                                    <xsd:element name="NDSTariffName" type="xsd:string"/>
+                                                    <xsd:element name="InvoiceDeliveryId" type="xsd:int"/>
+                                                    <xsd:element name="InvoiceDeliveryName" type="xsd:string"/>
+                                                    <xsd:element name="EmailInvoiceDelivery" type="xsd:string"/>
+                                                    <xsd:element name="ShowDIDALexpandedId" type="xsd:int"/>
+                                                    <xsd:element name="ShowDIDALexpandedName" type="xsd:string"/>
+                                                    <xsd:element name="UBGId" type="xsd:int"/>
+                                                    <xsd:element name="UBGName" type="xsd:string"/>
+                                                    <xsd:element name="GovContractId" type="xsd:string"/>
+                                                    <xsd:element name="OppCoopLVLTPId" type="xsd:int"/>
+                                                    <xsd:element name="OppCoopLVLTPName" type="xsd:string"/>
+                                                    <xsd:element name="IntDomID" type="xsd:string"/>
+                                                    <xsd:element name="IntDomName" type="xsd:string"/>
+                                                    <xsd:element name="BillingCurrencyId" type="xsd:long"/>
+                                                    <xsd:element name="BillingCurrencyName" type="xsd:string"/>
+                                                    <xsd:element name="TariffsCurrencyId" type="xsd:long"/>
+                                                    <xsd:element name="TariffsCurrencyName" type="xsd:string"/>
+                                                    <xsd:element name="BillLanguageId" type="xsd:int"/>
+                                                    <xsd:element name="BillLanguageName" type="xsd:string"/>
+                                                    <xsd:element name="FinFilialId" type="xsd:long"/>
+                                                    <xsd:element name="FinFilialName" type="xsd:string"/>
+                                                    <xsd:element name="CostBillingSystemId" type="xsd:long"/>
+                                                    <xsd:element name="CostBillingSystemName" type="xsd:string"/>
+                                                    <xsd:element name="RevenueBillingSystemId" type="xsd:long"/>
+                                                    <xsd:element name="RevenueBillingSystemName" type="xsd:string"/>
+                                                    <xsd:element name="QoSId" type="xsd:int"/>
+                                                    <xsd:element name="QoSName" type="xsd:string"/>
+                                                    <xsd:element name="AgentCollectorId" type="xsd:long"/>
+                                                    <xsd:element name="AgentCollectorName" type="xsd:string"/>
+                                                    <xsd:element name="AgentCollectorClientName" type="xsd:string"/>
+                                                    <xsd:element name="PMNCode" type="xsd:string"/>
+                                                    <xsd:element name="ClirInvFTPId" type="xsd:int"/>
+                                                    <xsd:element name="ClirInvFTPName" type="xsd:string"/>
+                                                    <xsd:element name="SpecifyConsumerId" type="xsd:int"/>
+                                                    <xsd:element name="SpecifyConsumerName" type="xsd:string"/>
+                                                    <xsd:element name="SMSProjectNotif" type="xsd:int"/>
+                                                    <xsd:element name="CloseDate" type="xsd:dateTime"/>
+                                                    <xsd:element name="BreakCauseId" type="xsd:long"/>
+                                                    <xsd:element name="BreakCauseName" type="xsd:string"/>
+                                                    <xsd:element name="RingUpPhone" type="xsd:string"/>
+                                                    <xsd:element name="RingUpEMail" type="xsd:string"/>
+                                                    <xsd:element name="DigitalSignature" type="xsd:int"/>
+                                                    <xsd:element name="DigitalSignatureDate" type="xsd:dateTime"/>
+                                                    <xsd:element name="DigitalSignatureId" type="xsd:string"/>
+                                                    <xsd:element name="ScalaNumberVKId" type="xsd:long"/>
+                                                    <xsd:element name="ScalaNumberVKName" type="xsd:string"/>
+                                                    <xsd:element name="TrafficTypeId" type="xsd:int"/>
+                                                    <xsd:element name="TrafficTypeName" type="xsd:string"/>
+                                                    <xsd:element name="ScalaNumberMGMNName" type="xsd:string"/>
+                                                    <xsd:element name="Editable" type="xsd:int"/>
+                                                    <xsd:element name="UnderControl" type="xsd:int"/>
+                                                    <xsd:element name="NBO" type="xsd:long"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Get-Scala/resultSet/UnresolvedResultsets"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render Info JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>958</pd:x>
+        <pd:y>240</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="info">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="nbo" type="xsd:string"/>
+                            <xsd:element name="scalan" type="xsd:string"/>
+                            <xsd:element name="error" type="xsd:string"/>
+                            <xsd:element name="underControl" type="xsd:int"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <info>
+                    <nbo>
+                        <xsl:value-of select="$Parse-BO-JSON/ns:ActivityOutputClass/inputParams/recordId"/>
+                    </nbo>
+                    <scalan>
+                        <xsl:value-of select="$Parse-JSON/ns:ActivityOutputClass/input/scalaNumber"/>
+                    </scalan>
+                    <error>
+                        <xsl:value-of select="$Parse-BO-JSON/ns:ActivityOutputClass/inputParams/opErrorText"/>
+                    </error>
+                    <underControl>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/UnderControl"/>
+                    </underControl>
+                </info>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Parse JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Render error JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render error JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Group</pd:from>
+        <pd:to>Render Info JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Scala</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>Group</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse JSON</pd:from>
+        <pd:to>Get Scala</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render Info JSON</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

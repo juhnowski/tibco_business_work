@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <pd:name>Processes/Contact/Get Contact.process</pd:name>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="inputParams">
+            <xsd:complexType>
+                <xsd:sequence>
+                    <xsd:element name="contactID" type="xsd:long"/>
+                    <xsd:element name="adLogin" type="xsd:string"/>
+                </xsd:sequence>
+            </xsd:complexType>
+        </xsd:element>
+    </pd:startType>
+    <pd:startX>48</pd:startX>
+    <pd:startY>166</pd:startY>
+    <pd:returnBindings>
+        <JSONoutput>
+            <xsl:value-of select="if (count($Catch/exceptiondata)>0) then $Render-error-JSON/ns:ActivityOutputClass/jsonString  else $Render-JSON/ns:ActivityOutputClass/jsonString"/>
+        </JSONoutput>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="JSONoutput" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>784</pd:endX>
+    <pd:endY>167</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1521575913877</pd:targetNamespace>
+    <pd:activity name="Render JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>584</pd:x>
+        <pd:y>167</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="id" type="xsd:int"/>
+                            <xsd:element name="title" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="preferredName" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="firstName" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="middleName" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="lastName" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="clientName" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="jobTitle" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="department" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="phone" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="phoneExt" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="email" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="preferredModeCode" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="preferredModeName" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="roleCode" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="roleName" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="birthday" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="keyContact" type="xsd:int" minOccurs="0"/>
+                            <xsd:element name="comment" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="addressID" type="xsd:long" minOccurs="0"/>
+                            <xsd:element name="addressString" type="xsd:string" minOccurs="0"/>
+                            <xsd:element name="active" type="xsd:int" minOccurs="0"/>
+                            <xsd:element name="editable" type="xsd:int" minOccurs="0"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <id>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ID"/>
+                    </id>
+                    <xsl:if test="$Parse-XML/Resultsets/ResultSet1/Record1/Title">
+                        <title>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Title"/>
+                        </title>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/Resultsets/ResultSet1/Record1/Preferred_Name">
+                        <preferredName>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Preferred_Name"/>
+                        </preferredName>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/Resultsets/ResultSet1/Record1/First_Name">
+                        <firstName>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/First_Name"/>
+                        </firstName>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/Resultsets/ResultSet1/Record1/Middle_Name">
+                        <middleName>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Middle_Name"/>
+                        </middleName>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/Resultsets/ResultSet1/Record1/Last_Name">
+                        <lastName>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Last_Name"/>
+                        </lastName>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/Resultsets/ResultSet1/Record1/ClientName">
+                        <clientName>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/ClientName"/>
+                        </clientName>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/Resultsets/ResultSet1/Record1/Job_Title">
+                        <jobTitle>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Job_Title"/>
+                        </jobTitle>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/Resultsets/ResultSet1/Record1/Department">
+                        <department>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Department"/>
+                        </department>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/Resultsets/ResultSet1/Record1/Phone">
+                        <phone>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Phone"/>
+                        </phone>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/Resultsets/ResultSet1/Record1/PhoneExt">
+                        <phoneExt>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/PhoneExt"/>
+                        </phoneExt>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/Resultsets/ResultSet1/Record1/Email">
+                        <email>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Email"/>
+                        </email>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/Resultsets/ResultSet1/Record1/PreferredModeCode">
+                        <preferredModeCode>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/PreferredModeCode"/>
+                        </preferredModeCode>
+                    </xsl:if>
+                    <preferredModeName>
+                        <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/PreferredModeName"/>
+                    </preferredModeName>
+                    <xsl:if test="$Parse-XML/Resultsets/ResultSet1/Record1/RoleCode">
+                        <roleCode>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/RoleCode"/>
+                        </roleCode>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/Resultsets/ResultSet1/Record1/RoleName">
+                        <roleName>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/RoleName"/>
+                        </roleName>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/Resultsets/ResultSet1/Record1/Birthday">
+                        <birthday>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Birthday"/>
+                        </birthday>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/Resultsets/ResultSet1/Record1/KeyContact">
+                        <keyContact>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/KeyContact"/>
+                        </keyContact>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/Resultsets/ResultSet1/Record1/Comment">
+                        <comment>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Comment"/>
+                        </comment>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/Resultsets/ResultSet1/Record1/AddressID">
+                        <addressID>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/AddressID"/>
+                        </addressID>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/Resultsets/ResultSet1/Record1/AddressString">
+                        <addressString>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/AddressString"/>
+                        </addressString>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/Resultsets/ResultSet1/Record1/Active">
+                        <active>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Active"/>
+                        </active>
+                    </xsl:if>
+                    <xsl:if test="$Parse-XML/Resultsets/ResultSet1/Record1/Editable">
+                        <editable>
+                            <xsl:value-of select="$Parse-XML/Resultsets/ResultSet1/Record1/Editable"/>
+                        </editable>
+                    </xsl:if>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Get Contact">
+        <pd:type>com.tibco.plugin.jdbc.JDBCCallActivity</pd:type>
+        <pd:resourceType>ae.activities.JDBCCallActivity</pd:resourceType>
+        <pd:x>208</pd:x>
+        <pd:y>164</pd:y>
+        <config>
+            <timeout>%%Timeout%%</timeout>
+            <maxRows>100</maxRows>
+            <emptyStrAsNil>false</emptyStrAsNil>
+            <jdbcSharedConfig>/Connection/MSSQL Connection (SF).sharedjdbc</jdbcSharedConfig>
+            <ProcedureName>Contact_GetRecord;1</ProcedureName>
+            <useSchema>false</useSchema>
+            <schema>%%Schema%%</schema>
+            <parameterTypes>
+                <parameter>
+                    <colName>@RETURN_VALUE</colName>
+                    <colType>5</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@ID</colName>
+                    <colType>1</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@adLogin</colName>
+                    <colType>1</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@opResult</colName>
+                    <colType>2</colType>
+                    <dataType>4</dataType>
+                    <typeName>int</typeName>
+                </parameter>
+                <parameter>
+                    <colName>@opErrorText</colName>
+                    <colType>2</colType>
+                    <dataType>12</dataType>
+                    <typeName>varchar</typeName>
+                </parameter>
+            </parameterTypes>
+        </config>
+        <pd:inputBindings>
+            <inputs>
+                <inputSet>
+                    <ID>
+                        <xsl:value-of select="$Start/inputParams/contactID"/>
+                    </ID>
+                    <adLogin>
+                        <xsl:value-of select="$Start/inputParams/adLogin"/>
+                    </adLogin>
+                    <opResult>
+                        <xsl:value-of select="0"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="&quot;&quot;"/>
+                    </opErrorText>
+                </inputSet>
+            </inputs>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Parse XML">
+        <pd:type>com.tibco.plugin.xml.XMLParseActivity</pd:type>
+        <pd:resourceType>ae.activities.XMLParseActivity</pd:resourceType>
+        <pd:x>368</pd:x>
+        <pd:y>166</pd:y>
+        <config>
+            <inputStyle>text</inputStyle>
+            <xsdVersion>default</xsdVersion>
+            <validateOutput>false</validateOutput>
+            <term>
+                <xsd:element name="Resultsets">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="UpdateCount" type="xsd:int"/>
+                            <xsd:element name="ResultSet1">
+                                <xsd:complexType>
+                                    <xsd:sequence>
+                                        <xsd:element name="Record1">
+                                            <xsd:complexType>
+                                                <xsd:sequence>
+                                                    <xsd:element name="ID" type="xsd:long"/>
+                                                    <xsd:element name="Title" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="Preferred_Name" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="First_Name" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="Middle_Name" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="Last_Name" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="ClientName" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="Job_Title" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="Department" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="Phone" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="PhoneExt" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="Email" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="PreferredModeCode" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="PreferredModeName" type="xsd:string"/>
+                                                    <xsd:element name="RoleCode" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="RoleName" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="Birthday" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="KeyContact" type="xsd:int" minOccurs="0"/>
+                                                    <xsd:element name="Comment" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="AddressID" type="xsd:long" minOccurs="0"/>
+                                                    <xsd:element name="AddressString" type="xsd:string" minOccurs="0"/>
+                                                    <xsd:element name="Active" type="xsd:int" minOccurs="0"/>
+                                                    <xsd:element name="Editable" type="xsd:int" minOccurs="0"/>
+                                                </xsd:sequence>
+                                            </xsd:complexType>
+                                        </xsd:element>
+                                    </xsd:sequence>
+                                </xsd:complexType>
+                            </xsd:element>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </term>
+        </config>
+        <pd:inputBindings>
+            <xmlString>
+                <xsl:value-of select="$Get-Contact/resultSet/UnresolvedResultsets"/>
+            </xmlString>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>367</pd:x>
+        <pd:y>68</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Render error JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>579</pd:x>
+        <pd:y>71</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xsd:element name="inputParams">
+                    <xsd:complexType>
+                        <xsd:sequence>
+                            <xsd:element name="opResult" type="xsd:int"/>
+                            <xsd:element name="opErrorText" type="xsd:string"/>
+                        </xsd:sequence>
+                    </xsd:complexType>
+                </xsd:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns:ActivityInputClass>
+                <inputParams>
+                    <opResult>
+                        <xsl:value-of select="2"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of select="$Catch/exceptiondata/*"/>
+                    </opErrorText>
+                </inputParams>
+            </ns:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Render JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Get Contact</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Contact</pd:from>
+        <pd:to>Parse XML</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Parse XML</pd:from>
+        <pd:to>Render JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Render error JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render error JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

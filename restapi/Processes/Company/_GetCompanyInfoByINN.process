@@ -1,0 +1,325 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:ns2="http://www.tibco.com/namespaces/tnt/plugins/json" xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://schemas.tibco.com/bw/plugins/xml/5.0/RESTJSONExceptions" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/CompanyInfoResponse.xsd">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/CompanyInfoResponse.xsd" schemaLocation="/XSD Schemas/CompanyInfoResponse.xsd"/>
+    <pd:name>Processes/Company/_GetCompanyInfoByINN.process</pd:name>
+    <pd:description>Получение информации об организации по ИНН</pd:description>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="INN" type="xsd:string"/>
+    </pd:startType>
+    <pd:startX>70</pd:startX>
+    <pd:startY>54</pd:startY>
+    <pd:returnBindings>
+        <JSONoutput>
+            <xsl:value-of select="if($Render-contract-JSON/ns2:ActivityOutputClass/jsonString !='') &#xA;then $Render-contract-JSON/ns2:ActivityOutputClass/jsonString &#xA;else &#xA;&#x9;( if($Render-error-JSON/ns2:ActivityOutputClass/jsonString !='')&#xA;&#x9;then $Render-error-JSON/ns2:ActivityOutputClass/jsonString&#xA;&#x9;else $Get-Company-info-from-SPARK/JSONoutput)"/>
+        </JSONoutput>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="JSONoutput" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>685</pd:endX>
+    <pd:endY>283</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables>
+        <inputINN>
+            <xsd:element name="value" type="xsd:string"/>
+        </inputINN>
+    </pd:processVariables>
+    <pd:targetNamespace>http://xmlns.example.com/1538647209902</pd:targetNamespace>
+    <pd:activity name="Get Company info from SPARK">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:description>Метод СПАРК для получения информации о компании по ИНН</pd:description>
+        <pd:x>682</pd:x>
+        <pd:y>65</pd:y>
+        <config>
+            <processName>/Processes/Spark/_GetCompanyInfoFromSPARK.process</processName>
+        </config>
+        <pd:inputBindings>
+            <inn>
+                <xsl:value-of select="$Start/INN"/>
+            </inn>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Catch">
+        <pd:type>com.tibco.pe.core.CatchActivity</pd:type>
+        <pd:resourceType>ae.activities.catch</pd:resourceType>
+        <pd:x>976</pd:x>
+        <pd:y>278</pd:y>
+        <pd:handler>true</pd:handler>
+        <config>
+            <catchAll>true</catchAll>
+        </config>
+        <pd:inputBindings/>
+    </pd:activity>
+    <pd:activity name="Render error JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>822</pd:x>
+        <pd:y>280</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor>
+                <xs:element xmlns:xs="http://www.w3.org/2001/XMLSchema" name="inputParams">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="opResult" type="xsd:int"/>
+                            <xs:element name="opErrorText" type="xsd:string"/>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+            </ActivityInputEditor>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInputClass xmlns:ns1="http://www.tibco.com/namespaces/tnt/plugins/json">
+                <inputParams>
+                    <opResult>
+                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="2"/>
+                    </opResult>
+                    <opErrorText>
+                        <xsl:value-of xmlns:xsl="http://www.w3.org/1999/XSL/Transform" select="$Catch/exceptiondata/*"/>
+                    </opErrorText>
+                </inputParams>
+            </ns1:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Render contract JSON">
+        <pd:type>com.tibco.plugin.json.activities.JSONRenderActivity</pd:type>
+        <pd:resourceType>ae.activities.JSONRenderActivity</pd:resourceType>
+        <pd:x>442</pd:x>
+        <pd:y>290</pd:y>
+        <config>
+            <SchemaType>xsdType</SchemaType>
+            <BadgerfishCheck>false</BadgerfishCheck>
+            <removeRootElementForInput>true</removeRootElementForInput>
+            <ActivityInputEditor ref="pfx:resultJSON"/>
+        </config>
+        <pd:inputBindings>
+            <ns2:ActivityInputClass>
+                <resultJSON>
+                    <Response>
+                        <opResult>
+                            <xsl:value-of select="$Count-Contract-by-INN/result"/>
+                        </opResult>
+                        <ObjectId>
+                            <xsl:value-of select="&quot;objID&quot;"/>
+                        </ObjectId>
+                        <opErrorText>
+                            <xsl:value-of select="&quot;Some text&quot;"/>
+                        </opErrorText>
+                    </Response>
+                    <IsExist>
+                        <xsl:value-of select="&quot;T&quot;"/>
+                    </IsExist>
+                    <CompanyInfo>
+                        <FullNameRus>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </FullNameRus>
+                        <OKOPF>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </OKOPF>
+                        <ShortNameRus>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </ShortNameRus>
+                        <Address>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </Address>
+                        <Www>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </Www>
+                        <DateFirstReg>
+                            <xsl:value-of select="current-date()"/>
+                        </DateFirstReg>
+                        <INN>
+                            <xsl:value-of select="$Start/INN"/>
+                        </INN>
+                        <OKVED>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </OKVED>
+                        <OGRN>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </OGRN>
+                        <OKPO>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </OKPO>
+                        <KPP>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </KPP>
+                        <StatusDate>
+                            <xsl:value-of select="current-date()"/>
+                        </StatusDate>
+                        <StatusCode>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </StatusCode>
+                        <IsActing>
+                            <xsl:value-of select="&quot;0&quot;"/>
+                        </IsActing>
+                        <SPARKLiqDate>
+                            <xsl:value-of select="current-date()"/>
+                        </SPARKLiqDate>
+                        <SPARKCauseLiq>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </SPARKCauseLiq>
+                        <HasStateContract>
+                            <xsl:value-of select="&quot;0&quot;"/>
+                        </HasStateContract>
+                    </CompanyInfo>
+                    <ScoringInfo>
+                        <ShortNameRus>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </ShortNameRus>
+                        <INN>
+                            <xsl:value-of select="$Start/INN"/>
+                        </INN>
+                        <OGRN>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </OGRN>
+                        <OKPO>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </OKPO>
+                        <OKATO>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </OKATO>
+                        <StatusDate>
+                            <xsl:value-of select="current-date()"/>
+                        </StatusDate>
+                        <StatusCode>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </StatusCode>
+                        <IsActing>
+                            <xsl:value-of select="&quot;0&quot;"/>
+                        </IsActing>
+                        <IndicatorValue>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </IndicatorValue>
+                        <IndicatorDescription>
+                            <xsl:value-of select="&quot;&quot;"/>
+                        </IndicatorDescription>
+                    </ScoringInfo>
+                </resultJSON>
+            </ns2:ActivityInputClass>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Count Contract by INN">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:description>Поиск контрактов клиента по его ИНН в различных системах (SF, UCP)</pd:description>
+        <pd:x>439</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <processName>/Processes/Contract/_CountContractByINN_SF.process</processName>
+        </config>
+        <pd:inputBindings>
+            <inn>
+                <xsl:value-of select="$Start/INN"/>
+            </inn>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Generate Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>229</pd:x>
+        <pd:y>266</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput xmlns:ns1="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+                <message>
+                    <xsl:value-of select="concat(&quot;Некорректный ИНН: &quot;, $Start/INN)"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="400"/>
+                </messageCode>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Assign">
+        <pd:type>com.tibco.pe.core.AssignActivity</pd:type>
+        <pd:resourceType>ae.activities.assignActivity</pd:resourceType>
+        <pd:x>226</pd:x>
+        <pd:y>57</pd:y>
+        <config>
+            <variableName>inputINN</variableName>
+        </config>
+        <pd:inputBindings>
+            <value>
+                <xsl:value-of select="$Start/INN"/>
+            </value>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Catch</pd:from>
+        <pd:to>Render error JSON</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render error JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Render contract JSON</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Get Company info from SPARK</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Count Contract by INN</pd:from>
+        <pd:to>Render contract JSON</pd:to>
+        <pd:xpathDescription>Contract exists</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Count-Contract-by-INN/result !=0</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Count Contract by INN</pd:from>
+        <pd:to>Get Company info from SPARK</pd:to>
+        <pd:xpathDescription>Otherwise</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Assign</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign</pd:from>
+        <pd:to>Count Contract by INN</pd:to>
+        <pd:xpathDescription>Valid INN</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>number($inputINN/value)
+ and number($inputINN/value)&gt;0
+ and (round($inputINN/value) = $inputINN/value) 
+and (string-length($inputINN/value)=9 or string-length($inputINN/value)=10 or string-length($inputINN/value)=11 or string-length($inputINN/value)=12)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Assign</pd:from>
+        <pd:to>Generate Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>error</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>

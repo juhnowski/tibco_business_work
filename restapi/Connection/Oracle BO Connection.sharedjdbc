@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>Oracle BO Connection</name>
+    <resourceType>ae.shared.JDBCSharedResource</resourceType>
+    <config>
+        <driver>oracle.jdbc.driver.OracleDriver (thin)</driver>
+        <maxConnections>%%MaxConnections%%</maxConnections>
+        <loginTimeout>0</loginTimeout>
+        <connectionType>JDBC</connectionType>
+        <UseSharedJndiConfig>false</UseSharedJndiConfig>
+        <location>%%BO_DatabaseUrl%%</location>
+        <user>%%BO_DatabaseUser%%</user>
+        <password>%%BO_DatabasePass%%</password>
+    </config>
+</BWSharedResource>

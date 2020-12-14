@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           id="ProductStructure">
+<xs:include schemaLocation="CFS.xsd"/>
+
+        <xs:complexType  name="ProductStructure">
+            <xs:sequence>
+			    <xs:element name="CFS" type="CFS"/>
+                <xs:element name="QuantityMin" type="xs:decimal" minOccurs="0"/>
+                <xs:element name="QuantityMax" type="xs:decimal" minOccurs="0"/>
+                <xs:element name="QuantityConditional" type="QuantityConditional" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+
+        <xs:complexType name="QuantityConditional">
+            <xs:sequence>
+                <xs:element name="CFS" type="xs:string" minOccurs="1" maxOccurs="unbounded"/>
+                <xs:element name="QuantityMin" type="xs:decimal" minOccurs="0"/>
+                <xs:element name="QuantityMax" type="xs:decimal" minOccurs="0"/>
+            </xs:sequence>
+        </xs:complexType>
+</xs:schema>

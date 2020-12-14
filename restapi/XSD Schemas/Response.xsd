@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           id="Response">
+    <xs:include schemaLocation="CommonTypes.xsd"/>
+    <xs:complexType name="Response">
+        <xs:annotation>
+            <xs:documentation>Ответ на запрос</xs:documentation>
+        </xs:annotation>
+        <xs:all>
+            <xs:element name="ObjectId" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Идентификатор созданного объекта</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="opResult" type="xs:integer">
+                <xs:annotation>
+                    <xs:documentation>Результат операции</xs:documentation>
+                </xs:annotation>
+            </xs:element>
+            <xs:element name="opErrorText" minOccurs="0">
+                <xs:annotation>
+                    <xs:documentation>Текст ошибки</xs:documentation>
+                </xs:annotation>
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:maxLength value="255"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+        </xs:all>
+    </xs:complexType>
+</xs:schema>

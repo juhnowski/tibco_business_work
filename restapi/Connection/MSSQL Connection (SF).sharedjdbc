@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BWSharedResource>
+    <name>MSSQL Connection (SF)</name>
+    <resourceType>ae.shared.JDBCSharedResource</resourceType>
+    <config>
+        <driver>com.microsoft.sqlserver.jdbc.SQLServerDriver</driver>
+        <maxConnections>%%MaxConnections%%</maxConnections>
+        <loginTimeout>0</loginTimeout>
+        <connectionType>JDBC</connectionType>
+        <UseSharedJndiConfig>false</UseSharedJndiConfig>
+        <location>%%DatabaseURL%%</location>
+        <user>%%DBUser%%</user>
+        <password>%%DBPass%%</password>
+    </config>
+</BWSharedResource>

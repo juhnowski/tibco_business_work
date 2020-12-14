@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 id="Attribute"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:element name="Attribute" type="Attribute"/>
+	<xs:complexType name="Attribute">
+		<xs:all>
+			<xs:element name="Name" type="xs:string"/>
+			<xs:element name="Value" type="xs:string"/>
+		</xs:all>
+	</xs:complexType>
+</xs:schema>

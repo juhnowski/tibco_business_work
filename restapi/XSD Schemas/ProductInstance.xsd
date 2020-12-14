@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" id="ProductInstance">
+	<xs:include schemaLocation="ProductAttribute.xsd"/>
+	<xs:include schemaLocation="CFSInstance.xsd"/>
+	<xs:element name="ProductInstanceId" type="xs:decimal">
+		<xs:annotation>
+			<xs:documentation>Идентификатор экземпляра продукта</xs:documentation>
+		</xs:annotation>
+	</xs:element>
+	<xs:element name="ProductId">
+		<xs:annotation>
+			<xs:documentation>Идентификатор продукта</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="255"/>
+						</xs:restriction>
+		</xs:simpleType>
+	</xs:element>
+
+	<xs:element name="ProductInstance">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="ProductInstanceId"/>
+				<xs:element ref="ProductId"/>
+				<xs:element name="ProductAttributes" type="ProductAttribute" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="ProductStructure" type="CFSInstance" maxOccurs="unbounded"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

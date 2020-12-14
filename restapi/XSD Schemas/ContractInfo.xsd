@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:complexType name="ContractInfo">
+		<xs:choice>
+			<xs:group ref="ContractInfoVariant1"/>
+			<xs:group ref="ContractInfoVariant2"/>
+		</xs:choice>
+	</xs:complexType>
+	<xs:group name="ContractInfoVariant1">
+		<xs:sequence>
+			<xs:element name="fixContractId" type="xs:integer"/>
+			<xs:element name="scala" type="xs:string"/>
+			<xs:element ref="BEN" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:group name="ContractInfoVariant2">
+		<xs:sequence>
+			<xs:element name="BAN" type="xs:string"/>
+			<xs:element name="scala" type="xs:string" minOccurs="0"/>
+			<xs:element ref="BEN" minOccurs="0"/>
+		</xs:sequence>
+	</xs:group>
+	<xs:element name="BEN" type="xs:string" default="1"/>
+</xs:schema>

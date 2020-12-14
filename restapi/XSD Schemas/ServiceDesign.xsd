@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           id="ServiceDesign">
+<xs:include schemaLocation="ActionInfo.xsd"/>
+<xs:include schemaLocation="Contact.xsd"/>
+<xs:include schemaLocation="Order.xsd"/>
+<xs:include schemaLocation="Contract.xsd"/>
+<xs:include schemaLocation="Response.xsd"/>
+ <xs:include schemaLocation="Equipment.xsd"/>
+
+           <xs:element  name="ServiceDesignRequest">
+           	<xs:complexType>
+           		<xs:all>
+                <xs:element ref="ActionInfo"/>
+                <xs:element name="ClientId" type="xs:string" />
+                <xs:element name="ProductId" type="xs:string" />
+                <xs:element name="OrderId" type="xs:string" />
+                <xs:element name="Contact" type="Contact" />
+                <xs:element ref="Order" />
+              </xs:all>
+            </xs:complexType>
+          </xs:element>
+
+          <xs:element  name="EQList">
+           <xs:complexType>
+             <xs:sequence>
+               <xs:element  ref="Equipment " />
+             </xs:sequence>
+          </xs:complexType>
+          </xs:element>
+
+          <xs:element  name="ServiceDesignResponse">
+           <xs:complexType>
+             <xs:all>
+               <xs:element name="Response" type="Response" />
+
+               <xs:element name="IsLegal" type="xs:string" />
+               <xs:element name="IsQuick" type="xs:string" />
+               <xs:element name="TariffId" type="xs:string" />
+               <xs:element name="SinglePayment" type="xs:string" />
+               <xs:element name="RealizationDate" type="xs:date" />
+               <xs:element name="DeliveryMethod" type="xs:string" />
+               <xs:element ref="EQList" />
+             </xs:all>
+           </xs:complexType>
+          </xs:element>
+</xs:schema>

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" id="CompanyAccountingReport">
+	<xs:include schemaLocation="CommonTypes.xsd"/>
+	<xs:element name="Response">
+		<xs:annotation>
+			<xs:documentation>Бухгалтерская отчетность</xs:documentation>
+		</xs:annotation>
+		<xs:complexType>
+			<xs:all>
+				<xs:element name="ResultInfo" type="ResultInfo">
+					<xs:annotation>
+						<xs:documentation>Статус рузультата </xs:documentation>
+					</xs:annotation>
+				</xs:element>
+				<xs:element name="Data" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="Report" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:all>
+										<xs:element name="SparkID" type="SparkID"/>
+										<xs:element name="INN" type="xs:string" minOccurs="0"/>
+										<xs:element name="OGRN" type="xs:string" minOccurs="0"/>
+										<xs:element name="OKPO" type="xs:string" minOccurs="0"/>
+										<xs:element name="ShortName" type="xs:string"/>
+										<xs:element name="EGRPOIncluded" type="xs:string"/>
+										<xs:element name="EGRULLikvidation" type="xs:string" minOccurs="0"/>
+										<xs:element name="Period">
+											<xs:annotation>
+												<xs:documentation>Период отчетности</xs:documentation>
+											</xs:annotation>
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="Form" maxOccurs="unbounded">
+														<xs:annotation>
+															<xs:documentation>Формы отчетов</xs:documentation>
+														</xs:annotation>
+														<xs:complexType>
+															<xs:sequence>
+																<xs:element name="Value" maxOccurs="unbounded">
+																	<xs:annotation>
+																		<xs:documentation>Значения строк баланса</xs:documentation>
+																	</xs:annotation>
+																	<xs:complexType>
+																		<xs:simpleContent>
+																			<xs:extension base="xs:integer">
+																				<xs:attribute name="Code" type="xs:string"/>
+																				<xs:attribute name="Name" type="xs:string" use="required"/>
+																				<xs:attribute name="Column" type="xs:integer" use="required"/>
+																			</xs:extension>
+																		</xs:simpleContent>
+																	</xs:complexType>
+																</xs:element>
+															</xs:sequence>
+															<xs:attribute name="ID" type="xs:integer" use="required">
+																<xs:annotation>
+																	<xs:documentation>Код формы отчетности (последняя цифра кода по ОКУД)</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+															<xs:attribute name="Power" type="xs:integer" use="required">
+																<xs:annotation>
+																	<xs:documentation>Единица измерения</xs:documentation>
+																</xs:annotation>
+															</xs:attribute>
+														</xs:complexType>
+													</xs:element>
+												</xs:sequence>
+												<xs:attribute name="PeriodName" type="xs:string" use="required"/>
+												<xs:attribute name="DateEnd" type="xs:date" use="required"/>
+												<xs:attribute name="DateBegin" type="xs:date" use="required"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:all>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:all>
+		</xs:complexType>
+	</xs:element>
+</xs:schema>

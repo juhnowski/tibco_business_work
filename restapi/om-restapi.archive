@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Repository:repository xmlns:Repository="http://www.tibco.com/xmlns/repo/types/2002">
+    <enterpriseArchive>
+        <sharedArchive name="Shared Archive">
+            <resourceType>shared.archive.resource</resourceType>
+            <authorProperty>VVasiliev</authorProperty>
+            <sharedResources>/JSON Models/reqModel.txt</sharedResources>
+            <sharedFiles/>
+            <sharedJarFiles/>
+        </sharedArchive>
+        <processArchive name="Process Archive">
+            <resourceType>process.archive.resource</resourceType>
+            <authorProperty>Juhnowski</authorProperty>
+            <processProperty>/REST services/_ClientRESTService.process,</processProperty>
+        </processArchive>
+        <versionProperty>1.2</versionProperty>
+        <authorProperty>Juhnowski</authorProperty>
+        <addServiceSettableGvars>true</addServiceSettableGvars>
+        <name>om-restapi</name>
+        <designer>
+            <lockedProperties/>
+            <fixedChildren/>
+            <resourceDescriptions/>
+        </designer>
+        <fileLocationProperty>D:\tmp\om-restapi.ear</fileLocationProperty>
+    </enterpriseArchive>
+</Repository:repository>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	 elementFormDefault="qualified"
+	 attributeFormDefault="unqualified">
+	<xs:complexType name="CFSPricePlan">
+		<xs:all>
+			<xs:element name="Id" type="xs:integer">
+				<xs:annotation>
+					<xs:documentation>Идентификатор тарифного плана</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="Name">
+				<xs:annotation>
+					<xs:documentation>Наименование тарифного плана</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="TariffPlan" type="xs:string" minOccurs="0"/>
+			<xs:element name="MonthlyFee" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Ежемесячная абонентская плата</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="SinglePayment" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Разовый платеж</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="MinAmount" type="xs:decimal" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Минимальная сумма счета</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="DataPricePlan" minOccurs="0">
+				<xs:complexType>
+					<xs:all>
+						<xs:element name="Unit">
+							<xs:annotation>
+								<xs:documentation>Единица измерения трафика</xs:documentation>
+							</xs:annotation>
+							<xs:simpleType>
+								<xs:restriction base="xs:string">
+									<xs:maxLength value="255"/>
+								</xs:restriction>
+							</xs:simpleType>
+						</xs:element>
+						<xs:element name="Price" type="xs:decimal"/>
+					</xs:all>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="VoicePricePlan">
+				<xs:annotation>
+					<xs:documentation>Тарифный план для голосового сервиса</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:all>
+	</xs:complexType>
+</xs:schema>

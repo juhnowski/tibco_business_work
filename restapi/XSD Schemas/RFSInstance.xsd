@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           id="RFSInstance">
+    <xs:include schemaLocation="RFSAttribute.xsd"/>
+
+    <xs:complexType name="RFSInstance">
+      <xs:sequence>
+      <xs:element  name="Id" type="xs:integer" />
+      <xs:element ref="RFSAttribute" minOccurs="0" maxOccurs="unbounded"/>
+    </xs:sequence>
+    </xs:complexType>
+
+</xs:schema>

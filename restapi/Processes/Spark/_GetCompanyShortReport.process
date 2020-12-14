@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:ns="http://www.tibco.com/pe/DeployedVarsType" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx="http://interfax.ru/ifax">
+    <wsdl:import namespace="http://interfax.ru/ifax"/>
+    <pd:name>Processes/Spark/_GetCompanyShortReport.process</pd:name>
+    <pd:description>ИНН должен содержать 9 или 10 цифр
+Метод предназначен для получения краткой справки по российской компании.</pd:description>
+    <pd:startName>Start</pd:startName>
+    <pd:startType>
+        <xsd:element name="inn" type="xsd:string"/>
+    </pd:startType>
+    <pd:startX>143</pd:startX>
+    <pd:startY>151</pd:startY>
+    <pd:returnBindings>
+        <result>
+            <xsl:value-of select="$Request-to-Spark/result"/>
+        </result>
+    </pd:returnBindings>
+    <pd:endName>End</pd:endName>
+    <pd:endType>
+        <xsd:element name="result" type="xsd:string"/>
+    </pd:endType>
+    <pd:endX>544</pd:endX>
+    <pd:endY>150</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1524834174000</pd:targetNamespace>
+    <pd:activity name="Request to Spark">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>329</pd:x>
+        <pd:y>148</pd:y>
+        <config>
+            <processName>/Processes/Spark/Utility/_RequestToSpark.process</processName>
+        </config>
+        <pd:inputBindings>
+            <inputParams>
+                <inn>
+                    <xsl:value-of select="$Start/inn"/>
+                </inn>
+                <method>
+                    <xsl:value-of select="&quot;GetCompanyShortReport&quot;"/>
+                </method>
+            </inputParams>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="INN Error">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>149</pd:x>
+        <pd:y>294</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput xmlns:ns1="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+                <message>
+                    <xsl:value-of select="&quot;ИНН должен иметь от 9 до 10 цифр&quot;"/>
+                </message>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>Request to Spark</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Request to Spark</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>INN Error</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>string-length($Start/inn)&lt;9 or string-length($Start/inn)&gt;10</pd:xpath>
+    </pd:transition>
+</pd:ProcessDefinition>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified" id="CFSInstance">
+	<xs:include schemaLocation="CFSAttribute.xsd"/>
+	<xs:include schemaLocation="RFSInstance.xsd"/>
+	<xs:include schemaLocation="CFSPricePlan.xsd"/>
+	<xs:include schemaLocation="Discount.xsd"/>
+	<xs:element name="CTN">
+		<xs:annotation>
+			<xs:documentation>MSISDN, на который подключается cfs</xs:documentation>
+		</xs:annotation>
+		<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="255"/>
+						</xs:restriction>
+					</xs:simpleType>
+		</xs:element>
+
+		<xs:element name="CFSInstance" type="CFSInstance"/>
+
+		<xs:complexType name="CFSInstance">
+			<xs:annotation>
+				<xs:documentation>Список параметров продукта. Описание типа данных ProductAttribute</xs:documentation>
+			</xs:annotation>
+			<xs:sequence>
+				<xs:element name="Id" type="xs:integer"/>
+				<xs:element ref="CTN" minOccurs="0"/>
+				<xs:element name="Attributes" type="CFSAttribute" minOccurs="0" maxOccurs="unbounded"/>
+				<xs:element name="CFSStructure" type="RFSInstance" maxOccurs="unbounded" />
+				<xs:element name="CFSPricePlans" type="CFSPricePlan" minOccurs="1" maxOccurs="unbounded"/>
+				<xs:element name="Discounts" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element ref="Discount" minOccurs="1" maxOccurs="unbounded"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+
+</xs:schema>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" attributeFormDefault="unqualified"
+           id="RFSAttribute">
+
+  <xs:include schemaLocation="Reference.xsd"/>
+	<xs:include schemaLocation="IsEditable.xsd"/>
+
+<xs:element name="RFSAttribute">
+	<xs:complexType >
+		<xs:sequence>
+			<xs:element name="Id" type="xs:integer"/>
+			<xs:element name="Name">
+				<xs:annotation>
+					<xs:documentation>Наименование атрибута</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="30"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="DataType">
+				<xs:annotation>
+					<xs:documentation>Тип данных атрибута</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Description" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Описание атрибута</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="DefaultValue" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Значение по умолчанию</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="TopValue" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Пороговое значение сверху</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="BottomValue" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Пороговое значение снизу</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="IsCFSAttr" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Признак, что атрибут является также атрибутом уровня cfs</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="IsBillingAttr" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Признак, влияет атрибут на тарификацию или нет</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="IsQuickOnAttr" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Признак, влияет атрибут на проверку расчета стоимости/возможности быстрого подключения</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Priority" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Приоритет отображения параметра</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="1"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element ref="Reference" maxOccurs="unbounded">
+				<xs:annotation>
+					<xs:documentation>Список возможных значений из справочника, если релевантно</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element ref="IsEditable">
+				<xs:annotation>
+					<xs:documentation>Информация, разрешено ли системе, которая запрашивает данные, редактирование параметра</xs:documentation>
+				</xs:annotation>
+			</xs:element>
+			<xs:element name="StoredIn" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Наименование системы, которая управляет атрибутом</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="30"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Comment" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Комментарий для атрибута</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Get" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Комментарий для атрибута</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+			<xs:element name="Put" minOccurs="0">
+				<xs:annotation>
+					<xs:documentation>Комментарий для атрибута</xs:documentation>
+				</xs:annotation>
+				<xs:simpleType>
+					<xs:restriction base="xs:string">
+						<xs:maxLength value="255"/>
+					</xs:restriction>
+				</xs:simpleType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+</xs:element>
+</xs:schema>

@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pd:ProcessDefinition xmlns:pd="http://xmlns.tibco.com/bw/process/2003" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:pfx2="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Contact.xsd" xmlns:pfx="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Client.xsd">
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Client.xsd" schemaLocation="/XSD Schemas/Client.xsd"/>
+    <xsd:import namespace="http://www.tibco.com/ns/no_namespace_schema_location/XSD Schemas/Contact.xsd" schemaLocation="/XSD Schemas/Contact.xsd"/>
+    <pd:name>Processes/Validation/_ValidateClientModel.process</pd:name>
+    <pd:description>Валидация модели данных Client</pd:description>
+    <pd:startName>Start</pd:startName>
+    <pd:startType ref="pfx:Client"/>
+    <pd:startX>150</pd:startX>
+    <pd:startY>64</pd:startY>
+    <pd:returnBindings/>
+    <pd:endName>End</pd:endName>
+    <pd:endX>593</pd:endX>
+    <pd:endY>241</pd:endY>
+    <pd:errorSchemas/>
+    <pd:processVariables/>
+    <pd:targetNamespace>http://xmlns.example.com/1539885718738</pd:targetNamespace>
+    <pd:activity name="_ValidatePrimaryContact">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>375</pd:x>
+        <pd:y>65</pd:y>
+        <config>
+            <processName>/Processes/Validation/_ValidateContactModel.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Contact>
+                <xsl:copy-of select="$Start/Client/primaryContactInfo/ancestor-or-self::*/namespace::node()"/>
+                <xsl:copy-of select="$Start/Client/primaryContactInfo/@*"/>
+                <xsl:copy-of select="$Start/Client/primaryContactInfo/node()"/>
+            </Contact>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="_ValidateAdditionalContact">
+        <pd:type>com.tibco.pe.core.CallProcessActivity</pd:type>
+        <pd:resourceType>ae.process.subprocess</pd:resourceType>
+        <pd:x>592</pd:x>
+        <pd:y>64</pd:y>
+        <config>
+            <processName>/Processes/Validation/_ValidateContactModel.process</processName>
+        </config>
+        <pd:inputBindings>
+            <Contact>
+                <xsl:copy-of select="$Start/Client/additionalContactInfo/ancestor-or-self::*/namespace::node()"/>
+                <xsl:copy-of select="$Start/Client/additionalContactInfo/@*"/>
+                <xsl:copy-of select="$Start/Client/additionalContactInfo/node()"/>
+            </Contact>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:activity name="Field-Required">
+        <pd:type>com.tibco.pe.core.GenerateErrorActivity</pd:type>
+        <pd:resourceType>ae.activities.throw</pd:resourceType>
+        <pd:x>153</pd:x>
+        <pd:y>245</pd:y>
+        <config>
+            <faultName/>
+        </config>
+        <pd:inputBindings>
+            <ns1:ActivityInput xmlns:ns1="http://www.tibco.com/pe/GenerateErrorActivity/InputSchema">
+                <message>
+                    <xsl:value-of select="&quot;Fields [companyInfo] and [companyName] required&quot;"/>
+                </message>
+                <messageCode>
+                    <xsl:value-of select="400"/>
+                </messageCode>
+            </ns1:ActivityInput>
+        </pd:inputBindings>
+    </pd:activity>
+    <pd:transition>
+        <pd:from>Start</pd:from>
+        <pd:to>_ValidatePrimaryContact</pd:to>
+        <pd:xpathDescription>Otherwise</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>_ValidatePrimaryContact</pd:from>
+        <pd:to>_ValidateAdditionalContact</pd:to>
+        <pd:xpathDescription>AdditionalContact present</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>$Start/Client/additionalContactInfo</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>_ValidateAdditionalContact</pd:from>
+        <pd:to>End</pd:to>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>always</pd:conditionType>
+    </pd:transition>
+    <pd:transition>
+        <pd:description>Поле CompanyInfo обязательно, если в запросе указан ИНН длиной 10 символов</pd:description>
+        <pd:from>Start</pd:from>
+        <pd:to>Field-Required</pd:to>
+        <pd:xpathDescription>CompanyInfo missed</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>xpath</pd:conditionType>
+        <pd:xpath>string-length($Start/Client/inn) = 10 
+and (not($Start/Client/companyInfo)
+	 or string-length($Start/Client/companyInfo/companyName) = 0)</pd:xpath>
+    </pd:transition>
+    <pd:transition>
+        <pd:from>_ValidatePrimaryContact</pd:from>
+        <pd:to>End</pd:to>
+        <pd:xpathDescription>Otherwise</pd:xpathDescription>
+        <pd:lineType>Default</pd:lineType>
+        <pd:lineColor>-16777216</pd:lineColor>
+        <pd:conditionType>otherwise</pd:conditionType>
+    </pd:transition>
+</pd:ProcessDefinition>
